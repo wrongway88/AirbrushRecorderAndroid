@@ -28,10 +28,6 @@
     <body>
         <div class="app">
             <h1>Apache Cordova</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
-            </div>
         </div>
         <script type="text/javascript" src="cordova.js"></script>
 		<script type="text/javascript" src="lib/jquery-1.8.2.min.js"></script>
@@ -44,6 +40,7 @@
 			
 			function onDeviceReady()
 			{
+				alert("device ready");
 				navigator.geolocation.getCurrentPossition(onSuccess, onError);
 			}
 			
@@ -66,6 +63,8 @@
 				alert('code: ' + error.code + '\n' +
 					  'message: ' + error.message + '\n');
 			}
+			
+			//navigator.geolocation.getCurrentPossition(onSuccess, onError);
         </script>
 		
 		<p id="geolocation">Finding geolocation...</p>

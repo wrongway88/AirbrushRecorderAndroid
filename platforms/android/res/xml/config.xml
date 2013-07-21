@@ -67,6 +67,8 @@
     </feature>
     <plugins>
 		<plugin name="Geolocation" value="org.apache.cordova.GeoBroker" />
+		<plugin name="File" value="org.apache.cordova.FileUtils" />
+		<plugin name="FileTransfer" value="org.apache.cordova.FileTransfer" />
     </plugins>
     <access origin="*" />
     <preference name="useBrowserHistory" value="true" />

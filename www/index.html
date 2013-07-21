@@ -36,13 +36,13 @@
         <script type="text/javascript" src="js/main.js"></script>
         <script type="text/javascript">
             app.initialize();
-			ioFile.initialize();
 			
 			document.addEventListener("deviceready", onDeviceReady, false);
 			
 			function onDeviceReady()
 			{
 				alert("device ready");
+				ioFile.initialize();
 				navigator.geolocation.getCurrentPossition(onSuccess, onError);
 			}
 			

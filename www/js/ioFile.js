@@ -42,6 +42,6 @@ var ioFile = {
 	initialize: function()
 	{
 		alert("initialize");
-		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+		window.requestFileSystem(window.PERSISTENT, 0, gotFS, fail);
 	}
 }

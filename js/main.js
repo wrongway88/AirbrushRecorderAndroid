@@ -16,6 +16,7 @@ var app = {
 	{
 		alert("writeToFile");
 	
+		/*
 		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, onError);
 		
 		gotFS: function(fileSystem)
@@ -44,10 +45,12 @@ var app = {
 		alert("initialize");
 	
         var self = this;
+		
+		writeToFile();
+		
 		var options = {frequency:500,maximumAge: 0, timeout: 300000, enableHighAccuracy:true};
 		//navigator.geolocation.getCurrentPosition(onSuccess, onError);
 		watchID = navigator.geolocation.watchPosition(this.onSuccess, this.onError, options);
-		writeToFile();
     }
 };
 

@@ -8,6 +8,17 @@
 		<script src="lib/jquery-1.8.2.min.js"></script>
 		<script src="js/main.js"></script>
 		
+		<script type="text/javascript" charset="utf-8">
+			document.addEventListener("deviceready", onDeviceReady, false);
+			
+			function onDeviceReady()
+			{
+				alert('onDeviceReady');
+				app.initialize();
+			}
+
+		</script>
+		
 		<p id="geolocation">Finding geolocation...</p>
 		
 	</body>

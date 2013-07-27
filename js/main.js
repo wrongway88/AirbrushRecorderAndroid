@@ -22,4 +22,4 @@ var app = {
 
 var watchID = null;
 
-app.initialize();
+//app.initialize();

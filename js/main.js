@@ -11,33 +11,30 @@ var app = {
 		alert('code: '    + error.code    + '\n' +
 			  'message: ' + error.message + '\n');
 	},
+	
+	gotFS: function(fileSystem)
+	{
+		alert("gotFS");
+		fileSystem.root.getFile("foo.txt", {create: true, exclusive: false}, gotFileEntry, onError);
+	},
+	
+	gotFileEntry: function(fileEntry)
+	{
+		alert("gotFileEntry");
+		fileEntry.createWriter(gotFileWriter, onError);
+	},
+	
+	gotFileWriter: function(writer)
+	{
+		alert("gotFileWriter");
+		writer.write("moin");
+	},
 
 	writeToFile: function()
 	{
 		alert("writeToFile");
 	
-		/*
 		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, onError);
-		
-		gotFS: function(fileSystem)
-		{
-			alert("gotFS");
-			//fileSystem.root.getFile("foo.txt", {create: true, exclusive: false}, gotFileEntry, onError);
-		}
-		
-		/*
-		gotFileEntry: function(fileEntry)
-		{
-			alert("gotFileEntry");
-			fileEntry.createWriter(gotFileWriter, onError);
-		},
-		
-		gotFileWriter: function(writer)
-		{
-			alert("gotFileWriter");
-			writer.write("moin");
-		},
-		*/
 	},
 	
     initialize: function()
@@ -46,15 +43,13 @@ var app = {
 	
         var self = this;
 		
-		writeToFile();
+		//this.writeToFile();
 		
 		alert("asdfkl");
 		
-		/*
 		var options = {frequency:500,maximumAge: 0, timeout: 300000, enableHighAccuracy:true};
 		//navigator.geolocation.getCurrentPosition(onSuccess, onError);
 		watchID = navigator.geolocation.watchPosition(this.onSuccess, this.onError, options);
-		*/
     }
 };
 

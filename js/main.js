@@ -15,11 +15,9 @@ var app = {
     initialize: function()
 	{
         var self = this;
-		var options = {timeout: 3000};
+		var options = {timeout: 30000};
 		watchID = navigator.geolocation.watchPosition(this.onSuccess, this.onError, options);
     }
 };
 
 var watchID = null;
-
-//app.initialize();

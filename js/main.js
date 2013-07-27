@@ -15,9 +15,10 @@ var app = {
 	gotFS: function(fileSystem)
 	{
 		alert("gotFS");
-		fileSystem.root.getFile("foo.txt", {create: true, exclusive: false}, gotFileEntry, onError);
+		//fileSystem.root.getFile("foo.txt", {create: true, exclusive: false}, gotFileEntry, onError);
 	},
 	
+	/*
 	gotFileEntry: function(fileEntry)
 	{
 		alert("gotFileEntry");
@@ -29,6 +30,7 @@ var app = {
 		alert("gotFileWriter");
 		writer.write("moin");
 	},
+	*/
 	
     initialize: function()
 	{

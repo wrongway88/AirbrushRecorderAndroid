@@ -35,7 +35,7 @@ var app = {
 		alert("initialize");
 	
         var self = this;
-		var options = {frequency:500,maximumAge: 0, timeout: 60000, enableHighAccuracy:true};
+		var options = {frequency:500,maximumAge: 0, timeout: 300000, enableHighAccuracy:true};
 		//navigator.geolocation.getCurrentPosition(onSuccess, onError);
 		watchID = navigator.geolocation.watchPosition(this.onSuccess, this.onError, options);
 		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, onError);

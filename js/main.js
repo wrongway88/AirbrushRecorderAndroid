@@ -34,14 +34,19 @@ var app = {
 	{
 		alert("writeToFile");
 	
-		if(typeof(LocalFileSystem) == 'undefined')
+		if(typeof(LocalFileSystem) != 'undefined')
 		{
-			alert("localFileSystem is undefined");
+			alert("localFileSystem is defined...apperently: " + LocalFileSystem.PERSISTENT);
+			window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, onError);
+		}
+		else if(typeof(window.PERSISTENT) != 'undefined')
+		{
+			alert("localFileSystem is undefined, using window: " + window.PERSISTENT);
+			window.requestFileSystem(window.PERSISTENT, 0, gotFS, onError);
 		}
 		else
 		{
-			alert("localFileSystem is defined...apperently");
-			window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, onError);
+			alert("i dont know what to do");
 		}
 	},
 	
@@ -59,7 +64,7 @@ var app = {
         var self = this;
 		
 		//this.writeToFile();
-		var compassOptions = {frequency:500};
+		var compassOptions = {frequency:500, timeout: 300000};
 		//compassID = navigator.compass.getCurrentHeading(onCompass, onError);//, compassOptions);
 		
 		alert("asdfkl");

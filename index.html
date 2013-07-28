@@ -14,14 +14,16 @@
 			function onDeviceReady()
 			{
 				alert('onDeviceReady');
+				//app.initialize();
+				
 				app.initialize();
+				app.writeToFile();
 			}
-			
-			app.writeToFile();
 
 		</script>
 		
 		<p id="geolocation">Finding geolocation...</p>
+		<p id="direction">Finding direction...</p>
 		
 	</body>
 </html>

@@ -37,6 +37,13 @@ var app = {
 		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, onError);
 	},
 	
+	onCompass: function(heading)
+	{
+		alert("compass");
+		var element = document.getElementById('direction');
+		element.innerHTML = 'direction: ' + heading.magneticHeading;
+	},
+	
     initialize: function()
 	{
 		alert("initialize");
@@ -44,6 +51,8 @@ var app = {
         var self = this;
 		
 		//this.writeToFile();
+		var compassOptions = {frequency:500};
+		//compassID = navigator.compass.getCurrentHeading(onCompass, onError);//, compassOptions);
 		
 		alert("asdfkl");
 		
@@ -54,3 +63,4 @@ var app = {
 };
 
 var watchID = null;
+var compassID = null;

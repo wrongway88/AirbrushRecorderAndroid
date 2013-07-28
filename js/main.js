@@ -40,6 +40,7 @@ var app = {
 		}
 		else
 		{
+			alert("localFileSystem is defined...apperently");
 			window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, onError);
 		}
 	},

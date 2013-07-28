@@ -34,7 +34,14 @@ var app = {
 	{
 		alert("writeToFile");
 	
-		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, onError);
+		if(typeof(LocalFileSystem) == 'undefined')
+		{
+			alert("localFileSystem is undefined");
+		}
+		else
+		{
+			window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, onError);
+		}
 	},
 	
 	onCompass: function(heading)

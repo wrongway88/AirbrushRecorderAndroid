@@ -38,6 +38,7 @@ var app = {
 		{
 			alert("localFileSystem is defined...apperently: " + LocalFileSystem.PERSISTENT);
 			window.requestFileSystem(LocalFileSystem.PERSISTENT, 1024, gotFS, onError);
+			alert('bla');
 		}
 		else if(typeof(window.PERSISTENT) != 'undefined')
 		{

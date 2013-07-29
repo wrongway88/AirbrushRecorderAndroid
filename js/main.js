@@ -12,45 +12,6 @@ var app = {
 			  'message: ' + error.message + '\n');
 	},
 	
-	gotFS: function(fileSystem)
-	{
-		alert("gotFS");
-		fileSystem.root.getFile("foo.txt", {create: true, exclusive: false}, gotFileEntry, onError);
-	},
-	
-	gotFileEntry: function(fileEntry)
-	{
-		alert("gotFileEntry");
-		fileEntry.createWriter(gotFileWriter, onError);
-	},
-	
-	gotFileWriter: function(writer)
-	{
-		alert("gotFileWriter");
-		writer.write("moin");
-	},
-
-	writeToFile: function()
-	{
-		alert("writeToFile");
-	
-		if(typeof(LocalFileSystem) != 'undefined')
-		{
-			alert("localFileSystem is defined...apperently: " + LocalFileSystem.PERSISTENT);
-			window.requestFileSystem(LocalFileSystem.PERSISTENT, 1024, gotFS, onError);
-			alert('bla');
-		}
-		else if(typeof(window.PERSISTENT) != 'undefined')
-		{
-			alert("localFileSystem is undefined, using window: " + window.PERSISTENT);
-			window.requestFileSystem(window.PERSISTENT, 1024, gotFS, onError);
-		}
-		else
-		{
-			alert("i dont know what to do");
-		}
-	},
-	
 	onCompass: function(heading)
 	{
 		alert("compass");

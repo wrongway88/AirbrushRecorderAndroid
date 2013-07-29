@@ -17,7 +17,42 @@
 				//app.initialize();
 				
 				app.initialize();
-				app.writeToFile();
+				//app.writeToFile();
+				writeToFile();
+			}
+			
+			function writeToFile()
+			{
+				alert("writeToFile");
+			
+				if(typeof(LocalFileSystem) != 'undefined')
+				{
+					alert("localFileSystem is defined...apperently: " + LocalFileSystem.PERSISTENT);
+					window.requestFileSystem(LocalFileSystem.PERSISTENT, 1024, gotFS, onError);
+					alert('bla');
+				}
+				else
+				{
+					alert("i dont know what to do");
+				}
+			}
+			
+			function gotFS(fileSystem)
+			{
+				alert("gotFS");
+				fileSystem.root.getFile("foo.txt", {create: true, exclusive: false}, gotFileEntry, onError);
+			}
+			
+			function gotFileEntry(fileEntry)
+			{
+				alert("gotFileEntry");
+				fileEntry.createWriter(gotFileWriter, onError);
+			}
+			
+			function gotFileWriter(writer)
+			{
+				alert("gotFileWriter");
+				writer.write("moin");
 			}
 			
 			//app.writeToFile();

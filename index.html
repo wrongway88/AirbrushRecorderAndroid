@@ -29,7 +29,6 @@
 				{
 					alert("localFileSystem is defined...apperently: " + LocalFileSystem.PERSISTENT);
 					window.requestFileSystem(LocalFileSystem.PERSISTENT, 1024, gotFS, onError);
-					alert('bla');
 				}
 				else
 				{
@@ -53,6 +52,12 @@
 			{
 				alert("gotFileWriter");
 				writer.write("moin");
+			}
+			
+			onError: function(error)
+			{
+				alert('code: '    + error.code    + '\n' +
+					  'message: ' + error.message + '\n');
 			}
 			
 			//app.writeToFile();

@@ -7,6 +7,7 @@
 		<script src="cordova.js"></script>
 		<script src="lib/jquery-1.8.2.min.js"></script>
 		<script src="js/main.js"></script>
+		<script src="fileWriter.js"></script>
 		
 		<script type="text/javascript" charset="utf-8">
 			document.addEventListener("deviceready", onDeviceReady, false);
@@ -18,9 +19,12 @@
 				
 				app.initialize();
 				//app.writeToFile();
-				writeToFile();
+				//writeToFile();
+				
+				getWriter();
 			}
 			
+			/*
 			function writeToFile()
 			{
 				alert("writeToFile");
@@ -59,6 +63,7 @@
 				alert('code: '    + error.code    + '\n' +
 					  'message: ' + error.message + '\n');
 			}
+			*/
 			
 			//app.writeToFile();
 

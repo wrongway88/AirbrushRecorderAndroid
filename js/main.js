@@ -31,8 +31,6 @@ var app = {
 		var compassOptions = {frequency:500, timeout: 300000};
 		//compassID = navigator.compass.getCurrentHeading(onCompass, onError);//, compassOptions);
 		
-		alert("asdfkl");
-		
 		var options = {frequency:500,maximumAge: 0, timeout: 300000, enableHighAccuracy:true};
 		//navigator.geolocation.getCurrentPosition(onSuccess, onError);
 		watchID = navigator.geolocation.watchPosition(this.onSuccess, this.onError, options);

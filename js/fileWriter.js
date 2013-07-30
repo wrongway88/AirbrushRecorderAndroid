@@ -8,7 +8,7 @@ function writeToFile(message)
 		if(_signaled == false)
 		{
 			alert("writing to file");
-			_signaled = false;
+			_signaled = true;
 		}
 		
 		_writer.write(message);

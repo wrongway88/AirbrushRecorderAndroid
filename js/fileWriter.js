@@ -1,20 +1,24 @@
 var _writer = null;
+var _signaled = false,
 
 function writeToFile(message)
 {
 	if(_writer != null)
 	{
+		if(_signaled == false)
+		{
+			alert("writing to file");
+			_signaled = false;
+		}
+		
 		_writer.write(message);
 	}
 }
 
 function getWriter()
 {
-	alert("getWriter");
-
 	if(typeof(LocalFileSystem) != 'undefined')
 	{
-		alert("getWriter");
 		window.requestFileSystem(LocalFileSystem.PERSISTENT, 1024*1024, gotFS, onError);
 	}
 	else
@@ -25,7 +29,6 @@ function getWriter()
 
 function gotFS(fileSystem)
 {
-	alert("gotFS");
 	var date = new Date();
 
 	var fileName = "log";
@@ -37,13 +40,11 @@ function gotFS(fileSystem)
 
 function gotFileEntry(fileEntry)
 {
-	alert("gotFileEntry");
 	fileEntry.createWriter(gotFileWriter, onError);
 }
 
 function gotFileWriter(writer)
 {
-	alert("gotWriter");
 	_writer = writer;
 }
 

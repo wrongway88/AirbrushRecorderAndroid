@@ -1,11 +1,15 @@
 var app = {
 	onSuccess: function(position)
-	{
-		var element = document.getElementById('geolocation');
-		element.innerHTML = 'lat: ' + position.coords.latitude +
-							' long: ' + position.coords.longitude +
-							' alt: ' + position.coords.altitude + 
-							' speed: ' + position.coords.speed;
+	{					
+		var message = 'lat: ' + position.coords.latitude + 
+						' long: ' + position.coords.longitude +
+						' alt: ' + position.coords.altitude + 
+						' speed: ' + position.coords.speed;
+			
+		writeToFile(message);
+		
+		var element = document.getElementById('geolocation');	
+		element.innerHTML = message;
 	},
 	
 	onError: function(error)

@@ -6,7 +6,7 @@ var app = {
 						' alt: ' + position.coords.altitude + 
 						' speed: ' + position.coords.speed;
 			
-		writeToFile(message);
+		//writeToFile(message);
 		
 		var element = document.getElementById('geolocation');	
 		element.innerHTML = message;

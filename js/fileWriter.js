@@ -49,10 +49,12 @@ function gotFileWriter(writer)
 {
 	alert("gotWriter");
 
+	/*
 	_writer = writer;
 	
 	var date = new Date();
 	var message = "file @ " + date.getHours() + ":" + date.getMinutes();
+	*/
 	
 	_writer.write(message);
 }

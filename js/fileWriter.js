@@ -3,6 +3,8 @@ var _signaled = false,
 
 function writeToFile(message)
 {
+	alert("trying file write");
+	
 	if(_writer != null)
 	{
 		if(_signaled == false)
@@ -46,6 +48,11 @@ function gotFileEntry(fileEntry)
 function gotFileWriter(writer)
 {
 	_writer = writer;
+	
+	var date = new Date();
+	var message = "file @ " + date.getHours() + ":" + date.getMinutes();
+	
+	_writer.write(message);
 }
 
 function onError(error)

@@ -1,6 +1,8 @@
 var app = {
 	onSuccess: function(position)
-	{					
+	{	
+		alert("got position");
+	
 		var message = 'lat: ' + position.coords.latitude + 
 						' long: ' + position.coords.longitude +
 						' alt: ' + position.coords.altitude + 

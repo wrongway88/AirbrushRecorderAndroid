@@ -12,6 +12,7 @@ function getWriter()
 {
 	if(typeof(LocalFileSystem) != 'undefined')
 	{
+		alert("getWriter");
 		window.requestFileSystem(LocalFileSystem.PERSISTENT, 1024*1024, gotFS, onError);
 	}
 	else
@@ -22,6 +23,7 @@ function getWriter()
 
 function gotFS(fileSystem)
 {
+	alert("gotFS");
 	var date = new Date();
 
 	var fileName = "log";
@@ -33,12 +35,13 @@ function gotFS(fileSystem)
 
 function gotFileEntry(fileEntry)
 {
+	alert("gotFileEntry");
 	fileEntry.createWriter(gotFileWriter, onError);
 }
 
 function gotFileWriter(writer)
 {
-	alert("asdfkl");
+	alert("gotWriter");
 	_writer = writer;
 }
 

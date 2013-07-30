@@ -47,6 +47,8 @@ function gotFileEntry(fileEntry)
 
 function gotFileWriter(writer)
 {
+	alert("gotWriter");
+
 	_writer = writer;
 	
 	var date = new Date();

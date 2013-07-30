@@ -19,6 +19,8 @@ function writeToFile(message)
 
 function getWriter()
 {
+	alert("getWriter");
+
 	if(typeof(LocalFileSystem) != 'undefined')
 	{
 		window.requestFileSystem(LocalFileSystem.PERSISTENT, 1024*1024, gotFS, onError);
@@ -31,6 +33,8 @@ function getWriter()
 
 function gotFS(fileSystem)
 {
+	alert("gotFS");
+
 	var date = new Date();
 
 	var fileName = "log";
@@ -42,6 +46,8 @@ function gotFS(fileSystem)
 
 function gotFileEntry(fileEntry)
 {
+	alert("gotFileEntry");
+
 	fileEntry.createWriter(gotFileWriter, onError);
 }
 
@@ -49,8 +55,10 @@ function gotFileWriter(writer)
 {
 	alert("gotWriter");
 
-	/*
 	_writer = writer;
+	
+	/*
+	
 	
 	var date = new Date();
 	var message = "file @ " + date.getHours() + ":" + date.getMinutes();

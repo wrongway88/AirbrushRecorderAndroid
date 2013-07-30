@@ -10,6 +10,8 @@ function writeToFile(message)
 
 function getWriter()
 {
+	alert("getWriter");
+
 	if(typeof(LocalFileSystem) != 'undefined')
 	{
 		alert("getWriter");

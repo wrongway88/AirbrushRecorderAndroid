@@ -3,7 +3,9 @@ var app = {
 	{
 		var element = document.getElementById('geolocation');
 		element.innerHTML = 'lat: ' + position.coords.latitude +
-							' long: ' + position.coords.longitude;
+							' long: ' + position.coords.longitude +
+							' alt: ' + position.coords.altitude + 
+							' speed: ' + position.coords.speed;
 	},
 	
 	onError: function(error)

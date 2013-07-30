@@ -1,9 +1,9 @@
 var _writer = null;
-var _signaled = false,
+var _signaled = false;
 
 function writeToFile(message)
 {
-	alert("trying file write");
+	//alert("trying file write");
 	
 	if(_writer != null)
 	{
@@ -19,7 +19,7 @@ function writeToFile(message)
 
 function getWriter()
 {
-	alert("getWriter");
+	//alert("getWriter");
 
 	if(typeof(LocalFileSystem) != 'undefined')
 	{
@@ -33,7 +33,7 @@ function getWriter()
 
 function gotFS(fileSystem)
 {
-	alert("gotFS");
+	//alert("gotFS");
 
 	var date = new Date();
 
@@ -46,7 +46,7 @@ function gotFS(fileSystem)
 
 function gotFileEntry(fileEntry)
 {
-	alert("gotFileEntry");
+	//alert("gotFileEntry");
 
 	fileEntry.createWriter(gotFileWriter, onError);
 }

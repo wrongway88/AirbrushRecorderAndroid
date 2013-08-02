@@ -7,11 +7,13 @@ function writeToFile(message)
 	
 	if(_writer != null)
 	{
+		/*
 		if(_signaled == false)
 		{
 			alert("writing to file");
 			_signaled = true;
 		}
+		*/
 		
 		_writer.write(message);
 	}
@@ -53,7 +55,7 @@ function gotFileEntry(fileEntry)
 
 function gotFileWriter(writer)
 {
-	alert("gotWriter");
+	//alert("gotWriter");
 
 	_writer = writer;
 	

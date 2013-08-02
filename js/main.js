@@ -7,11 +7,11 @@ var app = {
 		var time = (date.getHours() * 60.0 * 60.0) + (date.getMinutes() * 60.0) + date.getSeconds();
 		time = time - startTime;
 	
-		var message = 	' {\"t\": ' + time +
-						' \"lat\": ' + position.coords.latitude + 
-						' \"long\": ' + position.coords.longitude +
-						' \"alt\": ' + position.coords.altitude + 
-						' \"speed": ' + position.coords.speed + '},';
+		var message = 	'{\"t\": ' + time +
+						',\"lat\": ' + position.coords.latitude + 
+						',\"long\": ' + position.coords.longitude +
+						',\"alt\": ' + position.coords.altitude + 
+						',\"speed": ' + position.coords.speed + '},';
 			
 		writeToFile(message);
 		

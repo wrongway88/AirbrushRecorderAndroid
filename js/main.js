@@ -19,11 +19,13 @@ var app = {
 	
 	writeHeader: function()
 	{
+		/*
 		var element = document.getElementById('textDeparture');
 		trace(element.value);
 		
 		element = document.getElementById('textDestination');
 		trace(element.value);
+		*/
 		
 		writeToFile('{\"waypoints\":[\n');
 	},

@@ -1,8 +1,6 @@
 var app = {
 	onSuccess: function(position)
 	{	
-		//alert("got position");
-		
 		var date = new Date();
 		var time = (date.getHours() * 60.0 * 60.0) + (date.getMinutes() * 60.0) + date.getSeconds();
 		time = time - startTime;
@@ -21,6 +19,12 @@ var app = {
 	
 	writeHeader: function()
 	{
+		var element = document.getElementById('textDeparture');
+		trace(element.value);
+		
+		element = document.getElementById('textDestination');
+		trace(element.value);
+		
 		writeToFile('{\"waypoints\":[\n');
 	},
 	
@@ -73,9 +77,7 @@ var app = {
 	
     initialize: function()
 	{
-		//alert("initialize");
-	
-        getWriter();
+		getWriter();
 		
 		var element = document.getElementById('buttonRecord');
 		element.onclick = function(){app.startRecording();};
@@ -90,7 +92,5 @@ document.addEventListener("deviceready", onDeviceReady, false);
 			
 function onDeviceReady()
 {
-	//alert('onDeviceReady');
-	
 	app.initialize();
 }

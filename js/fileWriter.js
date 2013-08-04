@@ -3,26 +3,14 @@ var _signaled = false;
 
 function writeToFile(message)
 {
-	//alert("trying file write");
-	
 	if(_writer != null)
 	{
-		/*
-		if(_signaled == false)
-		{
-			alert("writing to file");
-			_signaled = true;
-		}
-		*/
-		
 		_writer.write(message);
 	}
 }
 
 function getWriter()
 {
-	//alert("getWriter");
-
 	if(typeof(LocalFileSystem) != 'undefined')
 	{
 		window.requestFileSystem(LocalFileSystem.PERSISTENT, 1024*1024, gotFS, onError);
@@ -35,12 +23,10 @@ function getWriter()
 
 function gotFS(fileSystem)
 {
-	//alert("gotFS");
-
 	var date = new Date();
 
 	var fileName = "log";
-	fileName += "_" + date.getHours() + "_" + date.getMinutes();
+	fileName += "_" + date.getDay() + "-" + date.getMonth() + "_" + date.getHours() + ":" + date.getMinutes();
 	fileName += ".txt"
 	
 	fileSystem.root.getFile(fileName, {create: true, exclusive: false}, gotFileEntry, onError);
@@ -48,23 +34,12 @@ function gotFS(fileSystem)
 
 function gotFileEntry(fileEntry)
 {
-	//alert("gotFileEntry");
-
 	fileEntry.createWriter(gotFileWriter, onError);
 }
 
 function gotFileWriter(writer)
 {
-	//alert("gotWriter");
-
 	_writer = writer;
-	
-	/*
-	
-	
-	var date = new Date();
-	var message = "file @ " + date.getHours() + ":" + date.getMinutes();
-	*/
 	
 	_writer.write(message);
 }

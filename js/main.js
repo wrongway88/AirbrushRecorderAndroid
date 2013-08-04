@@ -37,7 +37,7 @@ var app = {
 	
 	startRecording: function()
 	{
-		writeHeader();
+		this.writeHeader();
 	
 		var options = {frequency:500,maximumAge: 0, timeout: 300000, enableHighAccuracy:true};
 		watchID = navigator.geolocation.watchPosition(this.onSuccess, this.onError, options);
@@ -57,7 +57,7 @@ var app = {
 	{
 		if(watchID != null)
 		{
-			//writeFooter();
+			this.writeFooter();
 			
 			navigator.geolocation.clearWatch(watchID);
 			watchID = null;

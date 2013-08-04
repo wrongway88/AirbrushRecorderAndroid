@@ -21,12 +21,12 @@ var app = {
 	
 	writeHeader: function()
 	{
-		writeToFile("{\"waypoints\":[\n");
+		writeToFile('{\"waypoints\":[\n');
 	},
 	
 	writeFooter: function()
 	{
-		writeToFile("]}");
+		writeToFile(']}');
 	},
 	
 	onError: function(error)
@@ -37,7 +37,7 @@ var app = {
 	
 	startRecording: function()
 	{
-		//writeHeader();
+		writeHeader();
 	
 		var options = {frequency:500,maximumAge: 0, timeout: 300000, enableHighAccuracy:true};
 		watchID = navigator.geolocation.watchPosition(this.onSuccess, this.onError, options);

@@ -11,12 +11,22 @@ var app = {
 						',\"lat\": ' + position.coords.latitude + 
 						',\"long\": ' + position.coords.longitude +
 						',\"alt\": ' + position.coords.altitude + 
-						',\"speed": ' + position.coords.speed + '},';
+						',\"speed": ' + position.coords.speed + '},\n';
 			
 		writeToFile(message);
 		
 		var element = document.getElementById('geolocation');	
 		element.innerHTML = message;
+	},
+	
+	writeHeader: function()
+	{
+		writeToFile("{\"waypoints\":[\n");
+	},
+	
+	writeFooter: function()
+	{
+		writeToFile("]}");
 	},
 	
 	onError: function(error)
@@ -25,32 +35,62 @@ var app = {
 			  'message: ' + error.message + '\n');
 	},
 	
-	onCompass: function(heading)
+	startRecording: function()
 	{
-		alert("compass");
-		var element = document.getElementById('direction');
-		element.innerHTML = 'direction: ' + heading.magneticHeading;
+		writeHeader();
+	
+		var options = {frequency:500,maximumAge: 0, timeout: 300000, enableHighAccuracy:true};
+		watchID = navigator.geolocation.watchPosition(this.onSuccess, this.onError, options);
+		
+		var date = new Date();
+		startTime = (date.getHours() * 60.0 * 60.0) + (date.getMinutes() * 60.0) + date.getSeconds();
+		
+		var element = document.getElementById('geolocation');	
+		element.innerHTML = "Finding location...";
+		
+		element = document.getElementById('buttonRecord');
+		element.value = "Stop";
+		element.onclick= function(){app.stopRecording();};
+	},
+	
+	stopRecording: function()
+	{
+		if(watchID != null)
+		{
+			writeFooter();
+			
+			navigator.geolocation.clearWatch(watchID);
+			watchID = null;
+			
+			var element = document.getElementById('geolocation');	
+			element.innerHTML = "";
+			
+			element = document.getElementById('buttonRecord');
+			element.value = "Record";
+			element.onclick= function(){app.startRecording();};
+		}
 	},
 	
     initialize: function()
 	{
 		alert("initialize");
 	
-        var self = this;
+        getWriter();
 		
-		//this.writeToFile();
-		var compassOptions = {frequency:500, timeout: 300000};
-		//compassID = navigator.compass.getCurrentHeading(onCompass, onError);//, compassOptions);
-		
-		var options = {frequency:500,maximumAge: 0, timeout: 300000, enableHighAccuracy:true};
-		//navigator.geolocation.getCurrentPosition(onSuccess, onError);
-		watchID = navigator.geolocation.watchPosition(this.onSuccess, this.onError, options);
-		
-		var date = new Date();
-		startTime = (date.getHours() * 60.0 * 60.0) + (date.getMinutes() * 60.0) + date.getSeconds();
+		var element = document.getElementById('buttonRecord');
+		element.onclick = function(){app.startRecording();}; //app.startRecording;
     }
 };
 
 var watchID = null;
-var compassID = null;
 var startTime = 0.0;
+
+
+document.addEventListener("deviceready", onDeviceReady, false);
+			
+function onDeviceReady()
+{
+	alert('onDeviceReady');
+	
+	app.initialize();
+}

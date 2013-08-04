@@ -9,70 +9,11 @@
 		<script src="js/main.js"></script>
 	</head>
 	<body>
-		<script type="text/javascript" charset="utf-8">
-			document.addEventListener("deviceready", onDeviceReady, false);
-			
-			function onDeviceReady()
-			{
-				alert('onDeviceReady');
-				//app.initialize();
-				
-				app.initialize();
-				//app.writeToFile();
-				//writeToFile();
-				
-				getWriter();
-			}
-			
-			//getWriter();
-			
-			/*
-			function writeToFile()
-			{
-				alert("writeToFile");
-			
-				if(typeof(LocalFileSystem) != 'undefined')
-				{
-					alert("localFileSystem is defined...apperently: " + LocalFileSystem.PERSISTENT);
-					window.requestFileSystem(LocalFileSystem.PERSISTENT, 1024, gotFS, onError);
-				}
-				else
-				{
-					alert("i dont know what to do");
-				}
-			}
-			
-			function gotFS(fileSystem)
-			{
-				alert("gotFS");
-				fileSystem.root.getFile("foo.txt", {create: true, exclusive: false}, gotFileEntry, onError);
-			}
-			
-			function gotFileEntry(fileEntry)
-			{
-				alert("gotFileEntry");
-				fileEntry.createWriter(gotFileWriter, onError);
-			}
-			
-			function gotFileWriter(writer)
-			{
-				alert("gotFileWriter");
-				writer.write("moin");
-			}
-			
-			function onError(error)
-			{
-				alert('code: '    + error.code    + '\n' +
-					  'message: ' + error.message + '\n');
-			}
-			*/
-			
-			//app.writeToFile();
-
-		</script>
+		<form>
+			<input id="buttonRecord" type="button" value="Record" onclick="">
+		</form>
 		
-		<p id="geolocation">Finding geolocation...</p>
-		<p id="direction">Finding direction...</p>
+		<p id="geolocation"></p>
 		
 	</body>
 </html>

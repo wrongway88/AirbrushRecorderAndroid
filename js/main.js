@@ -37,7 +37,7 @@ var app = {
 	
 	startRecording: function()
 	{
-		writeHeader();
+		//writeHeader();
 	
 		var options = {frequency:500,maximumAge: 0, timeout: 300000, enableHighAccuracy:true};
 		watchID = navigator.geolocation.watchPosition(this.onSuccess, this.onError, options);
@@ -57,7 +57,7 @@ var app = {
 	{
 		if(watchID != null)
 		{
-			writeFooter();
+			//writeFooter();
 			
 			navigator.geolocation.clearWatch(watchID);
 			watchID = null;
@@ -78,7 +78,7 @@ var app = {
         getWriter();
 		
 		var element = document.getElementById('buttonRecord');
-		element.onclick = function(){alert("öhm??"); app.startRecording();}; //app.startRecording;
+		element.onclick = function(){app.startRecording();};
     }
 };
 

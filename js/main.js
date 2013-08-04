@@ -73,12 +73,12 @@ var app = {
 	
     initialize: function()
 	{
-		alert("initialize");
+		//alert("initialize");
 	
         getWriter();
 		
 		var element = document.getElementById('buttonRecord');
-		element.onclick = function(){app.startRecording();}; //app.startRecording;
+		element.onclick = function(){alert("öhm??"); app.startRecording();}; //app.startRecording;
     }
 };
 
@@ -90,7 +90,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 			
 function onDeviceReady()
 {
-	alert('onDeviceReady');
+	//alert('onDeviceReady');
 	
 	app.initialize();
 }

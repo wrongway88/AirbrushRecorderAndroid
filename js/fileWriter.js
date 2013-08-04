@@ -26,7 +26,7 @@ function gotFS(fileSystem)
 	var date = new Date();
 
 	var fileName = "log";
-	fileName += "_" + date.getDay() + "-" + date.getMonth() + "_" + date.getHours() + ":" + date.getMinutes();
+	fileName += "_" + date.getHours() + "_" + date.getMinutes();
 	fileName += ".txt"
 	
 	fileSystem.root.getFile(fileName, {create: true, exclusive: false}, gotFileEntry, onError);

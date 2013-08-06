@@ -19,15 +19,29 @@ var app = {
 	
 	writeHeader: function()
 	{
-		/*
+		writeToFile('{');
+	
 		var element = document.getElementById('textDeparture');
-		trace(element.value);
+		if(element != null)
+		{
+			writeToFile('\"departure\":' + element.value);
+		}
+		else
+		{
+			alert("element is null");
+		}
 		
 		element = document.getElementById('textDestination');
-		trace(element.value);
-		*/
+		if(element != null)
+		{
+			writeToFile('\"arrival\":' + element.value);
+		}
+		else
+		{
+			alert("element is null");
+		}
 		
-		writeToFile('{\"waypoints\":[\n');
+		writeToFile('\"waypoints\":[\n');
 	},
 	
 	writeFooter: function()

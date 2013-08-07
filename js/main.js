@@ -24,7 +24,7 @@ var app = {
 		var element = document.getElementById('textDeparture');
 		if(element != null)
 		{
-			writeToFile('\"departure\":' + element.value);
+			writeToFile('\"departure\":' + element.value + ',');
 		}
 		else
 		{
@@ -34,7 +34,7 @@ var app = {
 		element = document.getElementById('textDestination');
 		if(element != null)
 		{
-			writeToFile('\"arrival\":' + element.value);
+			writeToFile('\"arrival\":' + element.value + ',');
 		}
 		else
 		{

@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <EditText android:id="@+id/edit_text_departure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/edit_text_departure" />
+    
+    <EditText android:id="@+id/edit_text_destination"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/edit_text_destination" />
+    
+    <EditText android:id="@+id/edit_text_airplane_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/edit_text_airplane_type" />
+    
+    <Button
+        android:id="@+id/button_toggle_logging"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_start_logging"
+        android:onClick="togglePathLogging" />
+    
+    <Button
+        android:id="@+id/button_view_flights"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_view_flight"
+        android:onClick="viewFlights" />
+    
+    <Button
+        android:id="@+id/button_view_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_view_login"
+        android:onClick="viewLogin" />
+    
+</LinearLayout>

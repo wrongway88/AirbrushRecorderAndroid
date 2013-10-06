@@ -14,13 +14,14 @@ import android.support.v4.app.FragmentManager;
 
 import com.example.airbrushrecorder.data.FlightsDataSource;
 import com.example.airbrushrecorder.dialog.DialogDeleteFlight;
+import com.example.airbrushrecorder.dialog.DialogSetLoginData;
 
 import java.util.List;
 import java.util.ArrayList;
 
 import android.util.Log;
 
-public class FileBrowser extends FragmentActivity implements DialogDeleteFlight.NoticeDialogListener
+public class FileBrowser extends FragmentActivity implements DialogDeleteFlight.NoticeDialogListener, DialogSetLoginData.NoticeDialogListener
 {
 	private static String TAG = "FileBrowser";
 	private Spinner _spinner = null;
@@ -126,12 +127,28 @@ public class FileBrowser extends FragmentActivity implements DialogDeleteFlight.
 				FlightsDataSource dataSource = new FlightsDataSource(this);
 				dataSource.open();
 				String sessionData = dataSource.getCookie();
+				
+				WebInterface wf = new WebInterface();
+				
+				LoginHelper loginHelper = new LoginHelper();
+				if(sessionData.length() <= 0 || loginHelper.ipChanged(this))
+				{
+					if(loginHelper.login(this) == false)
+					{
+						DialogSetLoginData dialog = new DialogSetLoginData();
+						dialog.show(this.getSupportFragmentManager(), TAG);
+					}
+					else
+					{
+						sessionData = dataSource.getCookie();
+					}
+				}
+				
 				dataSource.close();
 				
 				if(sessionData.length() > 0)
 				{
-					WebInterface wf = new WebInterface();
-					wf.postFlight(flight, sessionData);
+					submitSelectedFlight(flight, sessionData);
 				}
 			}
 		}
@@ -139,6 +156,12 @@ public class FileBrowser extends FragmentActivity implements DialogDeleteFlight.
 		{
 			Log.d(TAG, e.toString());
 		}
+	}
+	
+	private void submitSelectedFlight(Flight flight, String sessionData)
+	{
+		WebInterface wf = new WebInterface();
+		wf.postFlight(flight, sessionData);
 	}
 	
 	private Flight getSelectedFlight()
@@ -206,6 +229,20 @@ public class FileBrowser extends FragmentActivity implements DialogDeleteFlight.
 	{
 		//Log.d(TAG, "onDialogPositiveClick");
 		deleteSelectedFlight();
+	}
+	
+	@Override
+	public void onDialogPositiveClick(DialogFragment dialog, String mail, String password)
+	{
+		LoginHelper loginHelper = new LoginHelper();
+		loginHelper.setLoginData(this, mail, password);
+		
+		if(loginHelper.login(this))
+		{
+			String sessionData = loginHelper.getSessionData(this);
+			WebInterface wf = new WebInterface();
+			wf.postFlight(getSelectedFlight(), sessionData);
+		}
 	}
 	
 	@Override

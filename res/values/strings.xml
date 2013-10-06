@@ -18,7 +18,7 @@
     <string name="edit_text_departure">Departure</string>
     <string name="edit_text_destination">Destination</string>
     <string name="edit_text_airplane_type">Airplane Type</string>
-    <string name="edit_text_user_name">User Name</string>
+    <string name="edit_text_user_name">Mail Address</string>
     <string name="edit_text_password">Password</string>
     
     <string name="log_date">date</string>
@@ -28,6 +28,8 @@
     <string name="log_airplane_type">airplaneType</string>
     
     <string name="dialog_delete_flight">Delete Flight?</string>
+    <string name="dialog_set_login_data">Set Login Data</string>
     <string name="dialog_delete">Delete</string>
     <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_save">Save</string>
 </resources>

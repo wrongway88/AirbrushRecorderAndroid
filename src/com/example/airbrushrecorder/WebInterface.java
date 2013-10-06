@@ -9,7 +9,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.URL;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONArray;
@@ -17,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.conn.util.InetAddressUtils;
 
 public class WebInterface
 {
@@ -220,4 +225,45 @@ public class WebInterface
 		
 		return result;
 	}
+	
+	//http://stackoverflow.com/questions/6064510/how-to-get-ip-address-of-the-device
+	public static String getIPAddress(boolean useIPv4)
+	{
+        try
+        {
+            List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface intf : interfaces)
+            {
+                List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
+                
+                for (InetAddress addr : addrs)
+                {
+                    if (!addr.isLoopbackAddress())
+                    {
+                        String sAddr = addr.getHostAddress().toUpperCase();
+                        boolean isIPv4 = InetAddressUtils.isIPv4Address(sAddr); 
+                        if (useIPv4)
+                        {
+                            if (isIPv4) 
+                                return sAddr;
+                        }
+                        else
+                        {
+                            if (!isIPv4)
+                            {
+                                int delim = sAddr.indexOf('%');
+                                return delim<0 ? sAddr : sAddr.substring(0, delim);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+        	Log.e(TAG, ex.toString());
+        }
+        
+        return "";
+    }
 }

@@ -14,14 +14,14 @@ import android.support.v4.app.FragmentManager;
 
 import com.example.airbrushrecorder.data.FlightsDataSource;
 import com.example.airbrushrecorder.dialog.DialogDeleteFlight;
-import com.example.airbrushrecorder.dialog.DialogSetLoginData;
+//import com.example.airbrushrecorder.dialog.DialogSetLoginData;
 
 import java.util.List;
 import java.util.ArrayList;
 
 import android.util.Log;
 
-public class FileBrowser extends FragmentActivity implements DialogDeleteFlight.NoticeDialogListener, DialogSetLoginData.NoticeDialogListener
+public class FileBrowser extends FragmentActivity implements DialogDeleteFlight.NoticeDialogListener//, DialogSetLoginData.NoticeDialogListener
 {
 	private static String TAG = "FileBrowser";
 	private Spinner _spinner = null;
@@ -135,8 +135,8 @@ public class FileBrowser extends FragmentActivity implements DialogDeleteFlight.
 				{
 					if(loginHelper.login(this) == false)
 					{
-						DialogSetLoginData dialog = new DialogSetLoginData();
-						dialog.show(this.getSupportFragmentManager(), TAG);
+						//DialogSetLoginData dialog = new DialogSetLoginData();
+						//dialog.show(this.getSupportFragmentManager(), TAG);
 					}
 					else
 					{
@@ -231,7 +231,7 @@ public class FileBrowser extends FragmentActivity implements DialogDeleteFlight.
 		deleteSelectedFlight();
 	}
 	
-	@Override
+	/*@Override
 	public void onDialogPositiveClick(DialogFragment dialog, String mail, String password)
 	{
 		LoginHelper loginHelper = new LoginHelper();
@@ -243,7 +243,7 @@ public class FileBrowser extends FragmentActivity implements DialogDeleteFlight.
 			WebInterface wf = new WebInterface();
 			wf.postFlight(getSelectedFlight(), sessionData);
 		}
-	}
+	}*/
 	
 	@Override
     public void onDialogNegativeClick(DialogFragment dialog)

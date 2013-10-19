@@ -11,6 +11,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
+import com.example.airbrushrecorder.WebInterface;
+
 public class Flight
 {
 	private static String TAG = "FLIGHT";
@@ -359,6 +361,7 @@ public class Flight
 			result += "&waypointsCompressed=";
 			
 			String waypoints = URLEncoder.encode(serializeWaypointsToHttp(), "ISO-8859-1");
+			waypoints = WebInterface.compress(waypoints);
 			
 			if(waypoints.length() > 0)
 			{

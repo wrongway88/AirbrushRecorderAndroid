@@ -1,20 +1,26 @@
 package com.example.airbrushrecorder;
 
 import android.os.AsyncTask;
+import android.util.Base64;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.security.MessageDigest;
+import java.util.zip.GZIPOutputStream;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -168,7 +174,7 @@ public class WebInterface
 		
 		try
 		{
-			String postData = "id=" + userId + "&password=" + password;
+			String postData = "id=" + userId + "&password=" + toHash(password);
 			String response = new AsyncHttpRequest().execute(ADDRESS_SESSION, postData, "").get();
 			
 			JSONObject object = new JSONObject(response);
@@ -266,4 +272,49 @@ public class WebInterface
         
         return "";
     }
+	
+	public static String toHash(String word)
+	{
+		String result = "";
+		
+		try
+		{
+			MessageDigest md5 = MessageDigest.getInstance("MD5");
+			md5.update(word.getBytes());
+			BigInteger hash = new BigInteger(1, md5.digest());
+			result = hash.toString(16);
+		}
+		catch(Exception e)
+		{
+			Log.e(TAG, e.toString());
+		}
+		
+		return result;
+	}
+	
+	public static String compress(String message)
+	{
+		String result = "";
+		
+		try
+		{
+			byte[] blockcopy = ByteBuffer.allocate(4).order(java.nio.ByteOrder.LITTLE_ENDIAN).putInt(message.length()).array();
+			ByteArrayOutputStream os = new ByteArrayOutputStream(message.length());
+			GZIPOutputStream gos = new GZIPOutputStream(os);
+			gos.write(message.getBytes());
+			gos.close();
+			byte[] compressed = os.toByteArray();
+			os.close();
+			
+			System.arraycopy(blockcopy, 0, compressed, 0, 4);
+			System.arraycopy(os.toByteArray(), 0, compressed, 4, os.toByteArray().length);
+			return Base64.encodeToString(compressed, 0);
+		}
+		catch(Exception e)
+		{
+			Log.e(TAG, e.toString());
+		}
+		
+		return result;
+	}
 }

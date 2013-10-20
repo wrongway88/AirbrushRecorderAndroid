@@ -24,22 +24,23 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_forgot_password=0x7f080010;
-        public static final int action_settings=0x7f08000f;
+        public static final int action_forgot_password=0x7f080011;
+        public static final int action_settings=0x7f080010;
         public static final int button_back_to_main=0x7f080004;
         public static final int button_delete_flight=0x7f080003;
         public static final int button_set_login_data=0x7f080007;
         public static final int button_submit_flight=0x7f080002;
-        public static final int button_toggle_logging=0x7f08000e;
-        public static final int button_view_flights=0x7f080008;
-        public static final int button_view_login=0x7f080009;
-        public static final int console=0x7f08000a;
+        public static final int button_toggle_logging=0x7f08000f;
+        public static final int button_view_flights=0x7f080009;
+        public static final int button_view_login=0x7f08000a;
+        public static final int console=0x7f08000b;
         public static final int dropdown_file=0x7f080000;
-        public static final int edit_text_airplane_type=0x7f08000d;
-        public static final int edit_text_departure=0x7f08000b;
-        public static final int edit_text_destination=0x7f08000c;
+        public static final int edit_text_airplane_type=0x7f08000e;
+        public static final int edit_text_departure=0x7f08000c;
+        public static final int edit_text_destination=0x7f08000d;
         public static final int edit_text_password=0x7f080006;
         public static final int edit_text_user_name=0x7f080005;
+        public static final int fragment_recorder=0x7f080008;
         public static final int textview_flight_data=0x7f080001;
     }
     public static final class layout {

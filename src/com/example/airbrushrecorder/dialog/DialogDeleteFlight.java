@@ -18,8 +18,8 @@ public class DialogDeleteFlight extends DialogFragment
         public void onDialogPositiveClick(DialogFragment dialog);
         public void onDialogNegativeClick(DialogFragment dialog);
     }
-
-
+	
+	
 	
 	private NoticeDialogListener m_listener;
 	
@@ -28,15 +28,17 @@ public class DialogDeleteFlight extends DialogFragment
 	{
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         
-        builder.setMessage(R.string.dialog_delete_flight)
-               .setPositiveButton(R.string.dialog_delete, new DialogInterface.OnClickListener()
+        builder.setMessage(R.string.dialog_delete_flight);
+        
+        builder.setPositiveButton(R.string.dialog_delete, new DialogInterface.OnClickListener()
                {
                    public void onClick(DialogInterface dialog, int id)
                    {
                 	   m_listener.onDialogPositiveClick(DialogDeleteFlight.this);
                    }
-               })
-               .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener()
+               });
+        
+        builder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener()
                {
                    public void onClick(DialogInterface dialog, int id)
                    {

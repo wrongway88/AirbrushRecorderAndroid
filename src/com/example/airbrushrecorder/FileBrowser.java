@@ -54,6 +54,8 @@ public class FileBrowser extends FragmentActivity implements DialogDeleteFlight.
 	
 	private void listFiles()
 	{
+		Log.d(TAG, "list files");
+		
 		try
 		{
 			FlightsDataSource dataSource = new FlightsDataSource(this);
@@ -133,15 +135,8 @@ public class FileBrowser extends FragmentActivity implements DialogDeleteFlight.
 				LoginHelper loginHelper = new LoginHelper();
 				if(sessionData.length() <= 0 || loginHelper.ipChanged(this))
 				{
-					if(loginHelper.login(this) == false)
-					{
-						//DialogSetLoginData dialog = new DialogSetLoginData();
-						//dialog.show(this.getSupportFragmentManager(), TAG);
-					}
-					else
-					{
-						sessionData = dataSource.getCookie();
-					}
+					loginHelper.login(this);
+					sessionData = dataSource.getCookie();
 				}
 				
 				dataSource.close();
@@ -230,20 +225,6 @@ public class FileBrowser extends FragmentActivity implements DialogDeleteFlight.
 		//Log.d(TAG, "onDialogPositiveClick");
 		deleteSelectedFlight();
 	}
-	
-	/*@Override
-	public void onDialogPositiveClick(DialogFragment dialog, String mail, String password)
-	{
-		LoginHelper loginHelper = new LoginHelper();
-		loginHelper.setLoginData(this, mail, password);
-		
-		if(loginHelper.login(this))
-		{
-			String sessionData = loginHelper.getSessionData(this);
-			WebInterface wf = new WebInterface();
-			wf.postFlight(getSelectedFlight(), sessionData);
-		}
-	}*/
 	
 	@Override
     public void onDialogNegativeClick(DialogFragment dialog)

@@ -1,11 +1,14 @@
 package com.example.airbrushrecorder;
 
-import com.example.airbrushrecorder.data.FlightsDataSource;
-
 import android.app.Activity;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
-public class LoginHelper
+import com.example.airbrushrecorder.data.FlightsDataSource;
+import com.example.airbrushrecorder.dialog.DialogEnterLoginData;
+
+public class LoginHelper implements DialogEnterLoginData.NoticeDialogListener
 {
 	private static String TAG = "loginHelper";
 	
@@ -21,7 +24,7 @@ public class LoginHelper
 		dataSource.close();
 	}
 	
-	public boolean login(Activity activity)
+	public boolean login(FragmentActivity activity)
 	{
 		try
 		{
@@ -33,16 +36,17 @@ public class LoginHelper
 			
 			if(mail.length() == 0 || password.length() == 0)
 			{
-				Log.e(TAG, "mail or password is not set");
+				DialogEnterLoginData dialog = new DialogEnterLoginData();
+				dialog.show(activity.getSupportFragmentManager(), TAG);
+				
+				//Log.e(TAG, "mail or password is not set");
 				return false;
 			}
 			
-			WebInterface webInterface = new WebInterface();
-			int userId = webInterface.requestUserId(mail);
+			int userId = getUserId(mail);
+			String sessionData = getSessionData(userId, password);
 			
-			String sessionData = webInterface.login(userId,  password);
 			dataSource.updateCookie(sessionData);
-			
 			dataSource.close();
 			
 			if(sessionData.length() > 0)
@@ -56,6 +60,38 @@ public class LoginHelper
 		}
 		
 		return false;
+	}
+	
+	private int getUserId(String mailAddress)
+	{
+		int userId = -1;
+		
+		if(mailAddress.length() == 0)
+		{
+			Log.e(TAG, "mail is not set");
+			return userId;
+		}
+		
+		WebInterface webInterface = new WebInterface();
+		userId = webInterface.requestUserId(mailAddress);
+		
+		return userId;
+	}
+	
+	private String getSessionData(int userId, String password)
+	{
+		String sessionData = "";
+		
+		if(userId < 0 || password.length() == 0)
+		{
+			Log.e(TAG, "userId and/or password not set");
+			return sessionData;
+		}
+		
+		WebInterface webInterface = new WebInterface();
+		sessionData = webInterface.login(userId,  password);
+		
+		return sessionData;
 	}
 	
 	public boolean ipChanged(Activity activity)
@@ -80,5 +116,32 @@ public class LoginHelper
 		dataSource.close();
 		
 		return result;
+	}
+
+	@Override
+	public void onDialogPositiveClick(DialogFragment dialog, String mailAddress, String password)
+	{
+		int userId = getUserId(mailAddress);
+		String sessionData = getSessionData(userId, password);
+		
+		if(sessionData.length() > 0)
+		{
+			FlightsDataSource dataSource = new FlightsDataSource(dialog.getActivity());
+			dataSource.open();
+			dataSource.updateCookie(sessionData);
+			dataSource.updateUserMail(mailAddress);
+			dataSource.updatePassword(password);
+			dataSource.close();
+		}
+		else
+		{
+			Log.e(TAG, "Failed to login");
+		}
+	}
+
+	@Override
+	public void onDialogNegativeClick(DialogFragment dialog)
+	{
+		
 	}
 }

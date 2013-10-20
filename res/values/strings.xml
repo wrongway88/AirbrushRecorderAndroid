@@ -32,4 +32,5 @@
     <string name="dialog_delete">Delete</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_save">Save</string>
+    <string name="dialog_set_login_data_message">Please enter mail address and password</string>
 </resources>

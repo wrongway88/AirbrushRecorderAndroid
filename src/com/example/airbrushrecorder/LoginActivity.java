@@ -28,6 +28,6 @@ public class LoginActivity extends Activity
 		
 		LoginHelper helper = new LoginHelper();
 		helper.setLoginData(this,  name,  password);
-		helper.login(this);
+		//helper.login(this);
 	}
 }

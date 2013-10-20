@@ -334,6 +334,14 @@ public class FlightsDataSource
 		return getAppData(4);
 	}
 	
+	//this deletes everything, only use if absolutely positively sure
+	public void resetDataBase()
+	{
+		flightsHelper.onUpgrade(database, 1, 1);
+		waypointsHelper.onUpgrade(database, 1, 1);
+		appDataHelper.onUpgrade(database, 1, 1);
+	}
+	
 	private String getAppData(int column)
 	{
 		String result = "";

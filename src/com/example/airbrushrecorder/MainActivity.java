@@ -8,8 +8,9 @@ import android.view.Menu;
 import android.view.View;
 
 import com.example.airbrushrecorder.fragments.FragmentRecorder;
+import com.example.airbrushrecorder.fragments.FragmentFlightBrowser;
 
-public class MainActivity extends FragmentActivity implements FragmentRecorder.OnToggleRecordingListener
+public class MainActivity extends FragmentActivity implements FragmentRecorder.OnToggleRecordingListener, FragmentFlightBrowser.OnFlightBrowserListener
 {
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -44,7 +45,7 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 		Intent intent = new Intent(this, LoginActivity.class);
 		startActivity(intent);
 	}
-
+	
 	@Override
 	public void togglePathLogging(View view)
 	{
@@ -53,6 +54,28 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 		if(fragment != null)
 		{
 			fragment.togglePathLogging(view);
+		}
+	}
+	
+	@Override
+	public void submitSelectedFlight(View view)
+	{
+		FragmentFlightBrowser fragment = (FragmentFlightBrowser) getSupportFragmentManager().findFragmentById(R.id.fragment_flight_browser);
+		
+		if(fragment != null)
+		{
+			fragment.submitSelectedFlight(view);
+		}
+	}
+	
+	@Override
+	public void deleteSelectedFlight(View view)
+	{
+		FragmentFlightBrowser fragment = (FragmentFlightBrowser) getSupportFragmentManager().findFragmentById(R.id.fragment_flight_browser);
+		
+		if(fragment != null)
+		{
+			fragment.deleteSelectedFlight(view);
 		}
 	}
 }

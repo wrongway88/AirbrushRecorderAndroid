@@ -130,8 +130,6 @@ public class FileBrowser extends FragmentActivity implements DialogDeleteFlight.
 				dataSource.open();
 				String sessionData = dataSource.getCookie();
 				
-				WebInterface wf = new WebInterface();
-				
 				LoginHelper loginHelper = new LoginHelper();
 				if(sessionData.length() <= 0 || loginHelper.ipChanged(this))
 				{

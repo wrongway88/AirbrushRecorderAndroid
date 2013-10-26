@@ -2,19 +2,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="horizontal" >
 
-    <fragment android:name="com.example.airbrushrecorder.fragments.FragmentRecorder"
-            android:id="@+id/fragment_recorder"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="0dip" />
-    
     <fragment android:name="com.example.airbrushrecorder.fragments.FragmentFlightBrowser"
             android:id="@+id/fragment_flight_browser"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="0dip" />
+            android:layout_height="match_parent" />
+    
+    <fragment android:name="com.example.airbrushrecorder.fragments.FragmentRecorder"
+            android:id="@+id/fragment_recorder"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     
     <!--
     <Button

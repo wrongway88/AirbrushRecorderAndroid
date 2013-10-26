@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.example.airbrushrecorder.LoginHelper;
+import com.example.airbrushrecorder.WebInterface;
 
 public class LoginActivity extends Activity
 {
@@ -22,12 +23,14 @@ public class LoginActivity extends Activity
 	public void setLoginData(View view)
 	{
 		EditText mailField = (EditText)findViewById(R.id.edit_text_user_name);
-		String name = mailField.getText().toString();
+		String mailAddress = mailField.getText().toString();
 		EditText passwordField = (EditText)findViewById(R.id.edit_text_password);
 		String password = passwordField.getText().toString();
+		password = WebInterface.saltPassword(password, mailAddress);
+		password = WebInterface.toHash(password);
 		
 		LoginHelper helper = new LoginHelper();
-		helper.setLoginData(this,  name,  password);
+		helper.setLoginData(this,  mailAddress,  password);
 		//helper.login(this);
 	}
 }

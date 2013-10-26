@@ -174,7 +174,7 @@ public class WebInterface
 		
 		try
 		{
-			String postData = "id=" + userId + "&password=" + toHash(password);
+			String postData = "id=" + userId + "&password=" + password;
 			String response = new AsyncHttpRequest().execute(ADDRESS_SESSION, postData, "").get();
 			
 			JSONObject object = new JSONObject(response);
@@ -230,6 +230,19 @@ public class WebInterface
 		}
 		
 		return result;
+	}
+	
+	public void createUser(String name, String surname, String email, String password)
+	{
+		try
+		{
+			String postData = "name=" + name + "&surname=" + surname + "&email=" + email + "&password=" + password;
+			String response = new AsyncHttpRequest().execute(ADDRESS_USER, postData, "").get();
+		}
+		catch(Exception e)
+		{
+			Log.e(TAG, e.toString());
+		}
 	}
 	
 	//http://stackoverflow.com/questions/6064510/how-to-get-ip-address-of-the-device
@@ -314,6 +327,27 @@ public class WebInterface
 		{
 			Log.e(TAG, e.toString());
 		}
+		
+		return result;
+	}
+	
+	public static String saltPassword(String password, String mailAddress)
+	{
+		String result = "";
+		
+		String firstLetter = mailAddress.substring(0, 1);
+		firstLetter = firstLetter.toLowerCase();
+		
+		String ending = "";
+		int idx = mailAddress.lastIndexOf(".");
+		if(idx > -1)
+		{
+			ending = mailAddress.substring(idx+1);
+		}
+		
+		ending = ending.toLowerCase();
+		
+		result = firstLetter + password + ending;
 		
 		return result;
 	}

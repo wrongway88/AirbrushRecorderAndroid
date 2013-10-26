@@ -27,7 +27,6 @@ public class FragmentRecorder extends Fragment
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		Log.d("FRAGMENT_RECORDER", "on create view");
 		super.onCreateView(inflater, container, savedInstanceState);
 		return inflater.inflate(R.layout.fragment_recorder, container, false);
 	}

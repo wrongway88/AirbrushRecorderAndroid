@@ -33,4 +33,8 @@
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_save">Save</string>
     <string name="dialog_set_login_data_message">Please enter mail address and password</string>
+    
+    <string name="edit_text_name">Name</string>
+    <string name="edit_text_surname">Surname</string>
+    <string name="edit_text_email">E-Mail</string>
 </resources>

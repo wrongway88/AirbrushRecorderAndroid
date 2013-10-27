@@ -102,6 +102,7 @@ namespace AirbrushDroneDataConverter.Flight
             result += "&waypointsCompressed=";
 
             String waypoints = WaypointsToHTTP();
+            waypoints = Utility.Utility.Compress(waypoints);
             waypoints = HttpUtility.UrlEncode(waypoints);
 
             if (_waypoints.Count > 0)

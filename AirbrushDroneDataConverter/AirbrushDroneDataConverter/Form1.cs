@@ -8,7 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+
 using AirbrushDroneDataConverter.DroneData;
+using AirbrushDroneDataConverter.Utility;
 
 namespace AirbrushDroneDataConverter
 {
@@ -19,22 +21,6 @@ namespace AirbrushDroneDataConverter
         public Form1()
         {
             InitializeComponent(); 
-        }
-
-        public void onButtonOpenDirectoryPressed()
-        {
-
-        }
-
-        private void buttonOpenDirectory_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
-            DialogResult result = fbd.ShowDialog();
-
-            string[] files = Directory.GetFiles(fbd.SelectedPath);
-            //System.Windows.Forms.MessageBox.Show("Files found: " + files.Length.ToString(), "Message");
-
-            openFiles(files);
         }
 
         private void openFiles(string[] filePaths)
@@ -49,19 +35,6 @@ namespace AirbrushDroneDataConverter
 
                     String fileName = filePath.Substring(filePath.LastIndexOf("\\")+1);
                     _flights.AddRange(DroneDataConverter.ConvertFile(file, fileName));
-
-                    //MessageBox.Show(filePath + ": " + flights.Count);
-
-                    /*
-                    int i = 0;
-                    foreach (Flight.Flight flight in flights)
-                    {
-                        i++;
-                        if(i > 1)
-                            WebInterface.WebInterface.PostFlight(flight);
-                        //MessageBox.Show(flight.ToJSON());
-                    }
-                    */
                 }
             }
 
@@ -90,6 +63,32 @@ namespace AirbrushDroneDataConverter
 
             if (result == DialogResult.Yes)
             {
+                LoginData loginData = LoginData.LoadLoginData();
+                if (loginData.MailAddress.Length > 0 && loginData.Password.Length > 0)
+                {
+                    int userId = WebInterface.WebInterface.GetUserID(loginData.MailAddress);
+                    if (userId > -1)
+                    {
+                        loginData.UserId = userId;
+                        WebInterface.WebInterface.Login(userId, Utility.Utility.SaltPassword(loginData.Password, loginData.MailAddress));
+                        LoginData.SaveLoginData(loginData);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Login failed, invalid login data!");
+                        FormLoginData loginDataForm = new FormLoginData();
+                        loginDataForm.Show();
+                        return;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Set Login Data first");
+                    FormLoginData loginDataForm = new FormLoginData();
+                    loginDataForm.Show();
+                    return;
+                }
+
                 if (selectedIndex >= 0 && selectedIndex < _flights.Count)
                 {
                     Flight.Flight flight = _flights[selectedIndex];
@@ -98,9 +97,24 @@ namespace AirbrushDroneDataConverter
             }
         }
 
-        private void buttonTestLogin_Click(object sender, EventArgs e)
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            WebInterface.WebInterface.Login(3, "test");
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            DialogResult result = fbd.ShowDialog();
+
+            if (fbd.SelectedPath.Length > 0)
+            {
+                string[] files = Directory.GetFiles(fbd.SelectedPath);
+                openFiles(files);
+            }
+        }
+
+        private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //WebInterface.WebInterface.GetUserID("test@test.com");
+
+            FormLoginData loginDataForm = new FormLoginData();
+            loginDataForm.Show();
         }
     }
 }

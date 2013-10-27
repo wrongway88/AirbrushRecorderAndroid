@@ -28,24 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.buttonOpenDirectory = new System.Windows.Forms.Button();
             this.listViewFlights = new System.Windows.Forms.ListView();
             this.id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.airplane = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.waypointCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.buttonTestLogin = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.flightsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fooToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // buttonOpenDirectory
-            // 
-            this.buttonOpenDirectory.Location = new System.Drawing.Point(12, 12);
-            this.buttonOpenDirectory.Name = "buttonOpenDirectory";
-            this.buttonOpenDirectory.Size = new System.Drawing.Size(107, 23);
-            this.buttonOpenDirectory.TabIndex = 0;
-            this.buttonOpenDirectory.Text = "Open Directory";
-            this.buttonOpenDirectory.UseVisualStyleBackColor = true;
-            this.buttonOpenDirectory.Click += new System.EventHandler(this.buttonOpenDirectory_Click);
             // 
             // listViewFlights
             // 
@@ -54,7 +49,7 @@
             this.airplane,
             this.date,
             this.waypointCount});
-            this.listViewFlights.Location = new System.Drawing.Point(12, 41);
+            this.listViewFlights.Location = new System.Drawing.Point(12, 38);
             this.listViewFlights.Name = "listViewFlights";
             this.listViewFlights.Size = new System.Drawing.Size(482, 283);
             this.listViewFlights.TabIndex = 1;
@@ -81,39 +76,78 @@
             this.waypointCount.Tag = "waypoints";
             this.waypointCount.Width = 140;
             // 
-            // buttonTestLogin
+            // menuStrip1
             // 
-            this.buttonTestLogin.Location = new System.Drawing.Point(125, 12);
-            this.buttonTestLogin.Name = "buttonTestLogin";
-            this.buttonTestLogin.Size = new System.Drawing.Size(75, 23);
-            this.buttonTestLogin.TabIndex = 2;
-            this.buttonTestLogin.Text = "Login";
-            this.buttonTestLogin.UseVisualStyleBackColor = true;
-            this.buttonTestLogin.Click += new System.EventHandler(this.buttonTestLogin_Click);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.flightsToolStripMenuItem,
+            this.settingsToolStripMenuItem,
+            this.fooToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(505, 24);
+            this.menuStrip1.TabIndex = 3;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // flightsToolStripMenuItem
+            // 
+            this.flightsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.loadToolStripMenuItem});
+            this.flightsToolStripMenuItem.Name = "flightsToolStripMenuItem";
+            this.flightsToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
+            this.flightsToolStripMenuItem.Text = "Flights";
+            // 
+            // loadToolStripMenuItem
+            // 
+            this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.loadToolStripMenuItem.Text = "Load";
+            this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.preferencesToolStripMenuItem});
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
+            this.settingsToolStripMenuItem.Text = "Edit";
+            // 
+            // preferencesToolStripMenuItem
+            // 
+            this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.preferencesToolStripMenuItem.Text = "Preferences";
+            this.preferencesToolStripMenuItem.Click += new System.EventHandler(this.preferencesToolStripMenuItem_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(506, 336);
-            this.Controls.Add(this.buttonTestLogin);
+            this.ClientSize = new System.Drawing.Size(505, 333);
             this.Controls.Add(this.listViewFlights);
-            this.Controls.Add(this.buttonOpenDirectory);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button buttonOpenDirectory;
         private System.Windows.Forms.ListView listViewFlights;
         private System.Windows.Forms.ColumnHeader airplane;
         private System.Windows.Forms.ColumnHeader date;
         private System.Windows.Forms.ColumnHeader waypointCount;
         private System.Windows.Forms.ColumnHeader id;
-        private System.Windows.Forms.Button buttonTestLogin;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem flightsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem preferencesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fooToolStripMenuItem;
     }
 }
 

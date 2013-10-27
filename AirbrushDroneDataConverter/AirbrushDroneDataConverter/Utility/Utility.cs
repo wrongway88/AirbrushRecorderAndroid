@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.IO.Compression;
+using System.IO;
 
 namespace AirbrushDroneDataConverter.Utility
 {
@@ -92,6 +94,47 @@ namespace AirbrushDroneDataConverter.Utility
                 }
                 result = builder.ToString();
             }
+            return result;
+        }
+
+        public static string Compress(string message)
+        {
+            byte[] buffer = Encoding.UTF8.GetBytes(message);
+            MemoryStream memoryStream = new MemoryStream();
+            using (GZipStream gZipStream = new GZipStream(memoryStream, CompressionMode.Compress, true))
+            {
+                gZipStream.Write(buffer, 0, buffer.Length);
+            }
+
+            memoryStream.Position = 0;
+
+            byte[] compressedData = new byte[memoryStream.Length];
+            memoryStream.Read(compressedData, 0, compressedData.Length);
+
+            byte[] gZipBuffer = new byte[compressedData.Length + 4];
+            Buffer.BlockCopy(compressedData, 0, gZipBuffer, 4, compressedData.Length);
+            Buffer.BlockCopy(BitConverter.GetBytes(buffer.Length), 0, gZipBuffer, 0, 4);
+
+            return Convert.ToBase64String(gZipBuffer);
+        }
+
+        public static string SaltPassword(string password, string mailAddress)
+        {
+            string result = "";
+
+            string firstLetter = mailAddress.Substring(0, 1);
+            firstLetter = firstLetter.ToLower();
+            string ending = "";
+
+            int idx = mailAddress.LastIndexOf(".");
+            if (idx > -1)
+            {
+                ending = mailAddress.Substring(idx+1);
+            }
+            ending = ending.ToLower();
+
+            result = firstLetter + password + ending;
+
             return result;
         }
     }

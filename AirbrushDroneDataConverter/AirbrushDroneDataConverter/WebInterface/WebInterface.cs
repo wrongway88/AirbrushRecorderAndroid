@@ -64,7 +64,7 @@ namespace AirbrushDroneDataConverter.WebInterface
                 StringBuilder sb = new StringBuilder();
                 for (uint i = 0; i < output.Length; i++)
                 {
-                    sb.Append(output[i].ToString("X2"));
+                    sb.Append(output[i].ToString("X"));
                 }
 
                 string passwordHash = sb.ToString();

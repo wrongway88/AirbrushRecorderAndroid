@@ -20,3 +20,7 @@ C:\Users\Manuel\Projekte\Airbrush\DroneConverter\AirbrushDroneDataConverter\Airb
 C:\Users\Manuel\Projekte\Airbrush\DroneConverter\AirbrushDroneDataConverter\AirbrushDroneDataConverter\bin\Release\Newtonsoft.Json.dll
 C:\Users\Manuel\Projekte\Airbrush\DroneConverter\AirbrushDroneDataConverter\AirbrushDroneDataConverter\bin\Release\Newtonsoft.Json.pdb
 C:\Users\Manuel\Projekte\Airbrush\DroneConverter\AirbrushDroneDataConverter\AirbrushDroneDataConverter\bin\Release\Newtonsoft.Json.xml
+C:\Users\Manuel\projects\Airbrush\DroneDataConverter\AirbrushDroneDataConverter\AirbrushDroneDataConverter\bin\Release\Newtonsoft.Json.dll
+C:\Users\Manuel\projects\Airbrush\DroneDataConverter\AirbrushDroneDataConverter\AirbrushDroneDataConverter\bin\Release\Newtonsoft.Json.pdb
+C:\Users\Manuel\projects\Airbrush\DroneDataConverter\AirbrushDroneDataConverter\AirbrushDroneDataConverter\bin\Release\Newtonsoft.Json.xml
+C:\Users\Manuel\projects\Airbrush\DroneDataConverter\AirbrushDroneDataConverter\AirbrushDroneDataConverter\obj\Release\AirbrushDroneDataConverter.FormLoginData.resources

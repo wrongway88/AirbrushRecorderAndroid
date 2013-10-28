@@ -85,27 +85,35 @@ public class WebInterface
 				wr.flush();
 				wr.close();
 				
-				InputStream is = connection.getInputStream();
-				BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-				String line;
-				StringBuffer response = new StringBuffer(); 
-		      while((line = rd.readLine()) != null)
-		      {
-		        response.append(line);
-		        response.append('\r');
-		      }
-		      rd.close();
-		      
-		      result = response.toString();
-		      Log.d(TAG, result);
+				if(connection.getResponseCode() < 300)
+				{
+					InputStream is = connection.getInputStream();
+					BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+					String line;
+					StringBuffer response = new StringBuffer(); 
+				    while((line = rd.readLine()) != null)
+				    {
+					    response.append(line);
+					    response.append('\r');
+				    }
+				    rd.close();
+				    
+				    result = response.toString();
+				}
+				else
+				{
+					result = connection.getResponseMessage();
+				}
+				
+				Log.d(TAG, result);
 			}
 			catch(ClientProtocolException e)
 			{
-				Log.e(TAG, "Error: " + e);
+				Log.e(TAG + " postData", "Error: " + e);
 			}
 			catch(IOException e)
 			{
-				Log.e(TAG, "Error: " + e);
+				Log.e(TAG + " postData", "Error: " + e);
 			}
 			
 			return result;
@@ -166,6 +174,19 @@ public class WebInterface
 	public void postFlight(Flight flight, String cookie)
 	{
 		new AsyncHttpRequest().execute(ADDRESS_FLIGHT, flight.serializeToHttp(), cookie);
+	}
+	
+	public void createAccount(String name, String surname, String email, String password)
+	{
+		try
+		{
+			String postData = "name=" + name + "&surname=" + surname + "&email=" + email + "&password=" + password;
+			String response = new AsyncHttpRequest().execute(ADDRESS_USER, postData, "").get();
+		}
+		catch(Exception e)
+		{
+			Log.e(TAG, e.toString());
+		}
 	}
 	
 	public String login(int userId, String password)
@@ -230,19 +251,6 @@ public class WebInterface
 		}
 		
 		return result;
-	}
-	
-	public void createUser(String name, String surname, String email, String password)
-	{
-		try
-		{
-			String postData = "name=" + name + "&surname=" + surname + "&email=" + email + "&password=" + password;
-			String response = new AsyncHttpRequest().execute(ADDRESS_USER, postData, "").get();
-		}
-		catch(Exception e)
-		{
-			Log.e(TAG, e.toString());
-		}
 	}
 	
 	//http://stackoverflow.com/questions/6064510/how-to-get-ip-address-of-the-device

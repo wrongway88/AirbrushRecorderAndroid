@@ -12,15 +12,15 @@ import android.widget.LinearLayout;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import com.example.airbrushrecorder.R;
+import com.example.airbrushrecorder.WebInterface;
 
-public class DialogEnterLoginData extends DialogFragment
+public class DialogCreateAccount extends DialogFragment
 {
-	private static String TAG = "DIALOG_ENTER_LOGIN_DATA";
+	private static String TAG = "DIALOG_CREATE_ACCOUNT";
 	
 	public interface NoticeDialogListener
 	{
-        public void onDialogPositiveClick(DialogFragment dialog, String mailAddress, String password);
-        public void onDialogNegativeClick(DialogFragment dialog);
+        public void onDialogCreateClick(DialogFragment dialog, String name, String surname, String email, String password);
     }
 	
 	private NoticeDialogListener m_listener;
@@ -29,12 +29,16 @@ public class DialogEnterLoginData extends DialogFragment
     public Dialog onCreateDialog(Bundle savedInstanceState)
 	{
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.dialog_set_login_data);
-        builder.setMessage(R.string.dialog_set_login_data_message);
+        builder.setTitle(R.string.dialog_create_account);
+        builder.setMessage(R.string.dialog_enter_account_data);
         
+        final EditText inputName = new EditText(getActivity());
+        final EditText inputSurname = new EditText(getActivity());
         final EditText inputMail = new EditText(getActivity());
         final EditText inputPassword = new EditText(getActivity());
         
+        inputName.setHint(R.string.edit_text_name);
+        inputSurname.setHint(R.string.edit_text_surname);
         inputMail.setHint(R.string.edit_text_email);
         inputPassword.setHint(R.string.edit_text_password);
         
@@ -45,18 +49,29 @@ public class DialogEnterLoginData extends DialogFragment
         LinearLayout layout = new LinearLayout(getActivity());
         layout.setOrientation(LinearLayout.VERTICAL);
         
+        layout.addView(inputName);
+        layout.addView(inputSurname);
         layout.addView(inputMail);
         layout.addView(inputPassword);
         
         builder.setView(layout);
         
-        builder.setPositiveButton(R.string.dialog_save, new DialogInterface.OnClickListener()
+        builder.setPositiveButton(R.string.dialog_create, new DialogInterface.OnClickListener()
         {
             public void onClick(DialogInterface dialog, int id)
             {
+            	String name = inputName.getText().toString();
+            	String surname = inputSurname.getText().toString();
             	String mail = inputMail.getText().toString();
             	String password = inputPassword.getText().toString();
-            	m_listener.onDialogPositiveClick(DialogEnterLoginData.this, mail, password);
+            	
+            	password = WebInterface.saltPassword(password, mail);
+            	password = WebInterface.toHash(password);
+            	
+            	if(name.length() > 0 && surname.length() > 0 && mail.length() > 0 && password.length() > 0)
+            	{
+            		m_listener.onDialogCreateClick(DialogCreateAccount.this, name, surname, mail, password);
+            	}
             }
         });
  
@@ -64,7 +79,7 @@ public class DialogEnterLoginData extends DialogFragment
         {
             public void onClick(DialogInterface dialog, int id)
             {
-            	m_listener.onDialogNegativeClick(DialogEnterLoginData.this);
+            	//m_listener.onDialogNegativeClick(DialogCreateAccount.this);
             }
         });
         

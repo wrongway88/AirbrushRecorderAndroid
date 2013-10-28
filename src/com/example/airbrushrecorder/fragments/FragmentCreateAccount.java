@@ -55,6 +55,6 @@ public class FragmentCreateAccount extends Fragment
 		
 		WebInterface webInterface = new WebInterface();
 		password = WebInterface.saltPassword(password, email);
-		webInterface.createUser(name, surname, email, password);
+		webInterface.createAccount(name, surname, email, password);
 	}
 }

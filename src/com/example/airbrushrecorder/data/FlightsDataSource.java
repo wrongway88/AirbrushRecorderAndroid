@@ -28,7 +28,8 @@ public class FlightsDataSource
 								WaypointsSQLiteHelper.COLUMN_ALTITUDE, WaypointsSQLiteHelper.COLUMN_SPEED,
 								WaypointsSQLiteHelper.COLUMN_TIMESTAMP};
 	private String[] appDataColumns = {AppDataSQLiteHelper.COLUMN_ID, AppDataSQLiteHelper.COLUMN_IP,
-								AppDataSQLiteHelper.COLUMN_COOKIE};
+								AppDataSQLiteHelper.COLUMN_COOKIE, AppDataSQLiteHelper.COLUMN_USER_MAIL, 
+								AppDataSQLiteHelper.COLUMN_PASSWORD};
 	
 	public FlightsDataSource(Context context)
 	{

@@ -8,7 +8,7 @@ import android.util.Log;
 import com.example.airbrushrecorder.data.FlightsDataSource;
 import com.example.airbrushrecorder.dialog.DialogEnterLoginData;
 
-public class LoginHelper implements DialogEnterLoginData.NoticeDialogListener
+public class LoginHelper
 {
 	private static String TAG = "loginHelper";
 	
@@ -118,11 +118,20 @@ public class LoginHelper implements DialogEnterLoginData.NoticeDialogListener
 		return result;
 	}
 
-	@Override
 	public void onDialogPositiveClick(DialogFragment dialog, String mailAddress, String password)
 	{
 		int userId = getUserId(mailAddress);
+		password = WebInterface.saltPassword(password, mailAddress);
+		
+		Log.d(TAG, password);
+		
+		password = WebInterface.toHash(password);
+		
+		Log.d(TAG, password);
+		
 		String sessionData = getSessionData(userId, password);
+		
+		Log.d(TAG, sessionData);
 		
 		if(sessionData.length() > 0)
 		{
@@ -139,7 +148,6 @@ public class LoginHelper implements DialogEnterLoginData.NoticeDialogListener
 		}
 	}
 
-	@Override
 	public void onDialogNegativeClick(DialogFragment dialog)
 	{
 		

@@ -12,14 +12,21 @@
     <string name="button_submit_flight">Submit</string>
     <string name="button_view_login">Login</string>
     <string name="button_set_login_data">Save Data</string>
+    <string name="button_create">Create</string>
+    <string name="button_create_account">Create Account</string>
+    
     <string name="title_activity_path_log">PathLog</string>
     <string name="title_activity_file_browser">FileBrowser</string>
     <string name="title_activity_power_management">PowerManagement</string>
+    
     <string name="edit_text_departure">Departure</string>
     <string name="edit_text_destination">Destination</string>
     <string name="edit_text_airplane_type">Airplane Type</string>
     <string name="edit_text_user_name">Mail Address</string>
     <string name="edit_text_password">Password</string>
+    <string name="edit_text_name">Name</string>
+    <string name="edit_text_surname">Surname</string>
+    <string name="edit_text_email">E-Mail</string>
     
     <string name="log_date">date</string>
 	<string name="log_departure">departure</string>
@@ -29,12 +36,11 @@
     
     <string name="dialog_delete_flight">Delete Flight?</string>
     <string name="dialog_set_login_data">Set Login Data</string>
+    <string name="dialog_create_account">Create new Account</string>
     <string name="dialog_delete">Delete</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_save">Save</string>
+    <string name="dialog_create">Create</string>
     <string name="dialog_set_login_data_message">Please enter mail address and password</string>
-    
-    <string name="edit_text_name">Name</string>
-    <string name="edit_text_surname">Surname</string>
-    <string name="edit_text_email">E-Mail</string>
+    <string name="dialog_enter_account_data">Please enter your data and hit create</string>
 </resources>

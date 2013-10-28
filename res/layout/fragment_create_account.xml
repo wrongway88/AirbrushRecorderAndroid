@@ -31,7 +31,7 @@
         android:id="@+id/button_create_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_delete_flight"
+        android:text="@string/button_create"
         android:onClick="deleteSelectedFlight" />
 
 </LinearLayout>

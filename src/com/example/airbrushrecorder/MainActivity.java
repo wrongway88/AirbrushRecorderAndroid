@@ -1,17 +1,25 @@
 package com.example.airbrushrecorder;
 
 import android.os.Bundle;
-//import android.app.Activity;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
+import com.example.airbrushrecorder.dialog.DialogDeleteFlight;
+import com.example.airbrushrecorder.dialog.DialogEnterLoginData;
+import com.example.airbrushrecorder.dialog.DialogCreateAccount;
 import com.example.airbrushrecorder.fragments.FragmentRecorder;
 import com.example.airbrushrecorder.fragments.FragmentFlightBrowser;
 
-public class MainActivity extends FragmentActivity implements FragmentRecorder.OnToggleRecordingListener, FragmentFlightBrowser.OnFlightBrowserListener
+public class MainActivity extends FragmentActivity implements FragmentRecorder.OnToggleRecordingListener, FragmentFlightBrowser.OnFlightBrowserListener,
+																DialogDeleteFlight.NoticeDialogListener, DialogEnterLoginData.NoticeDialogListener,
+																DialogCreateAccount.NoticeDialogListener
 {
+	private static final String TAG = "MAIN";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -34,16 +42,16 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 		super.onResume();
 	}
 	
-	public void viewFlights(View view)
-	{
-		Intent intent = new Intent(this, FileBrowser.class);
-		startActivity(intent);
-	}
-	
 	public void viewLogin(View view)
 	{
 		Intent intent = new Intent(this, LoginActivity.class);
 		startActivity(intent);
+	}
+	
+	public void viewCreateAccount(View view)
+	{
+		DialogCreateAccount dialog = new DialogCreateAccount();
+		dialog.show(this.getSupportFragmentManager(), TAG);
 	}
 	
 	@Override
@@ -75,7 +83,43 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 		
 		if(fragment != null)
 		{
-			fragment.deleteSelectedFlight(view);
+			if(view != null)
+				fragment.deleteSelectedFlight(view); //this will trigger a dialog to confirm deletion (is that a real word?)
+			else
+				fragment.deleteSelectedFlight(); //this will immediately delete the selected flight
 		}
+	}
+	
+	@Override
+	public void onDialogPositiveClick(DialogFragment dialog)
+	{
+		deleteSelectedFlight(null);
+	}
+	
+	@Override
+	public void onDialogPositiveClick(DialogFragment dialog, String mailAddress, String password)
+	{
+		LoginHelper loginHelper = new LoginHelper();
+		//loginHelper.onDialogPositiveClick(dialog, mailAddress, password);
+		loginHelper.onDialogPositiveClick(dialog, "McDobusch@gmx.net", "mgpö01");
+		
+		FragmentFlightBrowser fragment = (FragmentFlightBrowser) getSupportFragmentManager().findFragmentById(R.id.fragment_flight_browser);
+		if(fragment != null)
+		{
+			fragment.submitSelectedFlight(null);
+		}
+	}
+	
+	@Override
+    public void onDialogNegativeClick(DialogFragment dialog)
+    {
+		
+    }
+
+	@Override
+	public void onDialogCreateClick(DialogFragment dialog, String name, String surname, String email, String password)
+	{
+		WebInterface webInterface = new WebInterface();
+		webInterface.createAccount(name, surname, email, password);
 	}
 }

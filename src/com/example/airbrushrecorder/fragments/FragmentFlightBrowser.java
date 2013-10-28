@@ -27,9 +27,9 @@ import com.example.airbrushrecorder.data.FlightsDataSource;
 import com.example.airbrushrecorder.dialog.DialogDeleteFlight;
 import com.example.airbrushrecorder.fragments.FragmentRecorder.OnToggleRecordingListener;
 
-public class FragmentFlightBrowser extends Fragment implements DialogDeleteFlight.NoticeDialogListener
+public class FragmentFlightBrowser extends Fragment
 {
-	private static String TAG = "FileBrowser";
+	private static String TAG = "FlightBrowser";
 	private Spinner _spinner = null;
 	
 	private ArrayList<Flight> _flights = null;
@@ -58,21 +58,9 @@ public class FragmentFlightBrowser extends Fragment implements DialogDeleteFligh
 	};
 	
 	@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-	{
-		super.onCreateView(inflater, container, savedInstanceState);
-		
-		listFiles();
-		
-		return inflater.inflate(R.layout.fragment_flight_browser, container, false);
-	}
-	
-	@Override
 	public void onAttach(Activity activity)
 	{
 		super.onAttach(activity);
-		
-		listFiles();
 		
 		if(activity instanceof OnToggleRecordingListener)
 		{
@@ -84,9 +72,26 @@ public class FragmentFlightBrowser extends Fragment implements DialogDeleteFligh
 		}
 	}
 	
+	@Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+	{
+		super.onCreateView(inflater, container, savedInstanceState);
+		
+		return inflater.inflate(R.layout.fragment_flight_browser, container, false);
+	}
+	
+	@Override
+	public void onStart()
+	{
+		super.onStart();
+		
+		listFiles();
+	}
+	
+	
 	private void listFiles()
 	{
-		Log.d(TAG, "list files");
+		//Log.d(TAG, "list files");
 		
 		try
 		{
@@ -161,15 +166,17 @@ public class FragmentFlightBrowser extends Fragment implements DialogDeleteFligh
 				FlightsDataSource dataSource = new FlightsDataSource(this.getActivity());
 				dataSource.open();
 				String sessionData = dataSource.getCookie();
+				dataSource.close();
 				
 				LoginHelper loginHelper = new LoginHelper();
 				if(sessionData.length() <= 0 || loginHelper.ipChanged(this.getActivity()))
 				{
 					loginHelper.login(this.getActivity());
+					
+					dataSource.open();
 					sessionData = dataSource.getCookie();
+					dataSource.close();
 				}
-				
-				dataSource.close();
 				
 				if(sessionData.length() > 0)
 				{
@@ -243,16 +250,8 @@ public class FragmentFlightBrowser extends Fragment implements DialogDeleteFligh
 		}
 	}
 	
-	@Override
 	public void onDialogPositiveClick(DialogFragment dialog)
 	{
-		//Log.d(TAG, "onDialogPositiveClick");
 		deleteSelectedFlight();
 	}
-	
-	@Override
-    public void onDialogNegativeClick(DialogFragment dialog)
-    {
-    	//Log.d(TAG, "onDialogNegativeClick");
-    }
 }

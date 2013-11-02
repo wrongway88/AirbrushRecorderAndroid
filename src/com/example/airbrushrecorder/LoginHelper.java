@@ -43,8 +43,8 @@ public class LoginHelper
 				return false;
 			}
 			
-			int userId = getUserId(mail);
-			String sessionData = getSessionData(userId, password);
+			int userId = getUserId(mail, activity);
+			String sessionData = getSessionData(userId, password, activity);
 			
 			dataSource.updateCookie(sessionData);
 			dataSource.close();
@@ -62,7 +62,7 @@ public class LoginHelper
 		return false;
 	}
 	
-	private int getUserId(String mailAddress)
+	private int getUserId(String mailAddress, Activity activity)
 	{
 		int userId = -1;
 		
@@ -72,13 +72,13 @@ public class LoginHelper
 			return userId;
 		}
 		
-		WebInterface webInterface = new WebInterface();
+		WebInterface webInterface = new WebInterface(activity);
 		userId = webInterface.requestUserId(mailAddress);
 		
 		return userId;
 	}
 	
-	private String getSessionData(int userId, String password)
+	private String getSessionData(int userId, String password, Activity activity)
 	{
 		String sessionData = "";
 		
@@ -88,7 +88,7 @@ public class LoginHelper
 			return sessionData;
 		}
 		
-		WebInterface webInterface = new WebInterface();
+		WebInterface webInterface = new WebInterface(activity);
 		sessionData = webInterface.login(userId,  password);
 		
 		return sessionData;
@@ -120,7 +120,7 @@ public class LoginHelper
 
 	public void onDialogPositiveClick(DialogFragment dialog, String mailAddress, String password)
 	{
-		int userId = getUserId(mailAddress);
+		int userId = getUserId(mailAddress, dialog.getActivity());
 		password = WebInterface.saltPassword(password, mailAddress);
 		
 		Log.d(TAG, password);
@@ -129,7 +129,7 @@ public class LoginHelper
 		
 		Log.d(TAG, password);
 		
-		String sessionData = getSessionData(userId, password);
+		String sessionData = getSessionData(userId, password, dialog.getActivity());
 		
 		Log.d(TAG, sessionData);
 		

@@ -1,5 +1,8 @@
 package com.example.airbrushrecorder;
 
+import android.app.Activity;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
@@ -37,8 +40,10 @@ public class WebInterface
 	private static String ADDRESS_SESSION = "http://airbrush.nucular-bacon.com/api/session";
 	//private HttpURLConnection _connection = null;
 	
+	private Activity _activity = null;
+	
 	private class AsyncHttpRequest extends AsyncTask<String, Integer, String>
-	{
+	{	
 		@Override
 		protected String doInBackground(String...params)
 		{
@@ -167,21 +172,36 @@ public class WebInterface
 		}
 	}
 	
-	public WebInterface()
+	public WebInterface(Activity activity)
 	{
+		_activity = activity;
 	}
 	
 	public void postFlight(Flight flight, String cookie)
 	{
-		new AsyncHttpRequest().execute(ADDRESS_FLIGHT, flight.serializeToHttp(), cookie);
+		if(wifiAvailable(_activity))
+		{
+			new AsyncHttpRequest().execute(ADDRESS_FLIGHT, flight.serializeToHttp(), cookie);
+		}
+		else
+		{
+			Log.e(TAG, "Can't post flight, wifi is off");
+		}
 	}
 	
 	public void createAccount(String name, String surname, String email, String password)
 	{
 		try
 		{
-			String postData = "name=" + name + "&surname=" + surname + "&email=" + email + "&password=" + password;
-			String response = new AsyncHttpRequest().execute(ADDRESS_USER, postData, "").get();
+			if(wifiAvailable(_activity))
+			{
+				String postData = "name=" + name + "&surname=" + surname + "&email=" + email + "&password=" + password;
+				String response = new AsyncHttpRequest().execute(ADDRESS_USER, postData, "").get();
+			}
+			else
+			{
+				Log.e(TAG, "Can't create account, wifi is off");
+			}
 		}
 		catch(Exception e)
 		{
@@ -195,11 +215,18 @@ public class WebInterface
 		
 		try
 		{
-			String postData = "id=" + userId + "&password=" + password;
-			String response = new AsyncHttpRequest().execute(ADDRESS_SESSION, postData, "").get();
-			
-			JSONObject object = new JSONObject(response);
-			result = object.getString("sessionkey");
+			if(wifiAvailable(_activity))
+			{
+				String postData = "id=" + userId + "&password=" + password;
+				String response = new AsyncHttpRequest().execute(ADDRESS_SESSION, postData, "").get();
+				
+				JSONObject object = new JSONObject(response);
+				result = object.getString("sessionkey");
+			}
+			else
+			{
+				Log.e(TAG, "Can't login, wifi is off");
+			}
 		}
 		catch (InterruptedException e)
 		{
@@ -227,14 +254,21 @@ public class WebInterface
 		
 		try
 		{
-			response = new AsyncHttpRequest().execute(address).get();
-			
-			JSONArray jsonArray = new JSONArray(response);
-			
-			for(int i = 0; i < jsonArray.length(); i++)
+			if(wifiAvailable(_activity))
 			{
-				JSONObject object = jsonArray.getJSONObject(i);
-				result = object.getInt("id");
+				response = new AsyncHttpRequest().execute(address).get();
+				
+				JSONArray jsonArray = new JSONArray(response);
+				
+				for(int i = 0; i < jsonArray.length(); i++)
+				{
+					JSONObject object = jsonArray.getJSONObject(i);
+					result = object.getInt("id");
+				}
+			}
+			else
+			{
+				Log.e(TAG, "Can't retrieve user id, wifi is off");
 			}
 		}
 		catch (InterruptedException e)
@@ -301,7 +335,7 @@ public class WebInterface
 		try
 		{
 			MessageDigest md5 = MessageDigest.getInstance("MD5");
-			md5.update(word.getBytes());
+			md5.update(word.getBytes("US-ASCII"));
 			BigInteger hash = new BigInteger(1, md5.digest());
 			result = hash.toString(16);
 		}
@@ -358,5 +392,22 @@ public class WebInterface
 		result = firstLetter + password + ending;
 		
 		return result;
+	}
+	
+	public static Boolean wifiAvailable(Activity activity)
+	{
+		try
+		{
+			ConnectivityManager connManager = (ConnectivityManager)activity.getSystemService(Activity.WIFI_SERVICE);
+			NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		
+			return mWifi.isConnected();
+		}
+		catch(Exception e)
+		{
+			Log.e(TAG, e.toString());
+		}
+		
+		return false;
 	}
 }

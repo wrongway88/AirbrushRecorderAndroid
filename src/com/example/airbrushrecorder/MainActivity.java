@@ -119,7 +119,7 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 	@Override
 	public void onDialogCreateClick(DialogFragment dialog, String name, String surname, String email, String password)
 	{
-		WebInterface webInterface = new WebInterface();
+		WebInterface webInterface = new WebInterface(this);
 		webInterface.createAccount(name, surname, email, password);
 	}
 }

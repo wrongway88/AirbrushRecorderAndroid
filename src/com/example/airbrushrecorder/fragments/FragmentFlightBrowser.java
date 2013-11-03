@@ -192,7 +192,7 @@ public class FragmentFlightBrowser extends Fragment
 	
 	private void submitSelectedFlight(Flight flight, String sessionData)
 	{
-		WebInterface wf = new WebInterface();
+		WebInterface wf = new WebInterface(getActivity());
 		wf.postFlight(flight, sessionData);
 	}
 	

@@ -53,7 +53,7 @@ public class FragmentCreateAccount extends Fragment
 		EditText passwordField = (EditText) getView().findViewById(R.id.edit_text_password);
 		String password = passwordField.getText().toString();
 		
-		WebInterface webInterface = new WebInterface();
+		WebInterface webInterface = new WebInterface(getActivity());
 		password = WebInterface.saltPassword(password, email);
 		webInterface.createAccount(name, surname, email, password);
 	}

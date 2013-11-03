@@ -59,6 +59,8 @@ public class WebInterface
 		
 		public String postData(String address, String data, String cookie)
 		{
+			Log.d(TAG, "postData: " + address + ", " + data + ", " + cookie);
+			
 			URL url;
 			HttpURLConnection connection;
 			
@@ -110,7 +112,7 @@ public class WebInterface
 					result = connection.getResponseMessage();
 				}
 				
-				Log.d(TAG, result);
+				Log.d(TAG, "PostData response: " + result);
 			}
 			catch(ClientProtocolException e)
 			{
@@ -358,11 +360,12 @@ public class WebInterface
 			GZIPOutputStream gos = new GZIPOutputStream(os);
 			gos.write(message.getBytes());
 			gos.close();
-			byte[] compressed = os.toByteArray();
 			os.close();
 			
+			byte[] compressed = new byte[4 + os.toByteArray().length];
 			System.arraycopy(blockcopy, 0, compressed, 0, 4);
 			System.arraycopy(os.toByteArray(), 0, compressed, 4, os.toByteArray().length);
+			
 			return Base64.encodeToString(compressed, 0);
 		}
 		catch(Exception e)
@@ -398,9 +401,9 @@ public class WebInterface
 	{
 		try
 		{
-			ConnectivityManager connManager = (ConnectivityManager)activity.getSystemService(Activity.WIFI_SERVICE);
+			ConnectivityManager connManager = (ConnectivityManager)activity.getSystemService(Activity.CONNECTIVITY_SERVICE);
 			NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-		
+			
 			return mWifi.isConnected();
 		}
 		catch(Exception e)

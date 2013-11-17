@@ -8,9 +8,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
+import com.example.airbrushrecorder.dialog.DialogCreateAccountResponse;
 import com.example.airbrushrecorder.dialog.DialogDeleteFlight;
 import com.example.airbrushrecorder.dialog.DialogEnterLoginData;
 import com.example.airbrushrecorder.dialog.DialogCreateAccount;
+import com.example.airbrushrecorder.dialog.DialogWifiOff;
 import com.example.airbrushrecorder.fragments.FragmentRecorder;
 import com.example.airbrushrecorder.fragments.FragmentFlightBrowser;
 
@@ -50,8 +52,16 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 	
 	public void viewCreateAccount(View view)
 	{
-		DialogCreateAccount dialog = new DialogCreateAccount();
-		dialog.show(this.getSupportFragmentManager(), TAG);
+		if(WebInterface.wifiAvailable(this))
+		{
+			DialogCreateAccount dialog = new DialogCreateAccount();
+			dialog.show(this.getSupportFragmentManager(), TAG);
+		}
+		else
+		{
+			DialogWifiOff dialog = new DialogWifiOff();
+			dialog.show(getSupportFragmentManager(), TAG);
+		}
 	}
 	
 	@Override
@@ -120,6 +130,12 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 	public void onDialogCreateClick(DialogFragment dialog, String name, String surname, String email, String password)
 	{
 		WebInterface webInterface = new WebInterface(this);
-		webInterface.createAccount(name, surname, email, password);
+		Boolean success = webInterface.createAccount(name, surname, email, password);
+		
+		DialogCreateAccountResponse dialogResponse = new DialogCreateAccountResponse();
+		Bundle bundle = new Bundle();
+		bundle.putBoolean("success", success);
+		dialogResponse.setArguments(bundle);
+		dialog.show(this.getSupportFragmentManager(), TAG);
 	}
 }

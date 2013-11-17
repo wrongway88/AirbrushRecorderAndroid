@@ -25,6 +25,7 @@ import com.example.airbrushrecorder.R;
 import com.example.airbrushrecorder.WebInterface;
 import com.example.airbrushrecorder.data.FlightsDataSource;
 import com.example.airbrushrecorder.dialog.DialogDeleteFlight;
+import com.example.airbrushrecorder.dialog.DialogWifiOff;
 import com.example.airbrushrecorder.fragments.FragmentRecorder.OnToggleRecordingListener;
 
 public class FragmentFlightBrowser extends Fragment
@@ -191,9 +192,17 @@ public class FragmentFlightBrowser extends Fragment
 	}
 	
 	private void submitSelectedFlight(Flight flight, String sessionData)
-	{
-		WebInterface wf = new WebInterface(getActivity());
-		wf.postFlight(flight, sessionData);
+	{	
+		if(WebInterface.wifiAvailable(getActivity()))
+		{
+			WebInterface wf = new WebInterface(getActivity());
+			wf.postFlight(flight, sessionData);
+		}
+		else
+		{
+			DialogWifiOff dialog = new DialogWifiOff();
+			dialog.show(getChildFragmentManager(), TAG);
+		}
 	}
 	
 	private Flight getSelectedFlight()

@@ -191,7 +191,7 @@ public class WebInterface
 		}
 	}
 	
-	public void createAccount(String name, String surname, String email, String password)
+	public Boolean createAccount(String name, String surname, String email, String password)
 	{
 		try
 		{
@@ -199,16 +199,22 @@ public class WebInterface
 			{
 				String postData = "name=" + name + "&surname=" + surname + "&email=" + email + "&password=" + password;
 				String response = new AsyncHttpRequest().execute(ADDRESS_USER, postData, "").get();
+				
+				//TODO: return according to response
+				return true;
 			}
 			else
 			{
 				Log.e(TAG, "Can't create account, wifi is off");
+				return false;
 			}
 		}
 		catch(Exception e)
 		{
 			Log.e(TAG, e.toString());
 		}
+		
+		return false;
 	}
 	
 	public String login(int userId, String password)

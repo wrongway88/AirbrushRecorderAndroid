@@ -43,4 +43,8 @@
     <string name="dialog_create">Create</string>
     <string name="dialog_set_login_data_message">Please enter mail address and password</string>
     <string name="dialog_enter_account_data">Please enter your data and hit create</string>
+    <string name="dialog_create_account_response_positive">Created new Account!</string>
+    <string name="dialog_create_account_response_negative">Failed to create Account.</string>
+    <string name="dialog_wifi_off">No Internet connection!</string>
+    <string name="dialog_wifi_off_message">Failed to connect to the server, please check whether you are connected to the internet.</string>
 </resources>

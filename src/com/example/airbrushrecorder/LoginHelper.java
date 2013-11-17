@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.example.airbrushrecorder.data.FlightsDataSource;
 import com.example.airbrushrecorder.dialog.DialogEnterLoginData;
+import com.example.airbrushrecorder.dialog.DialogWifiOff;
 
 public class LoginHelper
 {
@@ -28,6 +29,13 @@ public class LoginHelper
 	{
 		try
 		{
+			if(WebInterface.wifiAvailable(activity) == false)
+			{
+				DialogWifiOff dialog = new DialogWifiOff();
+				dialog.show(activity.getSupportFragmentManager(), TAG);
+				return false;
+			}
+			
 			FlightsDataSource dataSource = new FlightsDataSource(activity);
 			dataSource.open();
 			

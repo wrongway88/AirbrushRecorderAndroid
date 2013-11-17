@@ -336,9 +336,9 @@ public class WebInterface
 		
 		try
 		{
-			MessageDigest md5 = MessageDigest.getInstance("MD5");
-			md5.update(word.getBytes("US-ASCII"));
-			BigInteger hash = new BigInteger(1, md5.digest());
+			MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
+			sha256.update(word.getBytes("UTF-8"));
+			BigInteger hash = new BigInteger(1, sha256.digest());
 			result = hash.toString(16);
 		}
 		catch(Exception e)

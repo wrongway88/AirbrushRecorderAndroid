@@ -3,6 +3,7 @@ package com.example.airbrushrecorder.fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,9 @@ public class FragmentCreateAccount extends Fragment
 		
 		WebInterface webInterface = new WebInterface(getActivity());
 		password = WebInterface.saltPassword(password, email);
+		
+		//Log.d("CREATE_ACCOUNT", surname + ", " + name);
+		
 		webInterface.createAccount(name, surname, email, password);
 	}
 }

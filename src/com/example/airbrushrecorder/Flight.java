@@ -361,7 +361,9 @@ public class Flight
 			result += "&waypointsCompressed=";
 			
 			String waypoints = URLEncoder.encode(serializeWaypointsToHttp(), "ISO-8859-1");
-			waypoints = WebInterface.compress(waypoints);
+			//waypoints = WebInterface.compress(waypoints);
+			
+			//Log.d(TAG, waypoints);
 			
 			if(waypoints.length() > 0)
 			{

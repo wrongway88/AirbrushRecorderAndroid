@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.example.airbrushrecorder.data.FlightsDataSource;
 import com.example.airbrushrecorder.dialog.DialogEnterLoginData;
+import com.example.airbrushrecorder.dialog.DialogWifiOff;
 
 public class LoginHelper
 {
@@ -28,6 +29,13 @@ public class LoginHelper
 	{
 		try
 		{
+			if(WebInterface.wifiAvailable(activity) == false)
+			{
+				DialogWifiOff dialog = new DialogWifiOff();
+				dialog.show(activity.getSupportFragmentManager(), TAG);
+				return false;
+			}
+			
 			FlightsDataSource dataSource = new FlightsDataSource(activity);
 			dataSource.open();
 			
@@ -44,6 +52,7 @@ public class LoginHelper
 			}
 			
 			int userId = getUserId(mail, activity);
+			
 			String sessionData = getSessionData(userId, password, activity);
 			
 			dataSource.updateCookie(sessionData);
@@ -123,15 +132,9 @@ public class LoginHelper
 		int userId = getUserId(mailAddress, dialog.getActivity());
 		password = WebInterface.saltPassword(password, mailAddress);
 		
-		Log.d(TAG, password);
-		
 		password = WebInterface.toHash(password);
 		
-		Log.d(TAG, password);
-		
 		String sessionData = getSessionData(userId, password, dialog.getActivity());
-		
-		Log.d(TAG, sessionData);
 		
 		if(sessionData.length() > 0)
 		{
@@ -141,6 +144,18 @@ public class LoginHelper
 			dataSource.updateUserMail(mailAddress);
 			dataSource.updatePassword(password);
 			dataSource.close();
+			
+			/*
+			dataSource.open();
+			
+			String cookie = dataSource.getCookie();
+			
+			dataSource.close();
+			
+			Log.d(TAG, "cookie: " + cookie);
+			*/
+			
+			Log.d(TAG, "login data set");
 		}
 		else
 		{

@@ -60,6 +60,10 @@ public class DialogCreateAccount extends DialogFragment
         {
             public void onClick(DialogInterface dialog, int id)
             {
+            	//String mail = "david@test.cc"; 
+            	//String password = WebInterface.toHash(WebInterface.saltPassword("test", mail));
+            	//m_listener.onDialogCreateClick(DialogCreateAccount.this, "david", "dunkin", mail, password);
+            	
             	String name = inputName.getText().toString();
             	String surname = inputSurname.getText().toString();
             	String mail = inputMail.getText().toString();
@@ -72,6 +76,7 @@ public class DialogCreateAccount extends DialogFragment
             	{
             		m_listener.onDialogCreateClick(DialogCreateAccount.this, name, surname, mail, password);
             	}
+            	
             }
         });
  

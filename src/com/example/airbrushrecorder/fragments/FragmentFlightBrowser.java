@@ -20,11 +20,12 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 import com.example.airbrushrecorder.Flight;
 import com.example.airbrushrecorder.LoginHelper;
-import com.example.airbrushrecorder.MainActivity;
 import com.example.airbrushrecorder.R;
 import com.example.airbrushrecorder.WebInterface;
 import com.example.airbrushrecorder.data.FlightsDataSource;
 import com.example.airbrushrecorder.dialog.DialogDeleteFlight;
+import com.example.airbrushrecorder.dialog.DialogUploadFlightResponse;
+import com.example.airbrushrecorder.dialog.DialogWifiOff;
 import com.example.airbrushrecorder.fragments.FragmentRecorder.OnToggleRecordingListener;
 
 public class FragmentFlightBrowser extends Fragment
@@ -88,6 +89,10 @@ public class FragmentFlightBrowser extends Fragment
 		listFiles();
 	}
 	
+	public void updateFlightList()
+	{
+		listFiles();
+	}
 	
 	private void listFiles()
 	{
@@ -158,6 +163,8 @@ public class FragmentFlightBrowser extends Fragment
 	
 	public void submitSelectedFlight(View view)
 	{
+		//Log.d(TAG, "submit selected flight");
+		
 		try
 		{
 			Flight flight = getSelectedFlight();
@@ -171,7 +178,7 @@ public class FragmentFlightBrowser extends Fragment
 				LoginHelper loginHelper = new LoginHelper();
 				if(sessionData.length() <= 0 || loginHelper.ipChanged(this.getActivity()))
 				{
-					loginHelper.login(this.getActivity());
+					loginHelper.login(getActivity());
 					
 					dataSource.open();
 					sessionData = dataSource.getCookie();
@@ -186,14 +193,30 @@ public class FragmentFlightBrowser extends Fragment
 		}
 		catch(Exception e)
 		{
-			Log.d(TAG, e.toString());
+			Log.e(TAG, e.toString());
 		}
 	}
 	
 	private void submitSelectedFlight(Flight flight, String sessionData)
-	{
-		WebInterface wf = new WebInterface(getActivity());
-		wf.postFlight(flight, sessionData);
+	{	
+		if(WebInterface.wifiAvailable(getActivity()))
+		{
+			WebInterface wf = new WebInterface(getActivity());
+			Boolean success = wf.postFlight(flight, sessionData);
+			
+			//Log.d(TAG, "success: " + success);
+			
+			DialogUploadFlightResponse dialog = new DialogUploadFlightResponse();
+			Bundle bundle = new Bundle();
+			bundle.putBoolean("success", success);
+			dialog.setArguments(bundle);
+			dialog.show(getFragmentManager(), TAG);
+		}
+		else
+		{
+			DialogWifiOff dialog = new DialogWifiOff();
+			dialog.show(getChildFragmentManager(), TAG);
+		}
 	}
 	
 	private Flight getSelectedFlight()

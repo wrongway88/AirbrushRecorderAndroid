@@ -2,35 +2,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:baselineAligned="false" >
 
     <fragment android:name="com.example.airbrushrecorder.fragments.FragmentRecorder"
             android:id="@+id/fragment_recorder"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_margin="5dip" />
     
     <fragment android:name="com.example.airbrushrecorder.fragments.FragmentFlightBrowser"
             android:id="@+id/fragment_flight_browser"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_margin="5dip" />
     
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
-    	android:layout_height="wrap_content" >
+    	android:layout_height="match_parent"
+    	android:padding="5dip"
+    	android:layout_margin="5dip"
+    	android:background="@drawable/layout_bg_light" >
         
         <Button
 	        android:id="@+id/button_view_login"
-	        android:layout_width="wrap_content"
+	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:text="@string/button_view_login"
 	        android:onClick="viewLogin" />
 	    
 	    <Button
 	        android:id="@+id/button_view_create_account"
-	        android:layout_width="wrap_content"
+	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:text="@string/button_create_account"
 	        android:onClick="viewCreateAccount" />

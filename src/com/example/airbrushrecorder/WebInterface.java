@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.security.MessageDigest;
 import java.util.zip.GZIPOutputStream;
+//import java.net.CookieManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +33,7 @@ import org.json.JSONObject;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.conn.util.InetAddressUtils;
+
 
 public class WebInterface
 {
@@ -40,7 +43,11 @@ public class WebInterface
 	private static String ADDRESS_SESSION = "http://airbrush.nucular-bacon.com/api/session";
 	//private HttpURLConnection _connection = null;
 	
+	private static String COOKIE_SESSION = "airbrush_session=";
+	
 	private Activity _activity = null;
+	
+	private String _httpResponse = "";
 	
 	private class AsyncHttpRequest extends AsyncTask<String, Integer, String>
 	{	
@@ -49,22 +56,32 @@ public class WebInterface
 		{
 			String result = "";
 			
+			//if this gets anymore complex, just checking the params count probably won't do it anymore
 			if(params.length == 3)
-				result = postData(params[0], params[1], params[2]);
+			{
+				int r = postData(params[0], params[1], params[2]);
+				result = "" + r;
+			}
 			else if(params.length == 1)
-				result = getData(params[0]);
+			{
+				result = getData(params[0], null);
+			}
+			else if(params.length == 2)
+			{
+				result = getData(params[0], params[1]);
+			}
 			
 			return result;
 		}
 		
-		public String postData(String address, String data, String cookie)
+		public int postData(String address, String data, String cookie)
 		{
-			Log.d(TAG, "postData: " + address + ", " + data + ", " + cookie);
+			//Log.d(TAG, "postData: " + address + ", " + data + ", " + cookie);
 			
 			URL url;
 			HttpURLConnection connection;
 			
-			String result = "";
+			int result = -1;
 			
 			//Log.d(TAG, data);
 			
@@ -83,6 +100,8 @@ public class WebInterface
 				
 				if(cookie.length() > 0)
 				{
+					//Log.d(TAG, cookie);
+
 					connection.setRequestProperty("Cookie", cookie);
 				}
 				
@@ -105,14 +124,21 @@ public class WebInterface
 				    }
 				    rd.close();
 				    
-				    result = response.toString();
+				    //Log.d(TAG, response.toString());
+				    
+				    //result = response.toString();
+				    
+				    _httpResponse = response.toString();
 				}
-				else
-				{
-					result = connection.getResponseMessage();
-				}
+				//else
+				//{
+					//result = connection.getResponseMessage();
+				//}
 				
-				Log.d(TAG, "PostData response: " + result);
+				
+				result = connection.getResponseCode();
+				
+				//Log.d(TAG, "PostData response: " + connection.getResponseMessage());
 			}
 			catch(ClientProtocolException e)
 			{
@@ -122,11 +148,15 @@ public class WebInterface
 			{
 				Log.e(TAG + " postData", "Error: " + e);
 			}
+			catch(Exception e)
+			{
+				Log.e(TAG + " postData", "Error: " + e);
+			}
 			
 			return result;
 		}
 		
-		public String getData(String address)
+		public String getData(String address, String cookie)
 		{
 			URL url;
 			HttpURLConnection connection;
@@ -141,6 +171,11 @@ public class WebInterface
 				connection.setRequestMethod("GET");
 				connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 				connection.setRequestProperty("Accept", "application/json");
+				
+				if(cookie != null && cookie.length() > 0)
+				{
+					connection.setRequestProperty("Cookie", cookie);
+				}
 				
 				connection.setUseCaches(false);
 				connection.setDoInput(true);
@@ -169,6 +204,10 @@ public class WebInterface
 			{
 				Log.e(TAG, "Error: " + e);
 			}
+			catch(Exception e)
+			{
+				Log.e(TAG, "Error: " + e);
+			}
 			
 			return result;
 		}
@@ -179,19 +218,35 @@ public class WebInterface
 		_activity = activity;
 	}
 	
-	public void postFlight(Flight flight, String cookie)
+	public Boolean postFlight(Flight flight, String cookie)
 	{
-		if(wifiAvailable(_activity))
+		try
 		{
-			new AsyncHttpRequest().execute(ADDRESS_FLIGHT, flight.serializeToHttp(), cookie);
+			if(wifiAvailable(_activity))
+			{
+				String response = new AsyncHttpRequest().execute(ADDRESS_FLIGHT, flight.serializeToHttp(), COOKIE_SESSION + cookie).get();
+				
+				int iResponse = Integer.parseInt(response);
+				
+				//Log.d(TAG + "postFlight", "" + iResponse);
+				
+				return (iResponse >= 200 && iResponse < 300);
+			}
+			else
+			{
+				Log.e(TAG, "Can't post flight, wifi is off");
+				return false;
+			}
 		}
-		else
+		catch(Exception e)
 		{
-			Log.e(TAG, "Can't post flight, wifi is off");
+			Log.e(TAG, e.toString());
 		}
+		
+		return false;
 	}
 	
-	public void createAccount(String name, String surname, String email, String password)
+	public Boolean createAccount(String name, String surname, String email, String password)
 	{
 		try
 		{
@@ -199,16 +254,25 @@ public class WebInterface
 			{
 				String postData = "name=" + name + "&surname=" + surname + "&email=" + email + "&password=" + password;
 				String response = new AsyncHttpRequest().execute(ADDRESS_USER, postData, "").get();
+				
+				//TODO: return according to response
+				return (response == "200");
 			}
 			else
 			{
+				//DialogWifiOff dialog = new DialogWifiOff();
+				//dialog.show(_activity.get, TAG);
+				
 				Log.e(TAG, "Can't create account, wifi is off");
+				return false;
 			}
 		}
 		catch(Exception e)
 		{
 			Log.e(TAG, e.toString());
 		}
+		
+		return false;
 	}
 	
 	public String login(int userId, String password)
@@ -220,9 +284,9 @@ public class WebInterface
 			if(wifiAvailable(_activity))
 			{
 				String postData = "id=" + userId + "&password=" + password;
-				String response = new AsyncHttpRequest().execute(ADDRESS_SESSION, postData, "").get();
+				new AsyncHttpRequest().execute(ADDRESS_SESSION, postData, "").get();
 				
-				JSONObject object = new JSONObject(response);
+				JSONObject object = new JSONObject(_httpResponse);
 				result = object.getString("sessionkey");
 			}
 			else
@@ -337,7 +401,8 @@ public class WebInterface
 		try
 		{
 			MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
-			sha256.update(word.getBytes("UTF-8"));
+			String s = new String(word.getBytes(), "UTF-8");
+			sha256.update(s.getBytes("UTF-8"));
 			BigInteger hash = new BigInteger(1, sha256.digest());
 			result = hash.toString(16);
 		}

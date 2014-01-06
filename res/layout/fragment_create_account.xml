@@ -2,8 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/layout_bg_light"
+    android:padding="5dip"
+    android:layout_margin="10dip" >
     
     <EditText android:id="@+id/edit_text_name"
         android:layout_width="wrap_content"

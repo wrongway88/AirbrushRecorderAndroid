@@ -93,13 +93,15 @@ public class ServicePathLog extends Service
 				wp += "\"alt\":" + location.getAltitude();
 				wp += "\"speed\":" + location.getSpeed();
 				wp += "},";
-				Log.d(TAG, wp);
+				Log.d(TAG, "new waypoint: " + wp);
 				
 				//_logWriter.writeToFile(wp + ",");
 			}
 			
 			if(_this != null)
 			{
+				Log.d(TAG, "write wp to db: " + _dbId);
+				
 				FlightsDataSource dataSource = new FlightsDataSource(_this);
 				dataSource.open();
 				dataSource.createWaypoint(_dbId, t, location.getLatitude(), location.getLongitude(), location.getAltitude(), location.getSpeed());
@@ -177,33 +179,41 @@ public class ServicePathLog extends Service
 	
 	protected void setupLocationProvider()
 	{
-		if(m_locationManager == null)
+		Log.d(TAG, "setupLocationProvider");
+		
+		try
 		{
-			m_locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+			if(m_locationManager == null)
+			{
+				m_locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+			}
+			
+			boolean gpsEnabled = m_locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+			
+			if(!gpsEnabled)
+			{
+				Log.d(TAG, "gps not enabled");
+				
+				this.stopSelf();
+			}
+			
+			m_locationProvider = m_locationManager.getProvider(LocationManager.GPS_PROVIDER);
+			m_locationProvider.getName();
+			
+			m_locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 2, m_locationListener);
+			
+			initFlight();
+			Calendar c = Calendar.getInstance();
+			m_startTime = (c.get(Calendar.HOUR_OF_DAY) * 60 * 60) + (c.get(Calendar.MINUTE) * 60) + c.get(Calendar.SECOND);
+			String date = c.get(Calendar.YEAR) + "_" + c.get(Calendar.MONTH) + "_" + c.get(Calendar.DAY_OF_MONTH) + "-"
+						+ c.get(Calendar.HOUR_OF_DAY) + "_" + c.get(Calendar.MINUTE) + "_" + c.get(Calendar.SECOND);
+			
+			Log.d(TAG, "start logging " + date);
 		}
-		
-		boolean gpsEnabled = m_locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-		
-		if(!gpsEnabled)
+		catch(Exception e)
 		{
-			Intent gpsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-			startActivity(gpsIntent);
+			Log.e(TAG, e.getMessage());
 		}
-		
-		m_locationProvider = m_locationManager.getProvider(LocationManager.GPS_PROVIDER);
-		m_locationProvider.getName();
-		
-		m_locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 2, m_locationListener);
-		
-		initFlight();
-		Calendar c = Calendar.getInstance();
-		m_startTime = (c.get(Calendar.HOUR_OF_DAY) * 60 * 60) + (c.get(Calendar.MINUTE) * 60) + c.get(Calendar.SECOND);
-		String date = c.get(Calendar.YEAR) + "_" + c.get(Calendar.MONTH) + "_" + c.get(Calendar.DAY_OF_MONTH) + "-"
-					+ c.get(Calendar.HOUR_OF_DAY) + "_" + c.get(Calendar.MINUTE) + "_" + c.get(Calendar.SECOND);
-		
-		Log.d(TAG, "start logging");
-		
-		//openLogFile(date);
 	}
 	
 	private void stopLocationProvider()
@@ -244,6 +254,8 @@ public class ServicePathLog extends Service
 	
 	private void initFlight()
 	{
+		Log.d(TAG, "init flight");
+		
 		_flight = new Flight();
 		
 		Calendar c = Calendar.getInstance();

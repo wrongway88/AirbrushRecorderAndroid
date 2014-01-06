@@ -1,33 +1,47 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
     <fragment android:name="com.example.airbrushrecorder.fragments.FragmentRecorder"
             android:id="@+id/fragment_recorder"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="0dip" />
+            android:layout_height="wrap_content"
+            android:layout_margin="5dip" />
     
     <fragment android:name="com.example.airbrushrecorder.fragments.FragmentFlightBrowser"
             android:id="@+id/fragment_flight_browser"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="0dip" />
+            android:layout_height="wrap_content"
+            android:layout_margin="5dip" />
     
-    <Button
-        android:id="@+id/button_view_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/button_view_login"
-        android:onClick="viewLogin" />
-    
-    <Button
-        android:id="@+id/button_view_create_account"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/button_create_account"
-        android:onClick="viewCreateAccount" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:padding="5dip"
+    	android:layout_margin="5dip"
+    	android:background="@drawable/layout_bg_light" >
+        
+        <Button
+	        android:id="@+id/button_view_login"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/button_view_login"
+	        android:onClick="viewLogin"
+	        android:layout_weight="0.5" />
+	    
+	    <Button
+	        android:id="@+id/button_view_create_account"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/button_create_account"
+	        android:onClick="viewCreateAccount"
+	        android:layout_weight="0.5" />
+        
+    </LinearLayout>
     
 </LinearLayout>

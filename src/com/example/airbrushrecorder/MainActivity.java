@@ -3,14 +3,18 @@ package com.example.airbrushrecorder;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
+import com.example.airbrushrecorder.dialog.DialogCreateAccountResponse;
 import com.example.airbrushrecorder.dialog.DialogDeleteFlight;
 import com.example.airbrushrecorder.dialog.DialogEnterLoginData;
 import com.example.airbrushrecorder.dialog.DialogCreateAccount;
+import com.example.airbrushrecorder.dialog.DialogWifiOff;
 import com.example.airbrushrecorder.fragments.FragmentRecorder;
 import com.example.airbrushrecorder.fragments.FragmentFlightBrowser;
 
@@ -44,25 +48,39 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 	
 	public void viewLogin(View view)
 	{
-		Intent intent = new Intent(this, LoginActivity.class);
-		startActivity(intent);
+		//Intent intent = new Intent(this, LoginActivity.class);
+		//startActivity(intent);
+		
+		DialogEnterLoginData dialog = new DialogEnterLoginData();
+		dialog.show(getSupportFragmentManager(), TAG);
 	}
 	
 	public void viewCreateAccount(View view)
 	{
-		DialogCreateAccount dialog = new DialogCreateAccount();
-		dialog.show(this.getSupportFragmentManager(), TAG);
+		if(WebInterface.wifiAvailable(this))
+		{
+			DialogCreateAccount dialog = new DialogCreateAccount();
+			dialog.show(this.getSupportFragmentManager(), TAG);
+		}
+		else
+		{
+			DialogWifiOff dialog = new DialogWifiOff();
+			dialog.show(getSupportFragmentManager(), TAG);
+		}
 	}
 	
 	@Override
 	public void togglePathLogging(View view)
 	{
 		FragmentRecorder fragment = (FragmentRecorder) getSupportFragmentManager().findFragmentById(R.id.fragment_recorder);
+		FragmentFlightBrowser flightBrowser = (FragmentFlightBrowser) getSupportFragmentManager().findFragmentById(R.id.fragment_flight_browser);
 		
 		if(fragment != null)
 		{
 			fragment.togglePathLogging(view);
 		}
+		
+		flightBrowser.updateFlightList();
 	}
 	
 	@Override
@@ -99,15 +117,19 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 	@Override
 	public void onDialogPositiveClick(DialogFragment dialog, String mailAddress, String password)
 	{
-		LoginHelper loginHelper = new LoginHelper();
-		//loginHelper.onDialogPositiveClick(dialog, mailAddress, password);
-		loginHelper.onDialogPositiveClick(dialog, "McDobusch@gmx.net", "mgpö01");
+		Log.d(TAG, mailAddress + ", " + password);
 		
+		LoginHelper loginHelper = new LoginHelper();
+		loginHelper.onDialogPositiveClick(dialog, mailAddress, password);
+		//loginHelper.onDialogPositiveClick(dialog, "McDobusch@gmx.net", "...");
+		
+		/*
 		FragmentFlightBrowser fragment = (FragmentFlightBrowser) getSupportFragmentManager().findFragmentById(R.id.fragment_flight_browser);
 		if(fragment != null)
 		{
 			fragment.submitSelectedFlight(null);
 		}
+		*/
 	}
 	
 	@Override
@@ -120,6 +142,12 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 	public void onDialogCreateClick(DialogFragment dialog, String name, String surname, String email, String password)
 	{
 		WebInterface webInterface = new WebInterface(this);
-		webInterface.createAccount(name, surname, email, password);
+		Boolean success = webInterface.createAccount(name, surname, email, password);
+		
+		DialogCreateAccountResponse dialogResponse = new DialogCreateAccountResponse();
+		Bundle bundle = new Bundle();
+		bundle.putBoolean("success", success);
+		dialogResponse.setArguments(bundle);
+		dialogResponse.show(this.getSupportFragmentManager(), TAG);
 	}
 }

@@ -4,13 +4,13 @@
     <string name="app_name">AirbrushRecorder</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="button_start_logging">Log Path</string>
+    <string name="button_start_logging">Record Flight</string>
     <string name="button_stop_logging">Stop</string>
     <string name="button_back_to_main">Back</string>
     <string name="button_view_flight">View Flights</string>
     <string name="button_delete_flight">Delete</string>
     <string name="button_submit_flight">Submit</string>
-    <string name="button_view_login">Login</string>
+    <string name="button_view_login">Change Account</string>
     <string name="button_set_login_data">Save Data</string>
     <string name="button_create">Create</string>
     <string name="button_create_account">Create Account</string>
@@ -39,12 +39,22 @@
     <string name="textView_logging_arrival">Arrival: </string>
     <string name="textView_logging_airplaneType">Airplane Type: </string>
     <string name="textView_logging_na">nA</string>
+    <string name="textView_flight_data_default">No flight selected</string>
+    <string name="textView_flight_data_no_records">No flights recorded</string>
+    <string name="textView_account_data_title">Account:</string>
+    <string name="textView_account_data_default">No data set</string>
+    
+    <string name="textView_flightBrowser_date">Date: </string>
+    <string name="textView_flightBrowser_departure">Departure: </string>
+    <string name="textView_flightBrowser_destination">Destination: </string>
+    <string name="textView_flightBrowser_waypoints">Waypoints: </string>
     
     <string name="dialog_delete_flight">Delete Flight?</string>
     <string name="dialog_set_login_data">Set Login Data</string>
     <string name="dialog_create_account">Create new Account</string>
     <string name="dialog_delete">Delete</string>
     <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_keep">Keep</string>
     <string name="dialog_save">Save</string>
     <string name="dialog_create">Create</string>
     <string name="dialog_set_login_data_message">Please enter mail address and password</string>
@@ -57,5 +67,13 @@
     <string name="dialog_gps_off_message">Location is unavailable. Please check whether the devices GPS is on.</string>
     <string name="dialog_upload">Flight Upload</string>
     <string name="dialog_upload_response_positive">Upload successful.</string>
+    <string name="dialog_upload_response_keep_local">Keep local data?</string>
+    <string name="dialog_upload_response_check_login_failed">Could not establish server connection.</string>
+    <string name="dialog_upload_response_check_login_data">Please check your login data.</string>
     <string name="dialog_upload_response_negative">Upload failed.</string>
+    <string name="dialog_enter_login_data_response_positive">Account data set.</string>
+    <string name="dialog_enter_login_data_response_negative">Failed to set account data. E-Mail or Password is incorrect.</string>
+    
+    <string name="menu_change_account">Change Account</string>
+    <string name="menu_create_account">Create Account</string>
 </resources>

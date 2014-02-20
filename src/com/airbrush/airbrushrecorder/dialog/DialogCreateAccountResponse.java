@@ -19,15 +19,25 @@ public class DialogCreateAccountResponse extends DialogFragment
         
         Bundle bundle = getArguments();
         Boolean success = bundle.getBoolean("success");
+        String info = bundle.getString("info");
+        
+        String message = "";
         
         if(success)
         {
-        	builder.setMessage(R.string.dialog_create_account_response_positive);
+        	message = getActivity().getString(R.string.dialog_create_account_response_positive);
         }
         else
         {
-        	builder.setMessage(R.string.dialog_create_account_response_negative);
+        	message = getActivity().getString(R.string.dialog_create_account_response_negative);
         }
+        
+        if(info.length() > 0)
+        {
+        	message += "\n" + info;
+        }
+        
+        builder.setMessage(message);
         
         return builder.create();
     }

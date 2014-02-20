@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 
-import com.airbrush.airbrushrecorder.dialog.DialogDeleteFlight.NoticeDialogListener;
 import com.airbrush.airbrushrecorder.R;
 
 public class DialogUploadFlightResponse extends DialogFragment

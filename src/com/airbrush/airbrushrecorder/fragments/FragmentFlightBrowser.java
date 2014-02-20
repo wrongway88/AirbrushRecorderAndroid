@@ -51,7 +51,7 @@ public class FragmentFlightBrowser extends Fragment
 			displayMetaData();
 	    }
 		
-		 @Override
+		@Override
 	    public void onNothingSelected(AdapterView<?> parentView)
 		{
 			 
@@ -181,7 +181,7 @@ public class FragmentFlightBrowser extends Fragment
 		}
 		catch(Exception e)
 		{
-			Log.d(TAG, e.toString());
+			Log.e(TAG, e.toString());
 		}
 	}
 	
@@ -200,9 +200,10 @@ public class FragmentFlightBrowser extends Fragment
 					dataSource.close();
 					
 					LoginHelper loginHelper = new LoginHelper();
+					boolean loginSuccess = false;
 					if(sessionData.length() <= 0 || loginHelper.ipChanged(this.getActivity()))
 					{
-						loginHelper.login(getActivity());
+						loginSuccess = loginHelper.login(getActivity());
 						
 						dataSource.open();
 						sessionData = dataSource.getCookie();
@@ -218,7 +219,7 @@ public class FragmentFlightBrowser extends Fragment
 						DialogUploadFlightResponse dialog = new DialogUploadFlightResponse();
 						Bundle bundle = new Bundle();
 						bundle.putBoolean("success", false);
-						bundle.putBoolean("loginSuccess", false);
+						bundle.putBoolean("loginSuccess", loginSuccess);
 						dialog.setArguments(bundle);
 						dialog.show(getFragmentManager(), TAG);
 					}
@@ -241,14 +242,53 @@ public class FragmentFlightBrowser extends Fragment
 		if(WebInterface.wifiAvailable(getActivity()))
 		{
 			WebInterface wf = new WebInterface(getActivity());
-			Boolean success = wf.postFlight(flight, sessionData);
+			int responseCode = wf.postFlight(flight, sessionData);
+			String response = wf.getHttpResponse();
 			
+			createFlightUploadResponse(responseCode, response);
+		}
+	}
+	
+	private void createFlightUploadResponse(int responseCode, String response)
+	{
+		Log.d(TAG, responseCode + " - " + response);
+		
+		if(responseCode >= 200 && responseCode < 300)
+		{
 			DialogUploadFlightResponse dialog = new DialogUploadFlightResponse();
 			Bundle bundle = new Bundle();
-			bundle.putBoolean("success", success);
+			bundle.putBoolean("success", true);
 			dialog.setArguments(bundle);
 			dialog.show(getFragmentManager(), TAG);
 		}
+		
+		//bad request
+		if(responseCode == 400)
+		{
+			DialogUploadFlightResponse dialog = new DialogUploadFlightResponse();
+			Bundle bundle = new Bundle();
+			bundle.putBoolean("success", false);
+			dialog.setArguments(bundle);
+			dialog.show(getFragmentManager(), TAG);
+		}
+		
+		//forbidden
+		if(responseCode == 403)
+		{
+			DialogUploadFlightResponse dialog = new DialogUploadFlightResponse();
+			Bundle bundle = new Bundle();
+			bundle.putBoolean("success", false);
+			dialog.setArguments(bundle);
+			dialog.show(getFragmentManager(), TAG);
+		}
+		
+		/*
+		DialogUploadFlightResponse dialog = new DialogUploadFlightResponse();
+		Bundle bundle = new Bundle();
+		bundle.putBoolean("success", success);
+		dialog.setArguments(bundle);
+		dialog.show(getFragmentManager(), TAG);
+		*/
 	}
 	
 	private Flight getSelectedFlight()
@@ -299,9 +339,20 @@ public class FragmentFlightBrowser extends Fragment
 			
 			try
 			{
-				String date = getString(R.string.textView_flightBrowser_date) + flight.getDate().toString();
-				String departure = getString(R.string.textView_flightBrowser_departure) + flight.getDeparture();
-				String destination = getString(R.string.textView_flightBrowser_destination) + flight.getDestination();
+				String date = flight.getDate().toString();
+				String departure = flight.getDeparture(); //getString(R.string.textView_logging_na) + 
+				String destination = flight.getDestination();
+				
+				if(date.length() <= 0)
+					date = getString(R.string.textView_logging_na);
+				if(departure.length() <= 0)
+					departure = getString(R.string.textView_logging_na);
+				if(destination.length() <= 0)
+					destination = getString(R.string.textView_logging_na);
+					
+				date = getString(R.string.textView_flightBrowser_date) + date;
+				departure = getString(R.string.textView_flightBrowser_departure) + departure;
+				destination = getString(R.string.textView_flightBrowser_destination) + destination;
 				
 				textView.setText(date + "\n" + departure + "\n" + destination + "\n" + getString(R.string.textView_flightBrowser_waypoints) + flight.getWaypointCount());
 			}

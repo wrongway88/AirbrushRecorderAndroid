@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentActivity;
 import android.util.Base64;
 import android.util.Log;
 
@@ -33,13 +34,16 @@ import org.json.JSONObject;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.conn.util.InetAddressUtils;
 
+import com.airbrush.airbrushrecorder.dialog.DialogDebugMesssage;
+
+import java.net.URLEncoder;
 
 public class WebInterface
 {
 	private static String TAG = "WebInterface";
-	private static String ADDRESS_FLIGHT = "http://airbrush.nucular-bacon.com/api/flight";
-	private static String ADDRESS_USER = "http://airbrush.nucular-bacon.com/api/user";
-	private static String ADDRESS_SESSION = "http://airbrush.nucular-bacon.com/api/session";
+	private static String ADDRESS_FLIGHT = "http://airbrush.nucular-bacon.com/api/flights";
+	private static String ADDRESS_USER = "http://airbrush.nucular-bacon.com/api/users";
+	//private static String ADDRESS_SESSION = "http://airbrush.nucular-bacon.com:50000/api/session";
 	//private HttpURLConnection _connection = null;
 	
 	private static String COOKIE_SESSION = "airbrush_session=";
@@ -80,6 +84,8 @@ public class WebInterface
 			
 			int result = -1;
 			
+			Log.d(TAG, address + " // " + data);
+			
 			try
 			{
 				url = new URL(address);
@@ -89,7 +95,7 @@ public class WebInterface
 				connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 				connection.setRequestProperty("Accept", "application/json");
 				
-				connection.setConnectTimeout(10000);
+				connection.setConnectTimeout(5000);
 				
 				connection.setUseCaches(false);
 				connection.setDoInput(true);
@@ -106,35 +112,32 @@ public class WebInterface
 				wr.flush();
 				wr.close();
 				
-				if(connection.getResponseCode() < 300)
-				{
-					InputStream is = connection.getInputStream();
-					BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-					String line;
-					StringBuffer response = new StringBuffer(); 
-				    while((line = rd.readLine()) != null)
-				    {
-					    response.append(line);
-					    response.append('\r');
-				    }
-				    rd.close();
-				    
-				    _httpResponse = response.toString();
-				}		
-				
 				result = connection.getResponseCode();
+				
+				InputStream is = connection.getInputStream();
+				BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+				String line;
+				StringBuffer response = new StringBuffer(); 
+			    while((line = rd.readLine()) != null)
+			    {
+				    response.append(line);
+				    response.append('\r');
+			    }
+			    rd.close();
+			    
+			    _httpResponse = response.toString();
 			}
 			catch(ClientProtocolException e)
 			{
-				Log.e(TAG + " postData", "Error: " + e);
+				Log.e(TAG + " postData ClientProtocolException", "Error: " + e);
 			}
 			catch(IOException e)
 			{
-				Log.e(TAG + " postData", "Error: " + e);
+				Log.e(TAG + " postData IOException", "Error: " + e);
 			}
 			catch(Exception e)
 			{
-				Log.e(TAG + " postData", "Error: " + e);
+				Log.e(TAG + " postData Exception", "Error: " + e);
 			}
 			
 			return result;
@@ -200,8 +203,15 @@ public class WebInterface
 		_activity = activity;
 	}
 	
-	public Boolean postFlight(Flight flight, String cookie)
+	public String getHttpResponse()
 	{
+		return _httpResponse;
+	}
+	
+	public int postFlight(Flight flight, String cookie)
+	{
+		Log.d(TAG, "postFlight");
+		
 		try
 		{
 			if(wifiAvailable(_activity))
@@ -210,12 +220,11 @@ public class WebInterface
 				
 				int iResponse = Integer.parseInt(response);
 				
-				return (iResponse >= 200 && iResponse < 300);
+				return iResponse;
 			}
 			else
 			{
 				Log.e(TAG, "Can't post flight, wifi is off");
-				return false;
 			}
 		}
 		catch(Exception e)
@@ -223,22 +232,22 @@ public class WebInterface
 			Log.e(TAG, e.toString());
 		}
 		
-		return false;
+		return -1;
 	}
 	
-	public Boolean createAccount(String name, String surname, String email, String password)
+	public int createAccount(String name, String surname, String email, String password)
 	{
 		try
 		{
 			if(wifiAvailable(_activity))
 			{
-				String postData = "name=" + name + "&surname=" + surname + "&email=" + email + "&password=" + password;
+				String postData = "name=" + name + "&surname=" + surname + "&email=" + email + "&airhash=" + password;
 				String response = new AsyncHttpRequest().execute(ADDRESS_USER, postData, "").get();
 				
 				int iResponse = Integer.parseInt(response);
 				
 				//TODO: return according to response
-				return (iResponse >= 200 && iResponse < 300);
+				return iResponse;
 			}
 			else
 			{
@@ -246,7 +255,7 @@ public class WebInterface
 				//dialog.show(_activity.get, TAG);
 				
 				Log.e(TAG, "Can't create account, wifi is off");
-				return false;
+				return -1;
 			}
 		}
 		catch(Exception e)
@@ -254,10 +263,10 @@ public class WebInterface
 			Log.e(TAG, e.toString());
 		}
 		
-		return false;
+		return -1;
 	}
 	
-	public String login(int userId, String password)
+	public String login(String userId, String password)
 	{
 		String result = "";
 		
@@ -265,12 +274,14 @@ public class WebInterface
 		{
 			if(wifiAvailable(_activity))
 			{
-				String postData = "id=" + userId + "&password=" + password;
+				String postData = "airhash=" + password;
 				
-				new AsyncHttpRequest().execute(ADDRESS_SESSION, postData, "").get();
+				String address = ADDRESS_USER + "/" + userId + "/session";
+				
+				new AsyncHttpRequest().execute(address, postData, "").get();
 				
 				JSONObject object = new JSONObject(_httpResponse);
-				result = object.getString("sessionkey");
+				result = object.getString("AirToken");
 			}
 			else
 			{
@@ -293,43 +304,40 @@ public class WebInterface
 		return result;
 	}
 	
-	public int requestUserId(String mailAddress)
+	public String requestUserId(String mailAddress, FragmentActivity activity)
 	{
-		int result = -1;
+		String result = "";
 		String response = "";
 		
-		String address = ADDRESS_USER;
-		address += "?email=" + mailAddress;
+		//address += "?email=" + mailAddress;
+		//address += "/" + mailAddress;
+		
+		DialogDebugMesssage.write("requestUserId: " + mailAddress, activity);
 		
 		try
 		{
 			if(wifiAvailable(_activity))
 			{
+				String address = ADDRESS_USER + "/" + URLEncoder.encode(mailAddress, "ISO-8859-1");
+				
 				response = new AsyncHttpRequest().execute(address).get();
 				
-				JSONArray jsonArray = new JSONArray(response);
+				DialogDebugMesssage.write("requestUserId response: " + response, activity);
 				
-				for(int i = 0; i < jsonArray.length(); i++)
-				{
-					JSONObject object = jsonArray.getJSONObject(i);
-					result = object.getInt("id");
-				}
+				JSONObject jsonObject  = new JSONObject(response);
+				result = jsonObject.getString("id");
+				
+				DialogDebugMesssage.write("requestUserId result: " + response, activity);
 			}
 			else
 			{
 				Log.e(TAG, "Can't retrieve user id, wifi is off");
 			}
 		}
-		catch (InterruptedException e)
+		catch (Exception e)
 		{
-			Log.e(TAG, e.toString());
-		}
-		catch (ExecutionException e)
-		{
-			Log.e(TAG, e.toString());
-		}
-		catch(JSONException e)
-		{
+			DialogDebugMesssage.write("requestUserId exception: " + e.toString(), activity);
+			
 			Log.e(TAG, e.toString());
 		}
 		
@@ -424,10 +432,11 @@ public class WebInterface
 		return result;
 	}
 	
-	public static String saltPassword(String password, String mailAddress)
+	public static String saltPassword(String password)
 	{
 		String result = "";
 		
+		/*
 		String firstLetter = mailAddress.substring(0, 1);
 		firstLetter = firstLetter.toLowerCase();
 		
@@ -441,6 +450,24 @@ public class WebInterface
 		ending = ending.toLowerCase();
 		
 		result = firstLetter + password + ending;
+		*/
+		
+		//handle short password, sort of...
+		if(password.length() < 3)
+		{
+			return result;
+		}
+		
+		result = password;
+		
+		int l = result.length();
+		int hl = l/2;
+		if(l%2 > 0)
+		{
+			hl += 1;
+		}
+		
+		result = result.substring(0, 1) + 'A' + result.substring(1, hl) + 'I' + result.substring(hl, l-1) + 'R' + result.substring(l-1, l);
 		
 		return result;
 	}
@@ -460,5 +487,10 @@ public class WebInterface
 		}
 		
 		return false;
+	}
+	
+	public static Boolean validateMailAddress(String mailAddress)
+	{
+		return android.util.Patterns.EMAIL_ADDRESS.matcher(mailAddress).matches();
 	}
 }

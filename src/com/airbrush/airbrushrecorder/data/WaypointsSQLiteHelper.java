@@ -33,6 +33,18 @@ public class WaypointsSQLiteHelper extends SQLiteOpenHelper
 			+ "FOREIGN KEY (" + COLUMN_FLIGHT_ID + ") REFERENCES flights(_id)"
 			+ ");";
 	
+	private static final String DATABASE_CREATE_IF_NOT_EXISTS = "CREATE TABLE IF NOT EXISTS "
+			+ TABLE_WAYPOINTS + "("
+			+ COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+			+ COLUMN_FLIGHT_ID + " INTEGER NOT NULL, "
+			+ COLUMN_TIMESTAMP + " INTEGER NOT NULL, "
+			+ COLUMN_LONGITUDE + " REAL NOT NULL, "
+			+ COLUMN_LATITUDE + " REAL NOT NULL, "
+			+ COLUMN_ALTITUDE + " REAL NOT NULL, "
+			+ COLUMN_SPEED + " REAL NOT NULL, "
+			+ "FOREIGN KEY (" + COLUMN_FLIGHT_ID + ") REFERENCES flights(_id)"
+			+ ");";
+	
 	public WaypointsSQLiteHelper(Context context)
 	{
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -49,5 +61,10 @@ public class WaypointsSQLiteHelper extends SQLiteOpenHelper
 				+ newVersion + ", which will destroy all old data");
 		database.execSQL("DROP TABLE IF EXISTS " + TABLE_WAYPOINTS);
 		onCreate(database);
+	}
+	
+	public void createIfNotExists(SQLiteDatabase database)
+	{
+		database.execSQL(DATABASE_CREATE_IF_NOT_EXISTS);
 	}
 }

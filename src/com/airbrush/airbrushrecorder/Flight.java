@@ -2,7 +2,6 @@ package com.airbrush.airbrushrecorder;
 
 import android.util.Log;
 
-import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +16,9 @@ public class Flight
 	
 	private int _id = -1;
 	private Date _date;
-	private String _departure = "nA";
-	private String _destination = "nA";
-	private String _airplaneType = "nA";
+	private String _departure = "";
+	private String _destination = "";
+	private String _airplaneType = "";
 	
 	private List<Waypoint> _waypoints = new ArrayList<Waypoint>();
 	
@@ -256,7 +255,7 @@ public class Flight
 	
 	public void setDeparture(String departure)
 	{
-		if(departure.length() > 0)
+		//if(departure.length() > 0)
 			_departure = departure;
 	}
 	
@@ -267,7 +266,7 @@ public class Flight
 	
 	public void setDestination(String destination)
 	{
-		if(destination.length() > 0)
+		//if(destination.length() > 0)
 			_destination = destination;
 	}
 	
@@ -278,7 +277,7 @@ public class Flight
 	
 	public void setAirplaneType(String airplaneType)
 	{
-		if(airplaneType.length() > 0)
+		//if(airplaneType.length() > 0)
 			_airplaneType = airplaneType;
 	}
 	
@@ -344,6 +343,7 @@ public class Flight
 		
 		try
 		{
+			/*
 			if(_departure.length() <= 0)
 			{
 				_departure = "nA";
@@ -352,16 +352,27 @@ public class Flight
 			{
 				_destination = "nA";
 			}
+			*/
 			
-			result += "departure=" + _departure;
-			result += "&arrival=" + _destination;
-			result += "&date=" + _date.serializeToHttp();//"2005-08-15T15%3A52%3A01%2B00%3A00";
-			result += "&waypointsCompressed=";
+			result += "dateW3C=" + _date.serializeToHttp();//"2005-08-15T15%3A52%3A01%2B00%3A00";
+			if(_departure.length() > 0)
+			{
+				result += "&departure=" + _departure;
+			}
+			if(_destination.length() > 0)
+			{
+				result += "&arrival=" + _destination;
+			}
+			if(_airplaneType.length() > 0)
+			{
+				result += "&aircraft=" + _airplaneType;
+			}
+			result += "&waypoints=";
+			
+			//result += "%5B%0D%0A%7B%22t%22%3A54%2C%22lat%22%3A48.15853714942932%2C%22long%22%3A14.190693497657776%2C%22alt%22%3A676.0%2C%22speed%22%3A56.502213%7D%0D%0A%0D%0A%2C%7B%22t%22%3A55%2C%22lat%22%3A48.15804898738861%2C%22long%22%3A14.190768599510193%2C%22alt%22%3A676.0%2C%22speed%22%3A56.5%7D%5D";
 			
 			String waypoints = URLEncoder.encode(serializeWaypointsToHttp(), "ISO-8859-1");
 			//waypoints = WebInterface.compress(waypoints);
-			
-			//Log.d(TAG, waypoints);
 			
 			if(waypoints.length() > 0)
 			{
@@ -372,7 +383,7 @@ public class Flight
 				result += "%5B%5D";
 			}
 		}
-		catch(IOException e)
+		catch(Exception e)
 		{
 			Log.e(TAG, e.toString());
 		}

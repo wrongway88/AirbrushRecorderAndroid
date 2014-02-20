@@ -8,23 +8,40 @@ import android.util.Log;
 import com.airbrush.airbrushrecorder.data.FlightsDataSource;
 import com.airbrush.airbrushrecorder.dialog.DialogEnterLoginData;
 import com.airbrush.airbrushrecorder.dialog.DialogWifiOff;
+import com.airbrush.airbrushrecorder.dialog.DialogDebugMesssage;
+
+import com.airbrush.airbrushrecorder.LogWriter;
 
 public class LoginHelper
 {
 	private static String TAG = "LOGIN_HELPER";
 	
-	public boolean setLoginData(Activity activity, String mail, String password)
+	private LogWriter _logWriter = new LogWriter();
+	
+	public boolean setLoginData(FragmentActivity activity, String mail, String password)
 	{
 		try
 		{
+			_logWriter.openFile("log.txt");
+			
 			if(WebInterface.wifiAvailable(activity))
 			{
+				_logWriter.writeToFile("setLoginData: set login data online");
+				
+				DialogDebugMesssage.write("setLoginData: set login data online", activity);
+				
 				return setLoginDataOnline(activity, mail, password);
 			}
 			else
 			{
+				_logWriter.writeToFile("setLoginData: set login data offline");
+				
+				DialogDebugMesssage.write("setLoginData: set login data offline", activity);
+				
 				setLoginDataOffline(activity, mail, password);
 			}
+			
+			_logWriter.closeFile();
 		}
 		catch(Exception e)
 		{
@@ -44,26 +61,47 @@ public class LoginHelper
 		dataSource.close();
 	}
 	
-	private boolean setLoginDataOnline(Activity activity, String mail, String password)
+	private boolean setLoginDataOnline(FragmentActivity activity, String mail, String password)
 	{
+		_logWriter.openFile("log.txt");
+		
+		_logWriter.writeToFile("setLoginDataOnline");
+		
 		if(WebInterface.wifiAvailable(activity))
 		{
 			String ip = WebInterface.getIPAddress(false);
 			
 			//this checks whether login data is correct
-			int userId = getUserId(mail, activity);
-			if(userId <= -1)
+			String userId = getUserId(mail, activity);
+			if(userId.length() <= 0)
 			{
+				_logWriter.writeToFile("failed to get user id: " + userId);
+				_logWriter.closeFile();
+				
+				DialogDebugMesssage.write("failed to get user id: " + userId, activity);
+				
 				Log.e(TAG, "setLoginDataOnline: failed to get id");
 				return false;
 			}
 			
+			Log.d(TAG, "id: " + userId);
+			
 			String sessionData = getSessionData(userId, password, activity);
 			if(sessionData.length() <= 0)
 			{
+				_logWriter.writeToFile("failed to get session data: " + userId + ", " + password);
+				_logWriter.closeFile();
+				
+				DialogDebugMesssage.write("failed to get session data: " + userId + ", " + password, activity);
+				
 				Log.e(TAG, "setLoginDataOnline: failed to get session data - " + userId + " // " + password);
 				return false;
 			}
+			
+			_logWriter.writeToFile("writing to database now: " + userId + ", " + password);
+			_logWriter.closeFile();
+			
+			DialogDebugMesssage.write("writing to database now: " + userId + ", " + password, activity);
 			
 			FlightsDataSource dataSource = new FlightsDataSource(activity);
 			dataSource.open();
@@ -75,6 +113,9 @@ public class LoginHelper
 			
 			return true;
 		}
+		
+		_logWriter.writeToFile("couldnt log in, no internet");
+		_logWriter.closeFile();
 		
 		return false;
 	}
@@ -96,19 +137,22 @@ public class LoginHelper
 			String mail = dataSource.getUserName();
 			String password = dataSource.getPassWord();
 			
+			dataSource.close();
+			
 			if(mail.length() == 0 || password.length() == 0)
 			{
-				DialogEnterLoginData dialog = new DialogEnterLoginData();
+				DialogEnterLoginData dialog = new DialogEnterLoginData(activity);
 				dialog.show(activity.getSupportFragmentManager(), TAG);
 				
 				//Log.e(TAG, "mail or password is not set");
 				return false;
 			}
 			
-			int userId = getUserId(mail, activity);
+			String userId = getUserId(mail, activity);
 			
 			String sessionData = getSessionData(userId, password, activity);
 			
+			dataSource.open();
 			dataSource.updateCookie(sessionData);
 			dataSource.close();
 			
@@ -125,27 +169,31 @@ public class LoginHelper
 		return false;
 	}
 	
-	private int getUserId(String mailAddress, Activity activity)
+	private String getUserId(String mailAddress, FragmentActivity activity)
 	{
-		int userId = -1;
+		String userId = "";
 		
 		if(mailAddress.length() == 0)
 		{
+			DialogDebugMesssage.write("mail is not set: " + mailAddress, activity);
+			
 			Log.e(TAG, "mail is not set");
 			return userId;
 		}
 		
+		DialogDebugMesssage.write("trying to get id, mail: " + mailAddress, activity);
+		
 		WebInterface webInterface = new WebInterface(activity);
-		userId = webInterface.requestUserId(mailAddress);
+		userId = webInterface.requestUserId(mailAddress, activity);
 		
 		return userId;
 	}
 	
-	private String getSessionData(int userId, String password, Activity activity)
+	private String getSessionData(String userId, String password, Activity activity)
 	{
 		String sessionData = "";
 		
-		if(userId < 0 || password.length() == 0)
+		if(userId.length() <= 0 || password.length() == 0)
 		{
 			Log.e(TAG, "userId and/or password not set");
 			return sessionData;

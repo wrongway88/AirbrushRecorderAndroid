@@ -24,6 +24,12 @@
     <string name="edit_text_airplane_type">Airplane Type</string>
     <string name="edit_text_user_name">Mail Address</string>
     <string name="edit_text_password">Password</string>
+    <string name="edit_text_name_error_missing">Name required.</string>
+    <string name="edit_text_surname_error_missing">Surame required.</string>
+    <string name="edit_text_mail_error_missing">E-Mail address required.</string>
+    <string name="edit_text_mail_error_invalid">E-Mail address is invalid.</string>
+    <string name="edit_text_mail_error_taken">This address is already in use.</string>
+    <string name="edit_text_password_error_short">Password is too short.</string>
     <string name="edit_text_name">Name</string>
     <string name="edit_text_surname">Surname</string>
     <string name="edit_text_email">E-Mail</string>
@@ -61,6 +67,7 @@
     <string name="dialog_enter_account_data">Please enter your data and hit create</string>
     <string name="dialog_create_account_response_positive">Created new Account!</string>
     <string name="dialog_create_account_response_negative">Failed to create Account.</string>
+    <string name="dialog_create_account_response_email_taken">The E-Mail address is already taken.</string>
     <string name="dialog_wifi_off">No Internet connection!</string>
     <string name="dialog_wifi_off_message">Failed to connect to the server, please check whether you are connected to the internet.</string>
     <string name="dialog_gps_off">Position not available</string>
@@ -76,4 +83,8 @@
     
     <string name="menu_change_account">Change Account</string>
     <string name="menu_create_account">Create Account</string>
+    
+    <string name="http_response_flight_upload_success"></string>
+    <string name="http_response_flight_upload_error_not_modified"></string>
+    <string name="http_response_flight_upload_error_bad_request"></string>
 </resources>

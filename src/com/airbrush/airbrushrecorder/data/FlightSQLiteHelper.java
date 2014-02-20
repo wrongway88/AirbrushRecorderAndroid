@@ -28,6 +28,14 @@ public class FlightSQLiteHelper extends SQLiteOpenHelper
 			+ COLUMN_DESTINATION + " TEXT NOT NULL, "
 			+ COLUMN_AIRPLANE + " TEXT NOT NULL );";
 	
+	private static final String DATABASE_CREATE_IF_NOT_EXISTS = "CREATE TABLE IF NOT EXISTS "
+			+ TABLE_FLIGHTS + "("
+			+ COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+			+ COLUMN_DATE + " TEXT NOT NULL, "
+			+ COLUMN_DEPARTURE + " TEXT NOT NULL, " 
+			+ COLUMN_DESTINATION + " TEXT NOT NULL, "
+			+ COLUMN_AIRPLANE + " TEXT NOT NULL );";
+	
 	public FlightSQLiteHelper(Context context)
 	{
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -44,6 +52,11 @@ public class FlightSQLiteHelper extends SQLiteOpenHelper
 				+ newVersion + ", which will destroy all old data");
 		database.execSQL("DROP TABLE IF EXISTS " + TABLE_FLIGHTS);
 		onCreate(database);
+	}
+	
+	public void createIfNotExists(SQLiteDatabase database)
+	{
+		database.execSQL(DATABASE_CREATE_IF_NOT_EXISTS);
 	}
 	
 	public void addFlight(SQLiteDatabase database, String date, String departure, String destination, String airplane)

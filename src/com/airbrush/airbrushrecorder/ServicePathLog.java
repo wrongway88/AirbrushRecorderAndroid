@@ -87,6 +87,7 @@ public class ServicePathLog extends Service
 			
 			if(_logWriter != null)
 			{
+				/*
 				String wp = "{";
 				wp += "\"t\":" + t;
 				wp += "\"lat\":" + location.getLatitude();
@@ -94,6 +95,7 @@ public class ServicePathLog extends Service
 				wp += "\"alt\":" + location.getAltitude();
 				wp += "\"speed\":" + location.getSpeed();
 				wp += "},";
+				*/
 				
 				//_logWriter.writeToFile(wp + ",");
 			}
@@ -159,7 +161,7 @@ public class ServicePathLog extends Service
 		}
 		catch(Error error)
 		{
-			Log.d(TAG, error.getMessage());
+			Log.e(TAG, error.getMessage());
 		}
 
 		stopLocationProvider();
@@ -189,8 +191,8 @@ public class ServicePathLog extends Service
 			initFlight();
 			Calendar c = Calendar.getInstance();
 			m_startTime = (c.get(Calendar.HOUR_OF_DAY) * 60 * 60) + (c.get(Calendar.MINUTE) * 60) + c.get(Calendar.SECOND);
-			String date = c.get(Calendar.YEAR) + "_" + c.get(Calendar.MONTH) + "_" + c.get(Calendar.DAY_OF_MONTH) + "-"
-						+ c.get(Calendar.HOUR_OF_DAY) + "_" + c.get(Calendar.MINUTE) + "_" + c.get(Calendar.SECOND);
+			//String date = c.get(Calendar.YEAR) + "_" + c.get(Calendar.MONTH) + "_" + c.get(Calendar.DAY_OF_MONTH) + "-"
+			//			+ c.get(Calendar.HOUR_OF_DAY) + "_" + c.get(Calendar.MINUTE) + "_" + c.get(Calendar.SECOND);
 		}
 		catch(Exception e)
 		{
@@ -206,6 +208,7 @@ public class ServicePathLog extends Service
 		}
 	}
 	
+	/*
 	private void openLogFile(String date)
 	{
 		_logWriter = new LogWriter();
@@ -229,11 +232,10 @@ public class ServicePathLog extends Service
 			_logWriter.closeFile();
 		}
 	}
+	*/
 	
 	private void initFlight()
 	{
-		Log.d(TAG, "init flight");
-		
 		_flight = new Flight();
 		
 		Calendar c = Calendar.getInstance();
@@ -241,6 +243,7 @@ public class ServicePathLog extends Service
 		
 		_flight.setDate(new Flight.Date(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH),
 										c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), c.get(Calendar.SECOND)));
+		
 		_flight.setDeparture(m_departure);
 		_flight.setDestination(m_destination);
 		_flight.setAirplaneType(m_airplaneType);
@@ -251,6 +254,7 @@ public class ServicePathLog extends Service
 		dataSource.close();
 	}
 	
+	/*
 	private void writeFlight()
 	{
 		FlightsDataSource dataSource = new FlightsDataSource(this);
@@ -274,4 +278,5 @@ public class ServicePathLog extends Service
 		//dataSource.createWaypoint(flightId, timeStamp, latitude, longitude, altitude, speed)
 		dataSource.close();
 	}
+	*/
 }

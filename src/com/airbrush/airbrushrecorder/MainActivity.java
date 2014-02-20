@@ -17,15 +17,18 @@ import com.airbrush.airbrushrecorder.dialog.DialogEnterLoginData;
 import com.airbrush.airbrushrecorder.dialog.DialogEnterLoginDataResponse;
 import com.airbrush.airbrushrecorder.dialog.DialogUploadFlightResponse;
 import com.airbrush.airbrushrecorder.dialog.DialogWifiOff;
+import com.airbrush.airbrushrecorder.dialog.DialogDebugMesssage;
 import com.airbrush.airbrushrecorder.fragments.FragmentFlightBrowser;
 import com.airbrush.airbrushrecorder.fragments.FragmentRecorder;
 import com.airbrush.airbrushrecorder.R;
 
 public class MainActivity extends FragmentActivity implements FragmentRecorder.OnToggleRecordingListener, FragmentFlightBrowser.OnFlightBrowserListener,
 																DialogDeleteFlight.NoticeDialogListener, DialogEnterLoginData.NoticeDialogListener,
-																DialogCreateAccount.NoticeDialogListener, DialogUploadFlightResponse.NoticeDialogListener
+																DialogUploadFlightResponse.NoticeDialogListener
 {
 	private static final String TAG = "MAIN";
+	
+	DialogCreateAccount _createAccountDialog = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -68,7 +71,7 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 	
 	public void viewChangeAccount()
 	{
-		DialogEnterLoginData dialog = new DialogEnterLoginData();
+		DialogEnterLoginData dialog = new DialogEnterLoginData(this);
 		dialog.show(getSupportFragmentManager(), TAG);
 	}
 	
@@ -76,8 +79,8 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 	{
 		if(WebInterface.wifiAvailable(this))
 		{
-			DialogCreateAccount dialog = new DialogCreateAccount();
-			dialog.show(this.getSupportFragmentManager(), TAG);
+			_createAccountDialog = new DialogCreateAccount(this);
+			_createAccountDialog.show(this.getSupportFragmentManager(), TAG);
 		}
 		else
 		{
@@ -132,56 +135,14 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 	}
 	
 	@Override
-	public void onDialogPositiveClick(DialogFragment dialog, String mailAddress, String password)
+	public void onAccountDataSet()
 	{
-		LoginHelper loginHelper = new LoginHelper();
-		if(loginHelper.onDialogPositiveClick(dialog, mailAddress, password) == false)
-		{
-			DialogEnterLoginDataResponse dialogResponse = new DialogEnterLoginDataResponse();
-			Bundle bundle = new Bundle();
-			bundle.putBoolean("success", false);
-			dialogResponse.setArguments(bundle);
-			dialogResponse.show(this.getSupportFragmentManager(), TAG);
-		}
-		
 		displayAccountData();
 	}
-	
-	@Override
-    public void onDialogNegativeClick(DialogFragment dialog)
-    {
-		
-    }
 
 	@Override
-	public void onDialogCreateClick(DialogFragment dialog, String name, String surname, String email, String password)
-	{
-		WebInterface webInterface = new WebInterface(this);
-		Boolean success = webInterface.createAccount(name, surname, email, password);
-		
-		if(success == true)
-		{
-			LoginHelper loginHelper = new LoginHelper();
-			if(loginHelper.setLoginData(this, email, password))
-			{
-				displayAccountData();
-			}
-			else
-			{
-				DialogEnterLoginDataResponse dialogResponse = new DialogEnterLoginDataResponse();
-				Bundle bundle = new Bundle();
-				bundle.putBoolean("success", success);
-				dialogResponse.setArguments(bundle);
-				dialogResponse.show(this.getSupportFragmentManager(), TAG);
-			}
-		}
-		
-		DialogCreateAccountResponse dialogResponse = new DialogCreateAccountResponse();
-		Bundle bundle = new Bundle();
-		bundle.putBoolean("success", success);
-		dialogResponse.setArguments(bundle);
-		dialogResponse.show(this.getSupportFragmentManager(), TAG);
-	}
+	public void onDialogNegativeClick(DialogFragment dialog)
+	{}
 	
 	@Override
 	public void onDialogDeleteClick(DialogFragment dialog)

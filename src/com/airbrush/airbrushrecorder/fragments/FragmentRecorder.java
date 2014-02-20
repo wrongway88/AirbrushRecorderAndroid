@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.util.Log;
 
 import com.airbrush.airbrushrecorder.ServicePathLog;
 import com.airbrush.airbrushrecorder.dialog.DialogGPSOff;

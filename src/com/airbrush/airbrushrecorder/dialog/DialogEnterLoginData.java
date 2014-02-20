@@ -4,77 +4,124 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.support.v4.app.DialogFragment;
-import android.text.InputType;
-import android.text.method.PasswordTransformationMethod;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.airbrush.airbrushrecorder.WebInterface;
 import com.airbrush.airbrushrecorder.R;
 
+import com.airbrush.airbrushrecorder.LoginHelper;
+
 public class DialogEnterLoginData extends DialogFragment
 {
 	private static String TAG = "DIALOG_ENTER_LOGIN_DATA";
 	
+	private FragmentActivity m_activity = null;
+	
 	public interface NoticeDialogListener
 	{
-        public void onDialogPositiveClick(DialogFragment dialog, String mailAddress, String password);
-        public void onDialogNegativeClick(DialogFragment dialog);
+		public void onAccountDataSet();
     }
 	
 	private NoticeDialogListener m_listener;
 	
+	public DialogEnterLoginData(FragmentActivity activity)
+	{
+		m_activity = activity;
+	}
+	
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
 	{
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.dialog_set_login_data);
-        builder.setMessage(R.string.dialog_set_login_data_message);
-        
-        final EditText inputMail = new EditText(getActivity());
-        final EditText inputPassword = new EditText(getActivity());
-        
-        inputMail.setHint(R.string.edit_text_email);
-        inputPassword.setHint(R.string.edit_text_password);
-        
-        inputMail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-        inputPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        inputPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        
-        LinearLayout layout = new LinearLayout(getActivity());
-        layout.setOrientation(LinearLayout.VERTICAL);
-        
-        layout.addView(inputMail);
-        layout.addView(inputPassword);
-        
-        builder.setView(layout);
-        
-        builder.setPositiveButton(R.string.dialog_save, new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialog, int id)
+		this.setRetainInstance(true);
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		LayoutInflater inflater = getActivity().getLayoutInflater();
+
+		final View v = inflater.inflate(R.layout.dialog_enter_login_data, null);
+		
+		builder.setTitle(R.string.dialog_set_login_data);
+		builder.setMessage(R.string.dialog_set_login_data_message);
+		
+		builder.setView(v)
+			.setPositiveButton(R.string.dialog_create, new DialogInterface.OnClickListener() {public void onClick(DialogInterface dialog, int id) {}})
+			.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {public void onClick(DialogInterface dialog, int id) {}});
+		
+		final AlertDialog d = builder.create();
+		
+		d.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(DialogInterface dialog)
             {
-            	String mail = inputMail.getText().toString();
-            	String password = inputPassword.getText().toString();
-            	
-            	password = WebInterface.saltPassword(password, mail);
-        		password = WebInterface.toHash(password);
-            	
-            	m_listener.onDialogPositiveClick(DialogEnterLoginData.this, mail, password);
+
+                Button b = d.getButton(AlertDialog.BUTTON_POSITIVE);
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view)
+                    {
+                    	EditText inputMail = (EditText) v.findViewById(R.id.edit_text_email);
+                    	EditText inputPassword = (EditText) v.findViewById(R.id.edit_text_password);
+                    	
+                    	String mail = inputMail.getText().toString();
+                    	String password = inputPassword.getText().toString();
+                    	
+                    	//validate stuff
+                    	Boolean invalid = false;
+                    	
+                    	if(mail.length() <= 0)
+                    	{
+                    		inputMail.setError(getString(R.string.edit_text_mail_error_missing));
+                    		invalid = true;
+                    	}
+                    	else if(WebInterface.validateMailAddress(mail) == false)
+                    	{
+                    		inputMail.setError(getString(R.string.edit_text_mail_error_invalid));
+                    		invalid = true;
+                    	}
+                    	
+                    	if(password.length() < 3)
+                    	{
+                    		inputPassword.setError(getString(R.string.edit_text_password_error_short));
+                    		invalid = true;
+                    	}
+                    	
+                    	if(invalid)
+                    	{
+                    		return;
+                    	}
+                    	
+                    	password = WebInterface.saltPassword(password);
+                    	password = WebInterface.toHash(password);
+                    	
+                    	LoginHelper loginHelper = new LoginHelper();
+                    	if(loginHelper.setLoginData(m_activity, mail, password) == false)
+                    	{
+                    		DialogEnterLoginDataResponse dialogResponse = new DialogEnterLoginDataResponse();
+                			Bundle bundle = new Bundle();
+                			bundle.putBoolean("success", false);
+                			dialogResponse.setArguments(bundle);
+                			dialogResponse.show(m_activity.getSupportFragmentManager(), TAG);
+                			
+                			return;
+                    	}
+                    	else
+                    	{
+                    		m_listener.onAccountDataSet();
+                    		d.dismiss();
+                    	}
+                    }
+                });
             }
-        });
- 
-        builder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialog, int id)
-            {
-            	m_listener.onDialogNegativeClick(DialogEnterLoginData.this);
-            }
-        });
-        
-        return builder.create();
+		});
+		
+		return d;
     }
 
 	@Override

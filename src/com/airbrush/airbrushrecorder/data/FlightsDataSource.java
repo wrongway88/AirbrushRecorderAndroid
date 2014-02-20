@@ -14,7 +14,7 @@ import android.util.Log;
 
 public class FlightsDataSource
 {
-	private final static String TAG = "FlightsDataSource";
+	private final static String TAG = "FLIGHTS_DATA_SOURCE";
 	
 	private SQLiteDatabase database;
 	private FlightSQLiteHelper flightsHelper;
@@ -35,7 +35,13 @@ public class FlightsDataSource
 	{
 		flightsHelper = new FlightSQLiteHelper(context);
 		waypointsHelper = new WaypointsSQLiteHelper(context);
-		appDataHelper = new AppDataSQLiteHelper(context); 
+		appDataHelper = new AppDataSQLiteHelper(context);
+		
+		open();
+			flightsHelper.createIfNotExists(database);
+			waypointsHelper.createIfNotExists(database);
+			appDataHelper.createIfNotExists(database);
+		close();
 	}
 	
 	public void open() throws SQLException
@@ -107,7 +113,7 @@ public class FlightsDataSource
 		}
 		catch(Exception e)
 		{
-			Log.d(TAG, e.toString());
+			Log.e(TAG, e.toString());
 		}
 		
 		return flight;
@@ -121,22 +127,25 @@ public class FlightsDataSource
 		{
 			Cursor cursor = database.query(FlightSQLiteHelper.TABLE_FLIGHTS, flightColumns, null, null, null, null, null);
 			
-			cursor.moveToFirst();
-			
-			while(!cursor.isAfterLast())
+			if(cursor != null)
 			{
-				Flight flight = cursorToFlight(cursor); 
-				
-				flight.setWaypoints(getWaypoints(flight.getId()));
-				
-				flights.add(flight);
-				
-				cursor.moveToNext();
+				cursor.moveToFirst();
+			
+				while(!cursor.isAfterLast())
+				{
+					Flight flight = cursorToFlight(cursor); 
+					
+					flight.setWaypoints(getWaypoints(flight.getId()));
+					
+					flights.add(flight);
+					
+					cursor.moveToNext();
+				}
 			}
 		}
 		catch(Exception e)
 		{
-			Log.d(TAG, e.toString());
+			Log.e(TAG, e.toString());
 		}
 		
 		return flights;
@@ -150,14 +159,22 @@ public class FlightsDataSource
 		{
 			Cursor cursor = null;
 			
-			if(flightId >= 0)
+			try
 			{
-				cursor = database.query(WaypointsSQLiteHelper.TABLE_WAYPOINTS, waypointColumns,
-						WaypointsSQLiteHelper.COLUMN_FLIGHT_ID + " = " + flightId, null, null, null, null);
+				if(flightId >= 0)
+				{
+					cursor = database.query(WaypointsSQLiteHelper.TABLE_WAYPOINTS, waypointColumns,
+							WaypointsSQLiteHelper.COLUMN_FLIGHT_ID + " = " + flightId, null, null, null, null);
+				}
+				else
+				{
+					cursor = database.query(WaypointsSQLiteHelper.TABLE_WAYPOINTS, waypointColumns, null, null, null, null, null);
+				}
 			}
-			else
+			catch(Exception e)
 			{
-				cursor = database.query(WaypointsSQLiteHelper.TABLE_WAYPOINTS, waypointColumns, null, null, null, null, null);
+				Log.e(TAG, e.toString());
+				cursor = null;
 			}
 			
 			if(cursor != null)
@@ -174,7 +191,7 @@ public class FlightsDataSource
 		}
 		catch(Exception e)
 		{
-			Log.d(TAG, e.toString());
+			Log.e(TAG, e.toString());
 		}
 		
 		return waypoints;
@@ -182,14 +199,21 @@ public class FlightsDataSource
 	
 	public void deleteFlight(int flightId, Boolean cascade)
 	{
-		if(database != null)
+		try
 		{
-			database.delete(FlightSQLiteHelper.TABLE_FLIGHTS, FlightSQLiteHelper.COLUMN_ID + " = " + flightId, null);
-			
-			if(cascade)
+			if(database != null)
 			{
-				database.delete(WaypointsSQLiteHelper.TABLE_WAYPOINTS, WaypointsSQLiteHelper.COLUMN_FLIGHT_ID + " = " + flightId, null);
+				database.delete(FlightSQLiteHelper.TABLE_FLIGHTS, FlightSQLiteHelper.COLUMN_ID + " = " + flightId, null);
+				
+				if(cascade)
+				{
+					database.delete(WaypointsSQLiteHelper.TABLE_WAYPOINTS, WaypointsSQLiteHelper.COLUMN_FLIGHT_ID + " = " + flightId, null);
+				}
 			}
+		}
+		catch(Exception e)
+		{
+			Log.e(TAG, e.toString());
 		}
 	}
 	

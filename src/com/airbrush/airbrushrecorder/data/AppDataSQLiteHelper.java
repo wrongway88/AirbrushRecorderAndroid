@@ -28,6 +28,14 @@ public class AppDataSQLiteHelper extends SQLiteOpenHelper
 			+ COLUMN_USER_MAIL + " TEXT NOT NULL, "
 			+ COLUMN_PASSWORD + " TEXT NOT NULL);";
 	
+	private static final String DATABASE_CREATE_IF_NOT_EXISTS = "CREATE TABLE IF NOT EXISTS "
+			+ TABLE_APP_DATA + "("
+			+ COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+			+ COLUMN_IP + " TEXT NOT NULL, "
+			+ COLUMN_COOKIE + " TEXT NOT NULL, "
+			+ COLUMN_USER_MAIL + " TEXT NOT NULL, "
+			+ COLUMN_PASSWORD + " TEXT NOT NULL);";
+	
 	public AppDataSQLiteHelper(Context context)
 	{
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -44,6 +52,11 @@ public class AppDataSQLiteHelper extends SQLiteOpenHelper
 				+ newVersion + ", which will destroy all old data");
 		database.execSQL("DROP TABLE IF EXISTS " + TABLE_APP_DATA);
 		onCreate(database);
+	}
+	
+	public void createIfNotExists(SQLiteDatabase database)
+	{
+		database.execSQL(DATABASE_CREATE_IF_NOT_EXISTS);
 	}
 	
 	public void updateIp(SQLiteDatabase database, String ip)

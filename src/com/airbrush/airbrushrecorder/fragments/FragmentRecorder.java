@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
 import android.support.v4.app.Fragment;
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -20,14 +23,32 @@ import com.airbrush.airbrushrecorder.R;
 
 public class FragmentRecorder extends Fragment
 {
+	public interface OnToggleRecordingListener
+	{
+		public void togglePathLogging(View view);
+		public void onLoggingSuccess();
+		public void onLoggingFail();
+	}
+	
 	private Boolean m_logging = false;
 	private OnToggleRecordingListener m_listener;
 	private static String TAG = "FragmentRecorder";
 	
-	public interface OnToggleRecordingListener
+	private Handler _pathLogHandler = new Handler()
 	{
-		public void togglePathLogging(View view);
-	}
+	    @Override
+	    public void handleMessage(Message msg)
+	    {
+	    	if(msg.arg1 == Activity.RESULT_OK)
+	    	{
+	    		m_listener.onLoggingSuccess();
+	    	}
+	    	else if(msg.arg1 == Activity.RESULT_CANCELED)
+	    	{
+	    		m_listener.onLoggingFail();
+	    	}
+	    }
+	};
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -97,6 +118,7 @@ public class FragmentRecorder extends Fragment
 	    	intent.putExtra(getString(R.string.log_departure), departure);
 			intent.putExtra(getString(R.string.log_destination), arrival);
 			intent.putExtra(getString(R.string.log_airplane_type), airplaneType);
+			intent.putExtra(getString(R.string.log_path_log_handler), new Messenger(_pathLogHandler));
 			getActivity().startService(intent);
 			
 			setLayoutLogging(true);

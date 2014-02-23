@@ -46,7 +46,7 @@ public class WebInterface
 	//private static String ADDRESS_SESSION = "http://airbrush.nucular-bacon.com:50000/api/session";
 	//private HttpURLConnection _connection = null;
 	
-	private static String COOKIE_SESSION = "airbrush_session=";
+	private static String COOKIE_SESSION = "AirToken=";
 	
 	private Activity _activity = null;
 	

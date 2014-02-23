@@ -11,20 +11,18 @@ import android.widget.TextView;
 import com.airbrush.airbrushrecorder.LoginHelper;
 import com.airbrush.airbrushrecorder.data.FlightsDataSource;
 import com.airbrush.airbrushrecorder.dialog.DialogCreateAccount;
-import com.airbrush.airbrushrecorder.dialog.DialogCreateAccountResponse;
 import com.airbrush.airbrushrecorder.dialog.DialogDeleteFlight;
 import com.airbrush.airbrushrecorder.dialog.DialogEnterLoginData;
-import com.airbrush.airbrushrecorder.dialog.DialogEnterLoginDataResponse;
 import com.airbrush.airbrushrecorder.dialog.DialogUploadFlightResponse;
 import com.airbrush.airbrushrecorder.dialog.DialogWifiOff;
-import com.airbrush.airbrushrecorder.dialog.DialogDebugMesssage;
+import com.airbrush.airbrushrecorder.dialog.DialogLogFlightResponse;
 import com.airbrush.airbrushrecorder.fragments.FragmentFlightBrowser;
 import com.airbrush.airbrushrecorder.fragments.FragmentRecorder;
 import com.airbrush.airbrushrecorder.R;
 
 public class MainActivity extends FragmentActivity implements FragmentRecorder.OnToggleRecordingListener, FragmentFlightBrowser.OnFlightBrowserListener,
 																DialogDeleteFlight.NoticeDialogListener, DialogEnterLoginData.NoticeDialogListener,
-																DialogUploadFlightResponse.NoticeDialogListener
+																DialogUploadFlightResponse.NoticeDialogListener, DialogCreateAccount.NoticeDialogListener
 {
 	private static final String TAG = "MAIN";
 	
@@ -93,14 +91,11 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 	public void togglePathLogging(View view)
 	{
 		FragmentRecorder fragment = (FragmentRecorder) getSupportFragmentManager().findFragmentById(R.id.fragment_recorder);
-		FragmentFlightBrowser flightBrowser = (FragmentFlightBrowser) getSupportFragmentManager().findFragmentById(R.id.fragment_flight_browser);
 		
 		if(fragment != null)
 		{
 			fragment.togglePathLogging(view);
 		}
-		
-		flightBrowser.updateFlightList();
 	}
 	
 	@Override
@@ -148,6 +143,28 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 	public void onDialogDeleteClick(DialogFragment dialog)
 	{
 		deleteSelectedFlight(null);
+	}
+	
+	@Override
+	public void onSuccess(DialogFragment dialog, String email, String password)
+	{
+		LoginHelper loginHelper = new LoginHelper();
+		loginHelper.setLoginData(this, email, password);
+		displayAccountData();
+	}
+	
+	@Override
+	public void onLoggingSuccess()
+	{
+		FragmentFlightBrowser flightBrowser = (FragmentFlightBrowser) getSupportFragmentManager().findFragmentById(R.id.fragment_flight_browser);
+		flightBrowser.updateFlightList();
+	}
+
+	@Override
+	public void onLoggingFail()
+	{
+		DialogLogFlightResponse dialog = new DialogLogFlightResponse();
+		dialog.show(getSupportFragmentManager(), TAG);
 	}
 	
 	private void displayAccountData()

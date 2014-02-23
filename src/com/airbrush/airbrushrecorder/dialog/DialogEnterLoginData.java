@@ -50,7 +50,7 @@ public class DialogEnterLoginData extends DialogFragment
 		builder.setMessage(R.string.dialog_set_login_data_message);
 		
 		builder.setView(v)
-			.setPositiveButton(R.string.dialog_create, new DialogInterface.OnClickListener() {public void onClick(DialogInterface dialog, int id) {}})
+			.setPositiveButton(R.string.dialog_save, new DialogInterface.OnClickListener() {public void onClick(DialogInterface dialog, int id) {}})
 			.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {public void onClick(DialogInterface dialog, int id) {}});
 		
 		final AlertDialog d = builder.create();

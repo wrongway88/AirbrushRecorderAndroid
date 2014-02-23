@@ -13,13 +13,13 @@ public class DialogDebugMesssage extends DialogFragment
 	
 	public static void write(String message, FragmentActivity activity)
 	{
-		/*
+		
 		DialogDebugMesssage dialogDebug = new DialogDebugMesssage();
 		Bundle bundle = new Bundle();
 		bundle.putString("message", message);
 		dialogDebug.setArguments(bundle);
 		dialogDebug.show(activity.getSupportFragmentManager(), "DEBUG_MESSAGE");
-		*/
+		
 	}
 	
 	@Override

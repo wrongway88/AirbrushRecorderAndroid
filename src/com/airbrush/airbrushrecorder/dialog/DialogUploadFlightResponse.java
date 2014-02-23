@@ -30,11 +30,15 @@ public class DialogUploadFlightResponse extends DialogFragment
         Bundle bundle = getArguments();
         Boolean success = bundle.getBoolean("success");
         Boolean loginSuccess = true;
-        loginSuccess = bundle.getBoolean("uploadSuccess");
+        loginSuccess = bundle.getBoolean("loginSuccess");
+        String additionalMessage = "";
+        additionalMessage = bundle.getString("message");
+        
+        String message = "";
         
         if(success)
         {
-        	builder.setMessage(getString(R.string.dialog_upload_response_positive) + "\n" + getString(R.string.dialog_upload_response_keep_local));
+        	message += getString(R.string.dialog_upload_response_positive) + "\n" + getString(R.string.dialog_upload_response_keep_local);
         	
         	builder.setPositiveButton(R.string.dialog_delete, new DialogInterface.OnClickListener()
             {
@@ -51,15 +55,20 @@ public class DialogUploadFlightResponse extends DialogFragment
         }
         else
         {
-        	String message = getString(R.string.dialog_upload_response_negative);
+        	message += getString(R.string.dialog_upload_response_negative);
         	
         	if(loginSuccess == false)
         	{
         		message += "\n" + getString(R.string.dialog_upload_response_check_login_failed) + " " + getString(R.string.dialog_upload_response_check_login_data);
         	}
-        	
-        	builder.setMessage(message);
         }
+        
+        if(additionalMessage.length() > 0)
+        {
+        	message += "\n" + additionalMessage;
+        }
+        
+        builder.setMessage(message);
         
         return builder.create();
     }

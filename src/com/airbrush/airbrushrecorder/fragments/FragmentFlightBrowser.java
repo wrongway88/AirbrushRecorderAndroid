@@ -220,6 +220,7 @@ public class FragmentFlightBrowser extends Fragment
 						Bundle bundle = new Bundle();
 						bundle.putBoolean("success", false);
 						bundle.putBoolean("loginSuccess", loginSuccess);
+						bundle.putString("message", "");
 						dialog.setArguments(bundle);
 						dialog.show(getFragmentManager(), TAG);
 					}
@@ -251,15 +252,17 @@ public class FragmentFlightBrowser extends Fragment
 	
 	private void createFlightUploadResponse(int responseCode, String response)
 	{
-		Log.d(TAG, responseCode + " - " + response);
-		
 		if(responseCode >= 200 && responseCode < 300)
 		{
 			DialogUploadFlightResponse dialog = new DialogUploadFlightResponse();
 			Bundle bundle = new Bundle();
 			bundle.putBoolean("success", true);
+			bundle.putBoolean("loginSuccess", true);
+			bundle.putString("message", "");
 			dialog.setArguments(bundle);
 			dialog.show(getFragmentManager(), TAG);
+			
+			return;
 		}
 		
 		//bad request
@@ -268,8 +271,12 @@ public class FragmentFlightBrowser extends Fragment
 			DialogUploadFlightResponse dialog = new DialogUploadFlightResponse();
 			Bundle bundle = new Bundle();
 			bundle.putBoolean("success", false);
+			bundle.putBoolean("loginSuccess", true);
+			bundle.putString("message", "");
 			dialog.setArguments(bundle);
 			dialog.show(getFragmentManager(), TAG);
+			
+			return;
 		}
 		
 		//forbidden
@@ -278,17 +285,27 @@ public class FragmentFlightBrowser extends Fragment
 			DialogUploadFlightResponse dialog = new DialogUploadFlightResponse();
 			Bundle bundle = new Bundle();
 			bundle.putBoolean("success", false);
+			bundle.putBoolean("loginSuccess", false);
+			bundle.putString("message", "");
 			dialog.setArguments(bundle);
 			dialog.show(getFragmentManager(), TAG);
+			
+			return;
 		}
 		
-		/*
-		DialogUploadFlightResponse dialog = new DialogUploadFlightResponse();
-		Bundle bundle = new Bundle();
-		bundle.putBoolean("success", success);
-		dialog.setArguments(bundle);
-		dialog.show(getFragmentManager(), TAG);
-		*/
+		//other errors...
+		if(responseCode > 300)
+		{
+			DialogUploadFlightResponse dialog = new DialogUploadFlightResponse();
+			Bundle bundle = new Bundle();
+			bundle.putBoolean("success", false);
+			bundle.putBoolean("loginSuccess", true);
+			bundle.putString("message", getString(R.string.dialog_upload_response_flight_corrupted));
+			dialog.setArguments(bundle);
+			dialog.show(getFragmentManager(), TAG);
+			
+			return;
+		}
 	}
 	
 	private Flight getSelectedFlight()

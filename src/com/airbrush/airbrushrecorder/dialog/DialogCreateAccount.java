@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,13 @@ import com.airbrush.airbrushrecorder.R;
 
 public class DialogCreateAccount extends DialogFragment
 {
+	public interface NoticeDialogListener
+	{
+        public void onSuccess(DialogFragment dialog, String email, String password);
+    }
+	
+	private NoticeDialogListener m_listener;
+	
 	private static String TAG = "DIALOG_CREATE_ACCOUNT";
 	
 	//private NoticeDialogListener m_listener;
@@ -134,6 +142,7 @@ public class DialogCreateAccount extends DialogFragment
                 		
                 		if(success)
                 		{
+                			m_listener.onSuccess(DialogCreateAccount.this, mail, password);
                 			d.dismiss();
                 		}
                 		else
@@ -152,5 +161,14 @@ public class DialogCreateAccount extends DialogFragment
 	public void onAttach(Activity activity)
 	{
 		super.onAttach(activity);
+		
+		try
+		{
+			m_listener = (NoticeDialogListener)activity;
+		}
+		catch (Exception e)
+		{
+			Log.e(TAG, activity.toString() + " must implement NoticeDialogListener");
+		}
 	}
 }

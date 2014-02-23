@@ -40,6 +40,8 @@
     <string name="log_waypoints">waypoints</string>
     <string name="log_airplane_type">airplaneType</string>
     
+    <string name="log_path_log_handler">pathLogHandler</string>
+    
     <string name="textView_logging_logging">Logging</string>
     <string name="textView_logging_departure">Departure: </string>
     <string name="textView_logging_arrival">Arrival: </string>
@@ -78,8 +80,12 @@
     <string name="dialog_upload_response_check_login_failed">Could not establish server connection.</string>
     <string name="dialog_upload_response_check_login_data">Please check your login data.</string>
     <string name="dialog_upload_response_negative">Upload failed.</string>
+    <string name="dialog_upload_response_flight_corrupted">Flight data is corrupted.</string>
     <string name="dialog_enter_login_data_response_positive">Account data set.</string>
     <string name="dialog_enter_login_data_response_negative">Failed to set account data. E-Mail or Password is incorrect.</string>
+    <string name="dialog_log_flight_response">Flight Recorder</string>
+    <string name="dialog_log_flight_response_no_waypoints">No waypoints recorded.</string>
+    <string name="dialog_log_flight_response_move_around">You may have to travel around further.</string>
     
     <string name="menu_change_account">Change Account</string>
     <string name="menu_create_account">Create Account</string>

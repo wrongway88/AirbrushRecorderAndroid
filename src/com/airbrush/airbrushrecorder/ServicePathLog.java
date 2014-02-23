@@ -6,6 +6,7 @@ import java.lang.Thread;
 import com.airbrush.airbrushrecorder.data.FlightsDataSource;
 import com.airbrush.airbrushrecorder.R;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,8 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
 import android.util.Log;
 import android.os.PowerManager;
 
@@ -39,6 +42,10 @@ public class ServicePathLog extends Service
 	private Thread.UncaughtExceptionHandler _uncaughtExceptionHandler = null;
 	
 	private int _dbId = -1;
+	
+	private int _waypointsCount = 0;
+	
+	private Messenger _messenger = null;
 	
 	private Thread.UncaughtExceptionHandler _exceptionHandler = new Thread.UncaughtExceptionHandler()
 	{
@@ -106,6 +113,8 @@ public class ServicePathLog extends Service
 				dataSource.open();
 				dataSource.createWaypoint(_dbId, t, location.getLatitude(), location.getLongitude(), location.getAltitude(), location.getSpeed());
 				dataSource.close();
+				
+				_waypointsCount++;
 			}
 		}
 		
@@ -143,6 +152,8 @@ public class ServicePathLog extends Service
 		m_departure = intent.getStringExtra(getString(R.string.log_departure));
 		m_destination = intent.getStringExtra(getString(R.string.log_destination));
 		m_airplaneType = intent.getStringExtra(getString(R.string.log_airplane_type));
+		
+		_messenger = (Messenger)intent.getExtras().get(getString(R.string.log_path_log_handler));
 		
 		PowerManager p = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		_wakeLock = p.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
@@ -206,6 +217,35 @@ public class ServicePathLog extends Service
 		{
 			m_locationManager.removeUpdates(m_locationListener);
 		}
+		
+		Message msg = Message.obtain();
+		
+		//delete flight when no waypoints where recorded
+		if(_waypointsCount <= 1)
+		{
+			FlightsDataSource dataSource = new FlightsDataSource(this);
+			dataSource.open();
+			dataSource.deleteFlight(_dbId, true);
+			dataSource.close();
+			
+			msg.arg1 = Activity.RESULT_CANCELED;
+		}
+		else
+		{
+			msg.arg1 = Activity.RESULT_OK;
+		}
+		
+		if(_messenger != null)
+		{
+			try
+			{
+				_messenger.send(msg);
+			}
+			catch(Exception e)
+			{
+				Log.e(TAG, e.toString());
+			}
+		}
 	}
 	
 	/*
@@ -252,6 +292,8 @@ public class ServicePathLog extends Service
 		dataSource.open();
 		_dbId = dataSource.createFlight(_flight.getDate().toString(), _flight.getDeparture(), _flight.getDestination(), _flight.getAirplaneType());
 		dataSource.close();
+		
+		_waypointsCount = 0;
 	}
 	
 	/*

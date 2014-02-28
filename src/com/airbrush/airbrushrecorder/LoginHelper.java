@@ -28,15 +28,11 @@ public class LoginHelper
 			{
 				_logWriter.writeToFile("setLoginData: set login data online");
 				
-				DialogDebugMesssage.write("setLoginData: set login data online", activity);
-				
 				return setLoginDataOnline(activity, mail, password);
 			}
 			else
 			{
 				_logWriter.writeToFile("setLoginData: set login data offline");
-				
-				DialogDebugMesssage.write("setLoginData: set login data offline", activity);
 				
 				setLoginDataOffline(activity, mail, password);
 			}
@@ -78,8 +74,6 @@ public class LoginHelper
 				_logWriter.writeToFile("failed to get user id: " + userId);
 				_logWriter.closeFile();
 				
-				DialogDebugMesssage.write("failed to get user id: " + userId, activity);
-				
 				Log.e(TAG, "setLoginDataOnline: failed to get id");
 				return false;
 			}
@@ -92,16 +86,12 @@ public class LoginHelper
 				_logWriter.writeToFile("failed to get session data: " + userId + ", " + password);
 				_logWriter.closeFile();
 				
-				DialogDebugMesssage.write("failed to get session data: " + userId + ", " + password, activity);
-				
 				Log.e(TAG, "setLoginDataOnline: failed to get session data - " + userId + " // " + password);
 				return false;
 			}
 			
 			_logWriter.writeToFile("writing to database now: " + userId + ", " + password);
 			_logWriter.closeFile();
-			
-			DialogDebugMesssage.write("writing to database now: " + userId + ", " + password, activity);
 			
 			FlightsDataSource dataSource = new FlightsDataSource(activity);
 			dataSource.open();
@@ -175,13 +165,9 @@ public class LoginHelper
 		
 		if(mailAddress.length() == 0)
 		{
-			DialogDebugMesssage.write("mail is not set: " + mailAddress, activity);
-			
 			Log.e(TAG, "mail is not set");
 			return userId;
 		}
-		
-		DialogDebugMesssage.write("trying to get id, mail: " + mailAddress, activity);
 		
 		WebInterface webInterface = new WebInterface(activity);
 		userId = webInterface.requestUserId(mailAddress, activity);

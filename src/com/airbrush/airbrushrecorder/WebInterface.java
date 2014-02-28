@@ -22,6 +22,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.security.MessageDigest;
 import java.util.zip.GZIPOutputStream;
@@ -52,6 +53,40 @@ public class WebInterface
 	
 	private String _httpResponse = "";
 	
+	public enum RequestType 
+	{
+		INVALID("INVALID"),
+		GET("GET"),
+		POST("POST");
+		
+		private RequestType(final String text)
+		{
+			_text = text;
+		}
+		
+		private final String _text;
+		
+		@Override
+		public String toString()
+		{
+			return _text;
+		}
+		
+		public static RequestType fromString(String text)
+		{
+			if(text == GET.toString())
+			{
+				return GET;
+			}
+			else if(text == POST.toString())
+			{
+				return POST;
+			}
+			
+			return INVALID;
+		}
+	}
+	
 	private class AsyncHttpRequest extends AsyncTask<String, Integer, String>
 	{
 		@Override
@@ -59,19 +94,29 @@ public class WebInterface
 		{
 			String result = "";
 			
-			//if this gets anymore complex, just checking the params count probably won't do it anymore
-			if(params.length == 3)
+			if(params.length <= 1)
+				return "";
+			
+			RequestType type = RequestType.fromString(params[0]);
+			
+			if(type == RequestType.POST)
 			{
-				int r = postData(params[0], params[1], params[2]);
-				result = "" + r;
+				if(params.length == 4)
+				{
+					int r = postData(params[1], params[2], params[3]);
+					result = "" + r;
+				}
 			}
-			else if(params.length == 1)
+			else if(type == RequestType.GET)
 			{
-				result = getData(params[0], null);
-			}
-			else if(params.length == 2)
-			{
-				result = getData(params[0], params[1]);
+				if(params.length == 3)
+				{
+					result = getData(params[1], params[2]);
+				}
+				else if(params.length == 2)
+				{
+					result = getData(params[1], null);
+				}
 			}
 			
 			return result;
@@ -166,20 +211,25 @@ public class WebInterface
 				
 				connection.setUseCaches(false);
 				connection.setDoInput(true);
-				connection.setDoOutput(true);
+				//connection.setDoOutput(false);
 				
+				/*
 				InputStream is = connection.getInputStream();
 				BufferedReader rd = new BufferedReader(new InputStreamReader(is));
 				String line;
 				StringBuffer response = new StringBuffer(); 
-		      while((line = rd.readLine()) != null)
-		      {
-		        response.append(line);
-		        response.append('\r');
-		      }
-		      rd.close();
-		      
-		      result = response.toString();
+				while((line = rd.readLine()) != null)
+			    {
+			      response.append(line);
+			      response.append('\r');
+			    }
+			    rd.close();
+			      
+			    result = response.toString();
+			    */
+				
+				result = connection.getResponseMessage();
+				_httpResponse = result;
 			}
 			catch(ClientProtocolException e)
 			{
@@ -216,7 +266,7 @@ public class WebInterface
 		{
 			if(wifiAvailable(_activity))
 			{
-				String response = new AsyncHttpRequest().execute(ADDRESS_FLIGHT, flight.serializeToHttp(), COOKIE_SESSION + cookie).get();
+				String response = new AsyncHttpRequest().execute(WebInterface.RequestType.POST.toString(), ADDRESS_FLIGHT, flight.serializeToHttp(), COOKIE_SESSION + cookie).get();
 				
 				int iResponse = Integer.parseInt(response);
 				
@@ -242,7 +292,7 @@ public class WebInterface
 			if(wifiAvailable(_activity))
 			{
 				String postData = "name=" + name + "&surname=" + surname + "&email=" + email + "&airhash=" + password;
-				String response = new AsyncHttpRequest().execute(ADDRESS_USER, postData, "").get();
+				String response = new AsyncHttpRequest().execute(WebInterface.RequestType.POST.toString(), ADDRESS_USER, postData, "").get();
 				
 				int iResponse = Integer.parseInt(response);
 				
@@ -278,7 +328,7 @@ public class WebInterface
 				
 				String address = ADDRESS_USER + "/" + userId + "/session";
 				
-				new AsyncHttpRequest().execute(address, postData, "").get();
+				new AsyncHttpRequest().execute(RequestType.POST.toString(), address, postData, "").get();
 				
 				JSONObject object = new JSONObject(_httpResponse);
 				result = object.getString("AirToken");
@@ -320,14 +370,10 @@ public class WebInterface
 			{
 				String address = ADDRESS_USER + "/" + URLEncoder.encode(mailAddress, "ISO-8859-1");
 				
-				response = new AsyncHttpRequest().execute(address).get();
-				
-				DialogDebugMesssage.write("requestUserId response: " + response, activity);
+				response = new AsyncHttpRequest().execute(RequestType.GET.toString(), address).get();
 				
 				JSONObject jsonObject  = new JSONObject(response);
 				result = jsonObject.getString("id");
-				
-				DialogDebugMesssage.write("requestUserId result: " + response, activity);
 			}
 			else
 			{
@@ -336,8 +382,6 @@ public class WebInterface
 		}
 		catch (Exception e)
 		{
-			DialogDebugMesssage.write("requestUserId exception: " + e.toString(), activity);
-			
 			Log.e(TAG, e.toString());
 		}
 		
@@ -358,7 +402,7 @@ public class WebInterface
                 {
                     if (!addr.isLoopbackAddress())
                     {
-                        String sAddr = addr.getHostAddress().toUpperCase();
+                        String sAddr = addr.getHostAddress().toUpperCase(Locale.getDefault());
                         boolean isIPv4 = InetAddressUtils.isIPv4Address(sAddr); 
                         if (useIPv4)
                         {

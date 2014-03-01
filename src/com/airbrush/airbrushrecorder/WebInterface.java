@@ -129,7 +129,7 @@ public class WebInterface
 			
 			int result = -1;
 			
-			Log.d(TAG, address + " // " + data);
+			//Log.d(TAG, address + " // " + data);
 			
 			try
 			{
@@ -213,23 +213,19 @@ public class WebInterface
 				connection.setDoInput(true);
 				//connection.setDoOutput(false);
 				
-				/*
 				InputStream is = connection.getInputStream();
 				BufferedReader rd = new BufferedReader(new InputStreamReader(is));
 				String line;
 				StringBuffer response = new StringBuffer(); 
-				while((line = rd.readLine()) != null)
+			    while((line = rd.readLine()) != null)
 			    {
-			      response.append(line);
-			      response.append('\r');
+				    response.append(line);
+				    response.append('\r');
 			    }
 			    rd.close();
-			      
-			    result = response.toString();
-			    */
 				
-				result = connection.getResponseMessage();
-				_httpResponse = result;
+				_httpResponse = response.toString();
+				result = _httpResponse;
 			}
 			catch(ClientProtocolException e)
 			{
@@ -260,7 +256,7 @@ public class WebInterface
 	
 	public int postFlight(Flight flight, String cookie)
 	{
-		Log.d(TAG, "postFlight");
+		//Log.d(TAG, "postFlight");
 		
 		try
 		{
@@ -358,11 +354,6 @@ public class WebInterface
 	{
 		String result = "";
 		String response = "";
-		
-		//address += "?email=" + mailAddress;
-		//address += "/" + mailAddress;
-		
-		DialogDebugMesssage.write("requestUserId: " + mailAddress, activity);
 		
 		try
 		{

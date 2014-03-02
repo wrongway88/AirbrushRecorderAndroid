@@ -69,10 +69,10 @@ public final class R {
         public static final int settings=0x7f070005;
     }
     public static final class string {
-        public static final int action_forgot_password=0x7f050058;
+        public static final int action_forgot_password=0x7f05005d;
         public static final int action_settings=0x7f050001;
-        public static final int action_sign_in_register=0x7f050056;
-        public static final int action_sign_in_short=0x7f050057;
+        public static final int action_sign_in_register=0x7f05005b;
+        public static final int action_sign_in_short=0x7f05005c;
         public static final int app_name=0x7f050000;
         public static final int button_back_to_main=0x7f050005;
         public static final int button_create=0x7f05000b;
@@ -84,6 +84,11 @@ public final class R {
         public static final int button_submit_flight=0x7f050008;
         public static final int button_view_flight=0x7f050006;
         public static final int button_view_login=0x7f050009;
+        public static final int data_email=0x7f050055;
+        public static final int data_name=0x7f050056;
+        public static final int data_surname=0x7f050057;
+        public static final int data_view_change_account=0x7f050054;
+        public static final int data_view_create_account=0x7f050053;
         public static final int dialog_cancel=0x7f050035;
         public static final int dialog_create=0x7f050038;
         public static final int dialog_create_account=0x7f050033;
@@ -127,10 +132,10 @@ public final class R {
         public static final int edit_text_surname=0x7f05001c;
         public static final int edit_text_surname_error_missing=0x7f050016;
         public static final int edit_text_user_name=0x7f050013;
-        public static final int error_field_required=0x7f05005d;
-        public static final int error_incorrect_password=0x7f05005c;
-        public static final int error_invalid_email=0x7f05005a;
-        public static final int error_invalid_password=0x7f05005b;
+        public static final int error_field_required=0x7f050062;
+        public static final int error_incorrect_password=0x7f050061;
+        public static final int error_invalid_email=0x7f05005f;
+        public static final int error_invalid_password=0x7f050060;
         public static final int hello_world=0x7f050002;
         public static final int http_response_flight_upload_error_bad_request=0x7f050052;
         public static final int http_response_flight_upload_error_not_modified=0x7f050051;
@@ -141,13 +146,13 @@ public final class R {
         public static final int log_destination=0x7f050020;
         public static final int log_path_log_handler=0x7f050023;
         public static final int log_waypoints=0x7f050021;
-        public static final int login_progress_signing_in=0x7f050059;
+        public static final int login_progress_signing_in=0x7f05005e;
         public static final int menu_change_account=0x7f05004e;
         public static final int menu_create_account=0x7f05004f;
         /**  Strings related to login 
          */
-        public static final int prompt_email=0x7f050054;
-        public static final int prompt_password=0x7f050055;
+        public static final int prompt_email=0x7f050059;
+        public static final int prompt_password=0x7f05005a;
         public static final int textView_account_data_default=0x7f05002c;
         public static final int textView_account_data_title=0x7f05002b;
         public static final int textView_flightBrowser_date=0x7f05002d;
@@ -162,7 +167,7 @@ public final class R {
         public static final int textView_logging_logging=0x7f050024;
         public static final int textView_logging_na=0x7f050028;
         public static final int title_activity_file_browser=0x7f05000e;
-        public static final int title_activity_login=0x7f050053;
+        public static final int title_activity_login=0x7f050058;
         public static final int title_activity_path_log=0x7f05000d;
         public static final int title_activity_power_management=0x7f05000f;
     }

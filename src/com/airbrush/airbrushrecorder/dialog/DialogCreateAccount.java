@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import com.airbrush.airbrushrecorder.DataStorage;
 import com.airbrush.airbrushrecorder.WebInterface;
 import com.airbrush.airbrushrecorder.R;
 
@@ -39,6 +40,7 @@ public class DialogCreateAccount extends DialogFragment
     public Dialog onCreateDialog(Bundle savedInstanceState)
 	{
 		this.setRetainInstance(true);
+		DataStorage.getInstance().setBoolean(getString(R.string.data_view_create_account), true);
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -50,18 +52,23 @@ public class DialogCreateAccount extends DialogFragment
 		
 		builder.setView(v)
 			.setPositiveButton(R.string.dialog_create, new DialogInterface.OnClickListener() {public void onClick(DialogInterface dialog, int id) {}})
-			.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {public void onClick(DialogInterface dialog, int id) {}});
+			.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {public void onClick(DialogInterface dialog, int id) {
+				DataStorage.getInstance().setBoolean(getString(R.string.data_view_create_account), false);
+				DataStorage.getInstance().setString(getString(R.string.data_email), "");
+				DataStorage.getInstance().setString(getString(R.string.data_name), "");
+				DataStorage.getInstance().setString(getString(R.string.data_surname), "");
+			}});
 		
 		final AlertDialog d = builder.create();
 		
 		d.setOnShowListener(new DialogInterface.OnShowListener() {
 
             @Override
-            public void onShow(DialogInterface dialog) {
-
+            public void onShow(DialogInterface dialog)
+            {
                 Button b = d.getButton(AlertDialog.BUTTON_POSITIVE);
-                b.setOnClickListener(new View.OnClickListener() {
-
+                b.setOnClickListener(new View.OnClickListener()
+                {
                     @Override
                     public void onClick(View view)
                     {
@@ -143,6 +150,10 @@ public class DialogCreateAccount extends DialogFragment
                 		if(success)
                 		{
                 			m_listener.onSuccess(DialogCreateAccount.this, mail, password);
+                			DataStorage.getInstance().setBoolean(getString(R.string.data_view_create_account), false);
+                			DataStorage.getInstance().setString(getString(R.string.data_email), "");
+            				DataStorage.getInstance().setString(getString(R.string.data_name), "");
+            				DataStorage.getInstance().setString(getString(R.string.data_surname), "");
                 			d.dismiss();
                 		}
                 		else

@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import com.airbrush.airbrushrecorder.DataStorage;
 import com.airbrush.airbrushrecorder.WebInterface;
 import com.airbrush.airbrushrecorder.R;
 
@@ -40,6 +41,7 @@ public class DialogEnterLoginData extends DialogFragment
     public Dialog onCreateDialog(Bundle savedInstanceState)
 	{
 		this.setRetainInstance(true);
+		DataStorage.getInstance().setBoolean(getString(R.string.data_view_change_account), true);
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -51,7 +53,10 @@ public class DialogEnterLoginData extends DialogFragment
 		
 		builder.setView(v)
 			.setPositiveButton(R.string.dialog_save, new DialogInterface.OnClickListener() {public void onClick(DialogInterface dialog, int id) {}})
-			.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {public void onClick(DialogInterface dialog, int id) {}});
+			.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {public void onClick(DialogInterface dialog, int id) {
+				DataStorage.getInstance().setBoolean(getString(R.string.data_view_change_account), false);
+				DataStorage.getInstance().setString(getString(R.string.data_email), "");
+			}});
 		
 		final AlertDialog d = builder.create();
 		
@@ -113,6 +118,8 @@ public class DialogEnterLoginData extends DialogFragment
                     	}
                     	else
                     	{
+                    		DataStorage.getInstance().setBoolean(getString(R.string.data_view_change_account), false);
+                    		DataStorage.getInstance().setString(getString(R.string.data_email), "");
                     		m_listener.onAccountDataSet();
                     		d.dismiss();
                     	}

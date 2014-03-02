@@ -26,8 +26,6 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 {
 	private static final String TAG = "MAIN";
 	
-	DialogCreateAccount _createAccountDialog = null;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -65,6 +63,18 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 		super.onResume();
 		
 		displayAccountData();
+		
+		Boolean showCreateDialog = DataStorage.getInstance().getBoolean(getString(R.string.data_view_create_account));
+		if(showCreateDialog != null &&  showCreateDialog == true)
+		{
+			viewCreateAccount();
+		}
+		
+		Boolean showChangeDialog = DataStorage.getInstance().getBoolean(getString(R.string.data_view_change_account));
+		if(showChangeDialog != null && showChangeDialog == true)
+		{
+			viewChangeAccount();
+		}
 	}
 	
 	public void viewChangeAccount()
@@ -77,8 +87,8 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 	{
 		if(WebInterface.wifiAvailable(this))
 		{
-			_createAccountDialog = new DialogCreateAccount(this);
-			_createAccountDialog.show(this.getSupportFragmentManager(), TAG);
+			DialogCreateAccount createAccountDialog = new DialogCreateAccount(this);
+			createAccountDialog.show(this.getSupportFragmentManager(), TAG);
 		}
 		else
 		{

@@ -28,14 +28,11 @@ import java.security.MessageDigest;
 import java.util.zip.GZIPOutputStream;
 //import java.net.CookieManager;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.conn.util.InetAddressUtils;
-
-import com.airbrush.airbrushrecorder.dialog.DialogDebugMesssage;
 
 import java.net.URLEncoder;
 
@@ -470,22 +467,6 @@ public class WebInterface
 	public static String saltPassword(String password)
 	{
 		String result = "";
-		
-		/*
-		String firstLetter = mailAddress.substring(0, 1);
-		firstLetter = firstLetter.toLowerCase();
-		
-		String ending = "";
-		int idx = mailAddress.lastIndexOf(".");
-		if(idx > -1)
-		{
-			ending = mailAddress.substring(idx+1);
-		}
-		
-		ending = ending.toLowerCase();
-		
-		result = firstLetter + password + ending;
-		*/
 		
 		//handle short password, sort of...
 		if(password.length() < 3)

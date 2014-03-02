@@ -93,4 +93,10 @@
     <string name="http_response_flight_upload_success"></string>
     <string name="http_response_flight_upload_error_not_modified"></string>
     <string name="http_response_flight_upload_error_bad_request"></string>
+    
+    <string name="data_view_create_account">viewCreateAccount</string>
+    <string name="data_view_change_account">viewChangeAccount</string>
+    <string name="data_email">email</string>
+    <string name="data_name">name</string>
+    <string name="data_surname">surname</string>
 </resources>

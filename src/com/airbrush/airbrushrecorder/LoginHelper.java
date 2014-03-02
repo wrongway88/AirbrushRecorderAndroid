@@ -8,7 +8,6 @@ import android.util.Log;
 import com.airbrush.airbrushrecorder.data.FlightsDataSource;
 import com.airbrush.airbrushrecorder.dialog.DialogEnterLoginData;
 import com.airbrush.airbrushrecorder.dialog.DialogWifiOff;
-import com.airbrush.airbrushrecorder.dialog.DialogDebugMesssage;
 
 import com.airbrush.airbrushrecorder.LogWriter;
 

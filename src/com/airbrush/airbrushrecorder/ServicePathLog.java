@@ -221,6 +221,7 @@ public class ServicePathLog extends Service
 		Message msg = Message.obtain();
 		
 		//delete flight when no waypoints where recorded
+		
 		if(_waypointsCount <= 1)
 		{
 			FlightsDataSource dataSource = new FlightsDataSource(this);
@@ -232,6 +233,11 @@ public class ServicePathLog extends Service
 		}
 		else
 		{
+			FlightsDataSource dataSource = new FlightsDataSource(this);
+			dataSource.open();
+			dataSource.setFlightRecording(_dbId, false);
+			dataSource.close();
+			
 			msg.arg1 = Activity.RESULT_OK;
 		}
 		
@@ -291,6 +297,7 @@ public class ServicePathLog extends Service
 		FlightsDataSource dataSource = new FlightsDataSource(this);
 		dataSource.open();
 		_dbId = dataSource.createFlight(_flight.getDate().toString(), _flight.getDeparture(), _flight.getDestination(), _flight.getAirplaneType());
+		dataSource.setFlightRecording(_dbId, true);
 		dataSource.close();
 		
 		_waypointsCount = 0;

@@ -15,6 +15,7 @@ public class FlightSQLiteHelper extends SQLiteOpenHelper
 	public static final String COLUMN_DEPARTURE = "departure";
 	public static final String COLUMN_DESTINATION = "destination";
 	public static final String COLUMN_AIRPLANE = "airplane";
+	public static final String COLUMN_RECORDING = "recording";
 	//public static final String COLUMN_WAYPOINTS = "waypoints";
 	
 	private static final String DATABASE_NAME = "flights.db";
@@ -26,7 +27,8 @@ public class FlightSQLiteHelper extends SQLiteOpenHelper
 			+ COLUMN_DATE + " TEXT NOT NULL, "
 			+ COLUMN_DEPARTURE + " TEXT NOT NULL, " 
 			+ COLUMN_DESTINATION + " TEXT NOT NULL, "
-			+ COLUMN_AIRPLANE + " TEXT NOT NULL );";
+			+ COLUMN_AIRPLANE + " TEXT NOT NULL, "
+			+ COLUMN_RECORDING + "  TEXT NOT NULL);";
 	
 	private static final String DATABASE_CREATE_IF_NOT_EXISTS = "CREATE TABLE IF NOT EXISTS "
 			+ TABLE_FLIGHTS + "("
@@ -34,7 +36,8 @@ public class FlightSQLiteHelper extends SQLiteOpenHelper
 			+ COLUMN_DATE + " TEXT NOT NULL, "
 			+ COLUMN_DEPARTURE + " TEXT NOT NULL, " 
 			+ COLUMN_DESTINATION + " TEXT NOT NULL, "
-			+ COLUMN_AIRPLANE + " TEXT NOT NULL );";
+			+ COLUMN_AIRPLANE + " TEXT NOT NULL, "
+			+ COLUMN_RECORDING + "  TEXT NOT NULL);";
 	
 	public FlightSQLiteHelper(Context context)
 	{

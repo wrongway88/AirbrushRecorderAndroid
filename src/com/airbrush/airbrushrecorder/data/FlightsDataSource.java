@@ -22,7 +22,7 @@ public class FlightsDataSource
 	private AppDataSQLiteHelper appDataHelper;
 	private String[] flightColumns = {FlightSQLiteHelper.COLUMN_ID, FlightSQLiteHelper.COLUMN_DATE,
 								FlightSQLiteHelper.COLUMN_DEPARTURE, FlightSQLiteHelper.COLUMN_DESTINATION,
-								FlightSQLiteHelper.COLUMN_AIRPLANE};
+								FlightSQLiteHelper.COLUMN_AIRPLANE, FlightSQLiteHelper.COLUMN_RECORDING};
 	private String[] waypointColumns = {WaypointsSQLiteHelper.COLUMN_ID, WaypointsSQLiteHelper.COLUMN_FLIGHT_ID,
 								WaypointsSQLiteHelper.COLUMN_LATITUDE, WaypointsSQLiteHelper.COLUMN_LONGITUDE,
 								WaypointsSQLiteHelper.COLUMN_ALTITUDE, WaypointsSQLiteHelper.COLUMN_SPEED,
@@ -65,10 +65,26 @@ public class FlightsDataSource
 			values.put(FlightSQLiteHelper.COLUMN_DEPARTURE, departure);
 			values.put(FlightSQLiteHelper.COLUMN_DESTINATION, destination);
 			values.put(FlightSQLiteHelper.COLUMN_AIRPLANE, airplaneType);
+			values.put(FlightSQLiteHelper.COLUMN_RECORDING, false);
 			id = (int)database.insert(FlightSQLiteHelper.TABLE_FLIGHTS, null, values);
 		}
 		
 		return id;
+	}
+	
+	public void setFlightRecording(int flightId, Boolean recording)
+	{
+		try
+		{
+			String statement = "UPDATE " + FlightSQLiteHelper.TABLE_FLIGHTS + " SET " + FlightSQLiteHelper.COLUMN_RECORDING + "='" + recording.toString() + "'"
+					+ " WHERE " + FlightSQLiteHelper.COLUMN_ID + " LIKE " + flightId;
+
+			database.execSQL(statement);
+		}
+		catch(Exception e)
+		{
+			Log.e(TAG, e.toString());
+		}
 	}
 	
 	public int createWaypoint(int flightId, int timeStamp, double latitude, double longitude, double altitude, float speed)
@@ -405,16 +421,18 @@ public class FlightsDataSource
 			String dep = cursor.getString(2);
 			String dest = cursor.getString(3);
 			String airplane = cursor.getString(4);
+			String recording = cursor.getString(5);
 			
 			flight.setId(id);
 			flight.setDate(date);
 			flight.setDeparture(dep);
 			flight.setDestination(dest);
 			flight.setAirplaneType(airplane);
+			flight.setRecording(Boolean.parseBoolean(recording));
 		}
 		catch(Exception e)
 		{
-			Log.e(TAG, e.toString());
+			Log.e(TAG + "_cursorToFlight", e.toString());
 		}
 		
 		return flight;

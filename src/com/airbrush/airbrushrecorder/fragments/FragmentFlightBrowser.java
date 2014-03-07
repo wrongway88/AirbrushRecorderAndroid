@@ -109,7 +109,10 @@ public class FragmentFlightBrowser extends Fragment
 			List<String> list = new ArrayList<String>();
 			for(int i = 0; i < _flights.size(); i++)
 			{
-				list.add(_flights.get(i).getDate().toString());
+				if(_flights.get(i).getRecording() == false)
+				{
+					list.add(_flights.get(i).getDate().toString());
+				}
 			}
 			
 			_spinner = (Spinner) getView().findViewById(R.id.dropdown_file);

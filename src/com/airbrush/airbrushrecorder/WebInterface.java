@@ -493,9 +493,14 @@ public class WebInterface
 		try
 		{
 			ConnectivityManager connManager = (ConnectivityManager)activity.getSystemService(Activity.CONNECTIVITY_SERVICE);
-			NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+			//NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+			NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
 			
-			return mWifi.isConnected();
+			if(networkInfo != null && networkInfo.isConnected())
+			{
+				return true;
+			}
+			return false;
 		}
 		catch(Exception e)
 		{

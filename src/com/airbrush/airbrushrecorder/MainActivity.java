@@ -64,6 +64,7 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 		
 		displayAccountData();
 		
+		/*
 		Boolean showCreateDialog = DataStorage.getInstance().getBoolean(getString(R.string.data_view_create_account));
 		if(showCreateDialog != null &&  showCreateDialog == true)
 		{
@@ -75,6 +76,7 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 		{
 			viewChangeAccount();
 		}
+		*/
 	}
 	
 	public void viewChangeAccount()

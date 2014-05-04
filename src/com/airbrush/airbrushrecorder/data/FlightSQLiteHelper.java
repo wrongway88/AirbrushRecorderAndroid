@@ -70,4 +70,16 @@ public class FlightSQLiteHelper extends SQLiteOpenHelper
 		
 		database.execSQL(createFlight);
 	}
+	
+	public void updateFlight(SQLiteDatabase database, int flightId, String departure, String destination, String airplane)
+	{
+		String updateFlight = "UPDATE " + TABLE_FLIGHTS
+				+ " SET "
+				+ COLUMN_DEPARTURE + " = '" + departure + "'"
+				+ COLUMN_DESTINATION + " = '" + destination + "'"
+				+ COLUMN_AIRPLANE + " = '" + airplane + "'"
+				+ " WHERE " + COLUMN_ID + " = " + flightId + ";";
+		
+		database.execSQL(updateFlight);
+	}
 }

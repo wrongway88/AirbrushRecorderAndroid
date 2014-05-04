@@ -5,39 +5,31 @@
     android:orientation="horizontal"
     android:baselineAligned="false" >
     
-    <fragment android:name="com.airbrush.airbrushrecorder.fragments.FragmentRecorder"
-            android:id="@+id/fragment_recorder"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="5dip" />
+    <fragment
+        android:id="@+id/fragment_recorder"
+        android:name="com.airbrush.airbrushrecorder.fragments.FragmentRecorder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dip"
+        android:layout_weight="1"
+        tools:layout="@layout/fragment_recorder" />
     
-    <fragment android:name="com.airbrush.airbrushrecorder.fragments.FragmentFlightBrowser"
-            android:id="@+id/fragment_flight_browser"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="5dip" />
+    <fragment
+        android:id="@+id/fragment_flight_browser"
+        android:name="com.airbrush.airbrushrecorder.fragments.FragmentFlightBrowser"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dip"
+        android:layout_weight="1"
+        tools:layout="@layout/fragment_flight_browser" />
     
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-    	android:layout_height="match_parent"
-    	android:padding="5dip"
-    	android:layout_margin="5dip"
-    	android:background="@drawable/layout_bg_light" >
-    	
-        <TextView android:id="@+id/textview_account_data"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:text="" 
-              android:background="@drawable/layout_bg_dark"
-              android:textColor="#ff6000"
-              android:padding="10dip"
-              android:layout_marginLeft="5dip"
-              android:layout_marginTop="10dip"
-              android:layout_marginBottom="10dip" />
-    
-    </LinearLayout>
+    <fragment
+        android:id="@+id/fragment_account_data"
+        android:name="com.airbrush.airbrushrecorder.dialog.FragmentAccountData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dip"
+        android:layout_weight="1"
+        tools:layout="@layout/fragment_account_data" />
     
 </LinearLayout>

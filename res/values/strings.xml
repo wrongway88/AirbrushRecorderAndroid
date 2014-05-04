@@ -10,7 +10,9 @@
     <string name="button_view_flight">View Flights</string>
     <string name="button_delete_flight">Delete</string>
     <string name="button_submit_flight">Submit</string>
-    <string name="button_view_login">Change Account</string>
+    <string name="button_edit_flight">Edit</string>
+    <string name="button_save_flight">Save</string>
+    <string name="button_view_login">Switch Account</string>
     <string name="button_set_login_data">Save Data</string>
     <string name="button_create">Create</string>
     <string name="button_create_account">Create Account</string>
@@ -49,7 +51,7 @@
     <string name="textView_logging_na">nA</string>
     <string name="textView_flight_data_default">No flight selected</string>
     <string name="textView_flight_data_no_records">No flights recorded</string>
-    <string name="textView_account_data_title">Account:</string>
+    <string name="textView_account_data_title">Upload as:</string>
     <string name="textView_account_data_default">No data set</string>
     
     <string name="textView_flightBrowser_date">Date: </string>
@@ -87,7 +89,7 @@
     <string name="dialog_log_flight_response_no_waypoints">No waypoints recorded.</string>
     <string name="dialog_log_flight_response_move_around">You may have to travel around further.</string>
     
-    <string name="menu_change_account">Change Account</string>
+    <string name="menu_change_account">Switch Account</string>
     <string name="menu_create_account">Create Account</string>
     
     <string name="http_response_flight_upload_success"></string>

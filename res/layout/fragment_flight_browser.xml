@@ -28,6 +28,15 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:orientation="horizontal">
+	    
+	    <Button
+	        android:id="@+id/button_edit_flight"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="0.5"
+	        android:text="@string/button_edit_flight"
+	        android:onClick="editSelectedFlight" />
+	    
 	    <Button
 	        android:id="@+id/button_submit_flight"
 	        android:layout_width="match_parent"
@@ -35,14 +44,6 @@
 	        android:layout_weight="0.5"
 	        android:text="@string/button_submit_flight"
 	        android:onClick="submitSelectedFlight" />
-	    
-	    <Button
-	        android:id="@+id/button_delete_flight"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="0.5"
-	        android:text="@string/button_delete_flight"
-	        android:onClick="deleteSelectedFlight" />
     </LinearLayout>
 	    
 </LinearLayout>

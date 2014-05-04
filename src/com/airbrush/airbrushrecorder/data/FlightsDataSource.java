@@ -354,6 +354,21 @@ public class FlightsDataSource
 		}
 	}
 	
+	public void updateFlight(Flight flight)
+	{
+		if(database != null && flightsHelper != null)
+		{
+			try
+			{
+				flightsHelper.updateFlight(database,  flight.getId(),  flight.getDeparture(), flight.getDestination(), flight.getAirplaneType());
+			}
+			catch(Exception e)
+			{
+				Log.e(TAG, e.toString());
+			}
+		}
+	}
+	
 	public String getIp()
 	{
 		return getAppData(1);

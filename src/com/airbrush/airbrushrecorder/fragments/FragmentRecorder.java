@@ -107,12 +107,12 @@ public class FragmentRecorder extends Fragment
 		
 		if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
 		{
-			EditText departureField = (EditText) getView().findViewById(R.id.edit_text_departure);
-			String departure = departureField.getText().toString();
-			EditText arrivalField = (EditText) getView().findViewById(R.id.edit_text_destination);
-			String arrival = arrivalField.getText().toString();
-			EditText airplaneTypeField = (EditText) getView().findViewById(R.id.edit_text_airplane_type);
-			String airplaneType = airplaneTypeField.getText().toString();
+			//EditText departureField = (EditText) getView().findViewById(R.id.edit_text_departure);
+			String departure = ""; //departureField.getText().toString();
+			//EditText arrivalField = (EditText) getView().findViewById(R.id.edit_text_destination);
+			String arrival = ""; //arrivalField.getText().toString();
+			//EditText airplaneTypeField = (EditText) getView().findViewById(R.id.edit_text_airplane_type);
+			String airplaneType = ""; //airplaneTypeField.getText().toString();
 			
 	    	Intent intent = new Intent(getActivity(), ServicePathLog.class);
 	    	intent.putExtra(getString(R.string.log_departure), departure);

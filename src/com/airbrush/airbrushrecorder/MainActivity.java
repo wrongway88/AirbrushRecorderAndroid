@@ -18,6 +18,7 @@ import com.airbrush.airbrushrecorder.dialog.DialogWifiOff;
 import com.airbrush.airbrushrecorder.dialog.DialogLogFlightResponse;
 import com.airbrush.airbrushrecorder.fragments.FragmentFlightBrowser;
 import com.airbrush.airbrushrecorder.fragments.FragmentRecorder;
+import com.airbrush.airbrushrecorder.fragments.FragmentAccountData;
 import com.airbrush.airbrushrecorder.R;
 
 public class MainActivity extends FragmentActivity implements FragmentRecorder.OnToggleRecordingListener, FragmentFlightBrowser.OnFlightBrowserListener,
@@ -44,13 +45,14 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
- 
+		FragmentAccountData fragment = (FragmentAccountData) getSupportFragmentManager().findFragmentById(R.id.fragment_account_data);
+        switch (item.getItemId())
+        {
         case R.id.menu_change_account:
-        	viewChangeAccount();
+        	fragment.viewSwitchAccount();
             break;
         case R.id.menu_create_account:
-        	viewCreateAccount();
+        	fragment.viewCreateAccount();
         	break;
         }
  
@@ -61,8 +63,6 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 	protected void onResume()
 	{
 		super.onResume();
-		
-		displayAccountData();
 		
 		/*
 		Boolean showCreateDialog = DataStorage.getInstance().getBoolean(getString(R.string.data_view_create_account));
@@ -79,25 +79,7 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 		*/
 	}
 	
-	public void viewChangeAccount()
-	{
-		DialogEnterLoginData dialog = new DialogEnterLoginData(this);
-		dialog.show(getSupportFragmentManager(), TAG);
-	}
 	
-	public void viewCreateAccount()
-	{
-		if(WebInterface.wifiAvailable(this))
-		{
-			DialogCreateAccount createAccountDialog = new DialogCreateAccount(this);
-			createAccountDialog.show(this.getSupportFragmentManager(), TAG);
-		}
-		else
-		{
-			DialogWifiOff dialog = new DialogWifiOff();
-			dialog.show(getSupportFragmentManager(), TAG);
-		}
-	}
 	
 	@Override
 	public void togglePathLogging(View view)
@@ -181,31 +163,11 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 	
 	private void displayAccountData()
 	{
-		String name = "";
+		FragmentAccountData fragment = (FragmentAccountData) getSupportFragmentManager().findFragmentById(R.id.fragment_account_data);
 		
-		FlightsDataSource dataSource = new FlightsDataSource(this);
-		dataSource.open();
-		name = dataSource.getUserName();
-		dataSource.close();
-		
-		displayAccountData(name);
-	}
-	
-	private void displayAccountData(String name)
-	{
-		TextView textView = (TextView)findViewById(R.id.textview_account_data);
-		
-		String message = getString(R.string.textView_account_data_title);
-		
-		if(name.length() <= 0)
+		if(fragment != null)
 		{
-			message += "\n" + getString(R.string.textView_account_data_default);
+			fragment.displayAccountData();
 		}
-		else
-		{
-			message += "\n" + name;
-		}
-		
-		textView.setText(message);
 	}
 }

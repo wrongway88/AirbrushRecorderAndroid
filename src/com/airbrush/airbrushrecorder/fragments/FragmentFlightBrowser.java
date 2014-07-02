@@ -23,6 +23,7 @@ import com.airbrush.airbrushrecorder.LoginHelper;
 import com.airbrush.airbrushrecorder.WebInterface;
 import com.airbrush.airbrushrecorder.data.FlightsDataSource;
 import com.airbrush.airbrushrecorder.dialog.DialogDeleteFlight;
+import com.airbrush.airbrushrecorder.dialog.DialogEditFlight;
 import com.airbrush.airbrushrecorder.dialog.DialogUploadFlightResponse;
 import com.airbrush.airbrushrecorder.dialog.DialogWifiOff;
 import com.airbrush.airbrushrecorder.fragments.FragmentRecorder.OnToggleRecordingListener;
@@ -109,7 +110,10 @@ public class FragmentFlightBrowser extends Fragment
 			List<String> list = new ArrayList<String>();
 			for(int i = 0; i < _flights.size(); i++)
 			{
-				list.add(_flights.get(i).getDate().toString());
+				if(_flights.get(i).getRecording() == false)
+				{
+					list.add(_flights.get(i).getDate().toString());
+				}
 			}
 			
 			_spinner = (Spinner) getView().findViewById(R.id.dropdown_file);
@@ -148,6 +152,21 @@ public class FragmentFlightBrowser extends Fragment
 		catch(Exception e)
 		{
 			Log.e(TAG, e.toString());
+		}
+	}
+	
+	public void editSelectedFlight(View view)
+	{
+		try
+		{
+			DialogEditFlight dialog = new DialogEditFlight(this.getActivity());
+			Bundle bundle = new Bundle();
+			bundle.putInt("flightId", getSelectedFlight().getId());
+			dialog.show(this.getActivity().getSupportFragmentManager(), TAG);
+		}
+		catch(Exception e)
+		{
+			Log.d(TAG, e.toString());
 		}
 	}
 

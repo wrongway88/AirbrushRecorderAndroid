@@ -19,6 +19,7 @@ public class Flight
 	private String _departure = "";
 	private String _destination = "";
 	private String _airplaneType = "";
+	private Boolean _recording = false;
 	
 	private List<Waypoint> _waypoints = new ArrayList<Waypoint>();
 	
@@ -279,6 +280,16 @@ public class Flight
 	{
 		//if(airplaneType.length() > 0)
 			_airplaneType = airplaneType;
+	}
+	
+	public Boolean getRecording()
+	{
+		return _recording;
+	}
+	
+	public void setRecording(Boolean recording)
+	{
+		_recording = recording;
 	}
 	
 	public void addWaypoint(Waypoint waypoint)

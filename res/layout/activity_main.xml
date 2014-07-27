@@ -34,14 +34,12 @@
 		    
 		    <fragment
 		        android:id="@+id/fragment_account_data"
-		        android:name="com.airbrush.airbrushrecorder.dialog.FragmentAccountData"
+		        android:name="com.airbrush.airbrushrecorder.fragments.FragmentAccountData"
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_margin="5dip"
 		        android:layout_weight="1"
 		        tools:layout="@layout/fragment_account_data" />
-		    		  
-		    </LinearLayout>
 	    
 	    </LinearLayout>
 	    

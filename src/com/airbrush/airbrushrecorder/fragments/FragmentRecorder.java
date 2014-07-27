@@ -144,9 +144,10 @@ public class FragmentRecorder extends Fragment
 	
 	private void setLayoutLogging(Boolean logging)
 	{
-		EditText departureField = (EditText) getView().findViewById(R.id.edit_text_departure);
+		/*EditText departureField = (EditText) getView().findViewById(R.id.edit_text_departure);
 		EditText arrivalField = (EditText) getView().findViewById(R.id.edit_text_destination);
 		EditText airplaneTypeField = (EditText) getView().findViewById(R.id.edit_text_airplane_type);
+		*/
 		
 		TextView indicator = (TextView) getView().findViewById(R.id.textview_log_indicator);
 		
@@ -154,7 +155,7 @@ public class FragmentRecorder extends Fragment
 		
 		if(logging)
 		{
-			String departure = departureField.getText().toString();
+			/*String departure = departureField.getText().toString();
 			String arrival = arrivalField.getText().toString();
 			String airplane = airplaneTypeField.getText().toString();
 			
@@ -166,23 +167,29 @@ public class FragmentRecorder extends Fragment
 			arrivalField.setVisibility(View.GONE);
 			airplaneTypeField.setVisibility(View.GONE);
 			
+			
 			Resources resource = getResources();
 			if(departure.length() <= 0) departure = resource.getString(R.string.textView_logging_na);
 			if(arrival.length() <= 0) arrival = resource.getString(R.string.textView_logging_na);
 			if(airplane.length() <= 0) airplane = resource.getString(R.string.textView_logging_na);
+			*/
 			
-			String message = resource.getString(R.string.textView_logging_logging);
+			/*String message = resource.getString(R.string.textView_logging_logging);
 			message += ("\n" + resource.getString(R.string.textView_logging_departure) + " " + departure);
 			message += ("\n" + resource.getString(R.string.textView_logging_arrival) + " " + arrival);
 			message += ("\n" + resource.getString(R.string.textView_logging_airplaneType) + " " + airplane);
+			*/
 			
-			indicator.setText(message);
+			
+			
+			indicator.setText("Recording");
 			indicator.setVisibility(View.VISIBLE);
 			
 			button.setText(R.string.button_stop_logging);
 		}
 		else
 		{
+			/*
 			departureField.setFocusableInTouchMode(true);
 			arrivalField.setFocusableInTouchMode(true);
 			airplaneTypeField.setFocusableInTouchMode(true);
@@ -190,6 +197,7 @@ public class FragmentRecorder extends Fragment
 			departureField.setVisibility(View.VISIBLE);
 			arrivalField.setVisibility(View.VISIBLE);
 			airplaneTypeField.setVisibility(View.VISIBLE);
+			*/
 
 			indicator.setVisibility(View.GONE);
 			

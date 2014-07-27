@@ -1,5 +1,6 @@
 package com.airbrush.airbrushrecorder.dialog;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -19,6 +20,7 @@ import com.airbrush.airbrushrecorder.R;
 import com.airbrush.airbrushrecorder.WebInterface;
 import com.airbrush.airbrushrecorder.data.FlightsDataSource;
 
+@SuppressLint("ValidFragment")
 public class DialogEditFlight extends DialogFragment
 {
 	private static String TAG = "DIALOG_EDIT_FLIGHT";
@@ -36,6 +38,8 @@ public class DialogEditFlight extends DialogFragment
 	{
 		super.onCreateDialog(savedInstanceState);
 		
+		
+		
 		Bundle bundle = getArguments();
 		m_fightId = bundle.getInt("flightId");
         FlightsDataSource dataSource = new FlightsDataSource(m_activity);
@@ -46,53 +50,62 @@ public class DialogEditFlight extends DialogFragment
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 
-		final View v = inflater.inflate(R.layout.dialog_enter_login_data, null);
+		final View v = inflater.inflate(R.layout.dialog_edit_flight, null);
 		
 		final AlertDialog d = builder.create();
+		d.setView(v);
 		
 		EditText inputDeparture = (EditText) v.findViewById(R.id.edit_text_departure);
     	EditText inputDestination = (EditText) v.findViewById(R.id.edit_text_destination);
     	EditText inputAirplaneType = (EditText) v.findViewById(R.id.edit_text_airplane_type);
-		inputDeparture.setText(flight.getDeparture());
-		inputDestination.setText(flight.getDestination());
-		inputAirplaneType.setText(flight.getAirplaneType());
+    	if(inputDeparture != null)
+    		inputDeparture.setText(flight.getDeparture());
+		if(inputDestination != null)
+			inputDestination.setText(flight.getDestination());
+		if(inputAirplaneType != null)
+			inputAirplaneType.setText(flight.getAirplaneType());
     	
-		Button saveButton = d.getButton(R.id.button_save_flight);
-		saveButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-            	EditText inputDeparture = (EditText) v.findViewById(R.id.edit_text_departure);
-            	EditText inputDestination = (EditText) v.findViewById(R.id.edit_text_destination);
-            	EditText inputAirplaneType = (EditText) v.findViewById(R.id.edit_text_airplane_type);
-            	
-            	String departure = inputDeparture.getText().toString();
-            	String destination = inputDestination.getText().toString();
-            	String airplaneType = inputAirplaneType.getText().toString();
-            	
-            	FlightsDataSource dataSource = new FlightsDataSource(m_activity);
-                dataSource.open();
-        		Flight flight = dataSource.getFlight(m_fightId);
-        		flight.setDeparture(departure);
-        		flight.setDestination(destination);
-        		flight.setAirplaneType(airplaneType);
-        		dataSource.close();
-        		
-        		
-            }
-        });
+		Button saveButton = (Button) v.findViewById(R.id.button_save_flight); //d.getButton(R.id.button_save_flight);
 		
-		Button deleteButton = d.getButton(R.id.button_delete_flight);
-		deleteButton.setOnClickListener(new View.OnClickListener()
-		{	
-			@Override
-			public void onClick(View v)
-			{
-				DialogDeleteFlight dialog = new DialogDeleteFlight();
-				dialog.show(m_activity.getSupportFragmentManager(), TAG);
-			}
-		});
+		if(saveButton != null)
+		{
+			saveButton.setOnClickListener(new View.OnClickListener()
+	        {
+	            @Override
+	            public void onClick(View view)
+	            {
+	            	EditText inputDeparture = (EditText) v.findViewById(R.id.edit_text_departure);
+	            	EditText inputDestination = (EditText) v.findViewById(R.id.edit_text_destination);
+	            	EditText inputAirplaneType = (EditText) v.findViewById(R.id.edit_text_airplane_type);
+	            	
+	            	String departure = inputDeparture.getText().toString();
+	            	String destination = inputDestination.getText().toString();
+	            	String airplaneType = inputAirplaneType.getText().toString();
+	            	
+	            	FlightsDataSource dataSource = new FlightsDataSource(m_activity);
+	                dataSource.open();
+	        		Flight flight = dataSource.getFlight(m_fightId);
+	        		flight.setDeparture(departure);
+	        		flight.setDestination(destination);
+	        		flight.setAirplaneType(airplaneType);
+	        		dataSource.close();
+	            }
+	        });
+		}
+		
+		Button deleteButton = (Button) v.findViewById(R.id.button_delete_flight);
+		if(deleteButton != null)
+		{
+			deleteButton.setOnClickListener(new View.OnClickListener()
+			{	
+				@Override
+				public void onClick(View v)
+				{
+					DialogDeleteFlight dialog = new DialogDeleteFlight();
+					dialog.show(m_activity.getSupportFragmentManager(), TAG);
+				}
+			});
+		}
 		
 		return d;
 	}

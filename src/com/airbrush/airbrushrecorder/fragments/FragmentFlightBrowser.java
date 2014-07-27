@@ -41,7 +41,7 @@ public class FragmentFlightBrowser extends Fragment
 	public interface OnFlightBrowserListener //well, thats a stupid name...
 	{
 		public void submitSelectedFlight(View view);
-		public void deleteSelectedFlight(View view);
+		public void editSelectedFlight(View view);
 	}
 	
 	private final OnItemSelectedListener m_itemSelectedListener = new OnItemSelectedListener()
@@ -97,8 +97,6 @@ public class FragmentFlightBrowser extends Fragment
 	
 	private void listFiles()
 	{
-		//Log.d(TAG, "list files");
-		
 		try
 		{
 			FlightsDataSource dataSource = new FlightsDataSource(this.getActivity());
@@ -118,7 +116,7 @@ public class FragmentFlightBrowser extends Fragment
 			
 			_spinner = (Spinner) getView().findViewById(R.id.dropdown_file);
 			Button submitButton = (Button) getView().findViewById(R.id.button_submit_flight);
-			Button deleteButton = (Button) getView().findViewById(R.id.button_delete_flight);
+			Button editButton = (Button) getView().findViewById(R.id.button_edit_flight);
 			
 			if(list.isEmpty() == false)
 			{
@@ -129,13 +127,13 @@ public class FragmentFlightBrowser extends Fragment
 				_spinner.setOnItemSelectedListener(m_itemSelectedListener);
 				
 				submitButton.setVisibility(View.VISIBLE);
-				deleteButton.setVisibility(View.VISIBLE);
+				editButton.setVisibility(View.VISIBLE);
 			}
 			else
 			{
 				//_spinner.setVisibility(View.GONE);
 				submitButton.setVisibility(View.GONE);
-				deleteButton.setVisibility(View.GONE);
+				editButton.setVisibility(View.GONE);
 			}
 			
 			if(list.size() > 1)
@@ -162,6 +160,7 @@ public class FragmentFlightBrowser extends Fragment
 			DialogEditFlight dialog = new DialogEditFlight(this.getActivity());
 			Bundle bundle = new Bundle();
 			bundle.putInt("flightId", getSelectedFlight().getId());
+			dialog.setArguments(bundle);
 			dialog.show(this.getActivity().getSupportFragmentManager(), TAG);
 		}
 		catch(Exception e)

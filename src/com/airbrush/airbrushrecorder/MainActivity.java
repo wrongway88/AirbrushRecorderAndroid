@@ -3,6 +3,7 @@ package com.airbrush.airbrushrecorder;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -104,6 +105,17 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 	}
 	
 	@Override
+	public void editSelectedFlight(View view)
+	{
+		FragmentFlightBrowser fragment = (FragmentFlightBrowser) getSupportFragmentManager().findFragmentById(R.id.fragment_flight_browser);
+		
+		if(fragment != null)
+		{
+			if(view != null)
+				fragment.editSelectedFlight(view);
+		}
+	}
+
 	public void deleteSelectedFlight(View view)
 	{
 		FragmentFlightBrowser fragment = (FragmentFlightBrowser) getSupportFragmentManager().findFragmentById(R.id.fragment_flight_browser);
@@ -168,6 +180,26 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 		if(fragment != null)
 		{
 			fragment.displayAccountData();
+		}
+	}
+	
+	public void createAccount(View view)
+	{
+		FragmentAccountData fragment = (FragmentAccountData) getSupportFragmentManager().findFragmentById(R.id.fragment_account_data);
+		
+		if(fragment != null)
+		{
+			fragment.viewCreateAccount();
+		}
+	}
+	
+	public void switchAccount(View view)
+	{
+		FragmentAccountData fragment = (FragmentAccountData) getSupportFragmentManager().findFragmentById(R.id.fragment_account_data);
+		
+		if(fragment != null)
+		{
+			fragment.viewSwitchAccount();
 		}
 	}
 }

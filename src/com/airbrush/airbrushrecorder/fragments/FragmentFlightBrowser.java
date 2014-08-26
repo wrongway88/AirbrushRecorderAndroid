@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Messenger;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,12 +15,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 import com.airbrush.airbrushrecorder.Flight;
 import com.airbrush.airbrushrecorder.LoginHelper;
+import com.airbrush.airbrushrecorder.TaskUploadFlight;
 import com.airbrush.airbrushrecorder.WebInterface;
 import com.airbrush.airbrushrecorder.data.FlightsDataSource;
 import com.airbrush.airbrushrecorder.dialog.DialogDeleteFlight;
@@ -28,15 +31,19 @@ import com.airbrush.airbrushrecorder.dialog.DialogUploadFlightResponse;
 import com.airbrush.airbrushrecorder.dialog.DialogWifiOff;
 import com.airbrush.airbrushrecorder.fragments.FragmentRecorder.OnToggleRecordingListener;
 import com.airbrush.airbrushrecorder.R;
+import com.airbrush.airbrushrecorder.fragments.InterfaceOnFlightUploadCompleted;
+import com.airbrush.airbrushrecorder.DataStorage;
 
-public class FragmentFlightBrowser extends Fragment
+public class FragmentFlightBrowser extends Fragment implements InterfaceOnFlightUploadCompleted
 {
 	private static String TAG = "FLIGHT_BROWSER";
+	private static String UPLOAD_BOOLEAN_NAME = "flightBrowserUploading";
 	private Spinner _spinner = null;
 	
 	private ArrayList<Flight> _flights = null;
 	
 	private OnFlightBrowserListener m_listener;
+	private ProgressBar m_progressBar = null;
 	
 	public interface OnFlightBrowserListener //well, thats a stupid name...
 	{
@@ -79,6 +86,8 @@ public class FragmentFlightBrowser extends Fragment
 	{
 		super.onCreateView(inflater, container, savedInstanceState);
 		
+		DataStorage.getInstance().setBoolean(UPLOAD_BOOLEAN_NAME, false);
+		
 		return inflater.inflate(R.layout.fragment_flight_browser, container, false);
 	}
 	
@@ -88,6 +97,16 @@ public class FragmentFlightBrowser extends Fragment
 		super.onStart();
 		
 		listFiles();
+		
+		m_progressBar = (ProgressBar)getView().findViewById(R.id.progress_bar);
+	}
+	
+	@Override
+	public void onResume()
+	{
+		Log.d(TAG, "" + DataStorage.getInstance().getBoolean(UPLOAD_BOOLEAN_NAME));
+		
+		super.onResume();
 	}
 	
 	public void updateFlightList()
@@ -230,6 +249,7 @@ public class FragmentFlightBrowser extends Fragment
 					
 					if(sessionData.length() > 0)
 					{
+						indicateUpload(true);
 						submitSelectedFlight(flight, sessionData);
 					}
 					else
@@ -256,20 +276,40 @@ public class FragmentFlightBrowser extends Fragment
 		}
 	}
 	
+	@Override
+	public void onUploadCompleted()
+	{
+		indicateUpload(false);
+	}
+	
 	private void submitSelectedFlight(Flight flight, String sessionData)
 	{	
 		if(WebInterface.wifiAvailable(getActivity()))
 		{
+			/*
 			WebInterface wf = new WebInterface(getActivity());
 			int responseCode = wf.postFlight(flight, sessionData);
 			String response = wf.getHttpResponse();
 			
 			createFlightUploadResponse(responseCode, response);
+			/**/
+			
+			TaskUploadFlight task = new TaskUploadFlight(getActivity(), sessionData, this);
+			try
+			{
+				task.execute(flight);
+			}
+			catch (Exception e)
+			{
+				Log.d(TAG, e.toString());
+			}
 		}
 	}
 	
 	private void createFlightUploadResponse(int responseCode, String response)
 	{
+		indicateUpload(false);
+		
 		if(responseCode >= 200 && responseCode < 300)
 		{
 			DialogUploadFlightResponse dialog = new DialogUploadFlightResponse();
@@ -401,5 +441,55 @@ public class FragmentFlightBrowser extends Fragment
 	public void onDialogPositiveClick(DialogFragment dialog)
 	{
 		deleteSelectedFlight();
+	}
+	
+	public void indicateUpload(boolean uploading)
+	{
+		DataStorage.getInstance().setBoolean(UPLOAD_BOOLEAN_NAME, uploading);
+		
+		Log.d(TAG, "indicate: " + DataStorage.getInstance().getBoolean(UPLOAD_BOOLEAN_NAME));
+		
+		_spinner = (Spinner) getView().findViewById(R.id.dropdown_file);
+		Button submitButton = (Button) getView().findViewById(R.id.button_submit_flight);
+		Button editButton = (Button) getView().findViewById(R.id.button_edit_flight);
+		
+		if(uploading)
+		{
+			if(_spinner != null)
+			{
+				_spinner.setEnabled(false);
+			}
+			if(submitButton != null)
+			{
+				submitButton.setEnabled(false);
+			}
+			if(editButton != null)
+			{
+				editButton.setEnabled(false);
+			}
+			if(m_progressBar != null)
+			{
+				m_progressBar.setVisibility(View.VISIBLE);
+			}
+		}
+		else
+		{
+			if(_spinner != null)
+			{
+				_spinner.setEnabled(true);
+			}
+			if(submitButton != null)
+			{
+				submitButton.setEnabled(true);
+			}
+			if(editButton != null)
+			{
+				editButton.setEnabled(true);
+			}
+			if(m_progressBar != null)
+			{
+				m_progressBar.setVisibility(View.GONE);
+			}
+		}
 	}
 }

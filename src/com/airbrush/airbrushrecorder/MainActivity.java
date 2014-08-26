@@ -3,19 +3,16 @@ package com.airbrush.airbrushrecorder;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.airbrush.airbrushrecorder.LoginHelper;
-import com.airbrush.airbrushrecorder.data.FlightsDataSource;
 import com.airbrush.airbrushrecorder.dialog.DialogCreateAccount;
 import com.airbrush.airbrushrecorder.dialog.DialogDeleteFlight;
+import com.airbrush.airbrushrecorder.dialog.DialogEditFlight;
 import com.airbrush.airbrushrecorder.dialog.DialogEnterLoginData;
 import com.airbrush.airbrushrecorder.dialog.DialogUploadFlightResponse;
-import com.airbrush.airbrushrecorder.dialog.DialogWifiOff;
 import com.airbrush.airbrushrecorder.dialog.DialogLogFlightResponse;
 import com.airbrush.airbrushrecorder.fragments.FragmentFlightBrowser;
 import com.airbrush.airbrushrecorder.fragments.FragmentRecorder;
@@ -24,7 +21,8 @@ import com.airbrush.airbrushrecorder.R;
 
 public class MainActivity extends FragmentActivity implements FragmentRecorder.OnToggleRecordingListener, FragmentFlightBrowser.OnFlightBrowserListener,
 																DialogDeleteFlight.NoticeDialogListener, DialogEnterLoginData.NoticeDialogListener,
-																DialogUploadFlightResponse.NoticeDialogListener, DialogCreateAccount.NoticeDialogListener
+																DialogUploadFlightResponse.NoticeDialogListener, DialogCreateAccount.NoticeDialogListener,
+																DialogEditFlight.NoticeDialogListener
 {
 	private static final String TAG = "MAIN";
 	
@@ -171,6 +169,13 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 	{
 		DialogLogFlightResponse dialog = new DialogLogFlightResponse();
 		dialog.show(getSupportFragmentManager(), TAG);
+	}
+	
+	@Override
+	public void onDialogSaveClicked()
+	{
+		FragmentFlightBrowser flightBrowser = (FragmentFlightBrowser) getSupportFragmentManager().findFragmentById(R.id.fragment_flight_browser);
+		flightBrowser.updateFlightList();
 	}
 	
 	private void displayAccountData()

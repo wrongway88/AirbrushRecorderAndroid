@@ -86,8 +86,6 @@ public class FragmentFlightBrowser extends Fragment implements InterfaceOnFlight
 	{
 		super.onCreateView(inflater, container, savedInstanceState);
 		
-		DataStorage.getInstance().setBoolean(UPLOAD_BOOLEAN_NAME, false);
-		
 		return inflater.inflate(R.layout.fragment_flight_browser, container, false);
 	}
 	
@@ -105,6 +103,11 @@ public class FragmentFlightBrowser extends Fragment implements InterfaceOnFlight
 	public void onResume()
 	{
 		Log.d(TAG, "" + DataStorage.getInstance().getBoolean(UPLOAD_BOOLEAN_NAME));
+		
+		if(DataStorage.getInstance().getBoolean(UPLOAD_BOOLEAN_NAME) != null)
+		{
+			indicateUpload(DataStorage.getInstance().getBoolean(UPLOAD_BOOLEAN_NAME));
+		}
 		
 		super.onResume();
 	}
@@ -446,8 +449,6 @@ public class FragmentFlightBrowser extends Fragment implements InterfaceOnFlight
 	public void indicateUpload(boolean uploading)
 	{
 		DataStorage.getInstance().setBoolean(UPLOAD_BOOLEAN_NAME, uploading);
-		
-		Log.d(TAG, "indicate: " + DataStorage.getInstance().getBoolean(UPLOAD_BOOLEAN_NAME));
 		
 		_spinner = (Spinner) getView().findViewById(R.id.dropdown_file);
 		Button submitButton = (Button) getView().findViewById(R.id.button_submit_flight);

@@ -31,22 +31,29 @@ public class TaskUploadFlight extends AsyncTask<Flight, Integer, Integer>
 	@Override
 	protected Integer doInBackground(Flight... params)
 	{
-		if(m_activity != null && m_sessionData.length() > 0)
+		try
 		{
-			int flightCount = params.length;
-			
-			for(int i = 0; i < flightCount; i++)
+			if(m_activity != null && m_sessionData.length() > 0)
 			{
-				if(WebInterface.wifiAvailable(m_activity))
+				int flightCount = params.length;
+				
+				for(int i = 0; i < flightCount; i++)
 				{
-					WebInterface wf = new WebInterface(m_activity);
-					m_responseCode = wf.postFlight(params[i], m_sessionData);
-					m_response = wf.getHttpResponse();
+					if(WebInterface.wifiAvailable(m_activity))
+					{
+						WebInterface wf = new WebInterface(m_activity);
+						m_responseCode = wf.postFlight(params[i], m_sessionData);
+						m_response = wf.getHttpResponse();
+					}
 				}
 			}
+			
+			createFlightUploadResponse(m_responseCode, m_response);
 		}
-		
-		createFlightUploadResponse(m_responseCode, m_response);
+		catch(Exception e)
+		{
+			Log.e(TAG, "" + e);
+		}
 		
 		return m_responseCode;
 	}

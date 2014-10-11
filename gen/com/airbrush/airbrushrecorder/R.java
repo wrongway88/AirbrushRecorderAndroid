@@ -26,17 +26,17 @@ public final class R {
         public static final int layout_bg_light=0x7f020002;
     }
     public static final class id {
-        public static final int action_forgot_password=0x7f08001a;
-        public static final int action_settings=0x7f080019;
-        public static final int button_create_account=0x7f080010;
+        public static final int action_forgot_password=0x7f08001c;
+        public static final int action_settings=0x7f08001b;
+        public static final int button_create_account=0x7f080011;
         public static final int button_delete_flight=0x7f08000e;
-        public static final int button_edit_flight=0x7f080014;
+        public static final int button_edit_flight=0x7f080016;
         public static final int button_save_flight=0x7f08000d;
         public static final int button_set_login_data=0x7f080002;
-        public static final int button_submit_flight=0x7f080015;
-        public static final int button_switch_account=0x7f080011;
-        public static final int button_toggle_logging=0x7f080018;
-        public static final int dropdown_file=0x7f080012;
+        public static final int button_submit_flight=0x7f080017;
+        public static final int button_switch_account=0x7f080012;
+        public static final int button_toggle_logging=0x7f08001a;
+        public static final int dropdown_file=0x7f080014;
         public static final int edit_text_airplane_type=0x7f08000c;
         public static final int edit_text_departure=0x7f08000a;
         public static final int edit_text_destination=0x7f08000b;
@@ -48,13 +48,15 @@ public final class R {
         public static final int fragment_account_data=0x7f080006;
         public static final int fragment_flight_browser=0x7f080005;
         public static final int fragment_recorder=0x7f080004;
-        public static final int menu_change_account=0x7f08001c;
-        public static final int menu_create_account=0x7f08001b;
-        public static final int progress_bar=0x7f080016;
+        public static final int menu_change_account=0x7f08001e;
+        public static final int menu_create_account=0x7f08001d;
+        public static final int progress_bar=0x7f080018;
         public static final int scrollViewMain=0x7f080003;
-        public static final int textview_account_data=0x7f08000f;
-        public static final int textview_flight_data=0x7f080013;
-        public static final int textview_log_indicator=0x7f080017;
+        public static final int textview_account_data=0x7f080010;
+        public static final int textview_account_headline=0x7f08000f;
+        public static final int textview_flight_browser_headline=0x7f080013;
+        public static final int textview_flight_data=0x7f080015;
+        public static final int textview_log_indicator=0x7f080019;
     }
     public static final class layout {
         public static final int activity_login=0x7f030000;
@@ -76,10 +78,10 @@ public final class R {
         public static final int settings=0x7f070005;
     }
     public static final class string {
-        public static final int action_forgot_password=0x7f050062;
+        public static final int action_forgot_password=0x7f050065;
         public static final int action_settings=0x7f050001;
-        public static final int action_sign_in_register=0x7f050060;
-        public static final int action_sign_in_short=0x7f050061;
+        public static final int action_sign_in_register=0x7f050063;
+        public static final int action_sign_in_short=0x7f050064;
         public static final int app_name=0x7f050000;
         public static final int button_back_to_main=0x7f050005;
         public static final int button_create=0x7f05000d;
@@ -141,10 +143,13 @@ public final class R {
         public static final int edit_text_surname=0x7f05001e;
         public static final int edit_text_surname_error_missing=0x7f050018;
         public static final int edit_text_user_name=0x7f050015;
-        public static final int error_field_required=0x7f050067;
-        public static final int error_incorrect_password=0x7f050066;
-        public static final int error_invalid_email=0x7f050064;
-        public static final int error_invalid_password=0x7f050065;
+        public static final int error_field_required=0x7f05006a;
+        public static final int error_incorrect_password=0x7f050069;
+        public static final int error_invalid_email=0x7f050067;
+        public static final int error_invalid_password=0x7f050068;
+        public static final int fragment_account_data=0x7f05005f;
+        public static final int fragment_flight_browser=0x7f05005e;
+        public static final int fragment_recorder=0x7f05005d;
         public static final int hello_world=0x7f050002;
         public static final int http_response_flight_upload_error_bad_request=0x7f050057;
         public static final int http_response_flight_upload_error_not_modified=0x7f050056;
@@ -158,13 +163,13 @@ public final class R {
         public static final int log_path_log_handler=0x7f050028;
         public static final int log_session_data=0x7f050025;
         public static final int log_waypoints=0x7f050023;
-        public static final int login_progress_signing_in=0x7f050063;
+        public static final int login_progress_signing_in=0x7f050066;
         public static final int menu_change_account=0x7f050053;
         public static final int menu_create_account=0x7f050054;
         /**  Strings related to login 
          */
-        public static final int prompt_email=0x7f05005e;
-        public static final int prompt_password=0x7f05005f;
+        public static final int prompt_email=0x7f050061;
+        public static final int prompt_password=0x7f050062;
         public static final int textView_account_data_default=0x7f050031;
         public static final int textView_account_data_title=0x7f050030;
         public static final int textView_flightBrowser_date=0x7f050032;
@@ -179,7 +184,7 @@ public final class R {
         public static final int textView_logging_logging=0x7f050029;
         public static final int textView_logging_na=0x7f05002d;
         public static final int title_activity_file_browser=0x7f050010;
-        public static final int title_activity_login=0x7f05005d;
+        public static final int title_activity_login=0x7f050060;
         public static final int title_activity_path_log=0x7f05000f;
         public static final int title_activity_power_management=0x7f050011;
     }

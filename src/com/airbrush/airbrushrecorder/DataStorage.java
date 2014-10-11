@@ -27,7 +27,7 @@ public class DataStorage
 	
 	public void setBoolean(String key, Boolean value)
 	{
-		_boolValues.put(key,  value);
+		_boolValues.put(key, value);
 	}
 	
 	public void setString(String key, String value)

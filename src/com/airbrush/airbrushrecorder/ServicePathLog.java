@@ -254,32 +254,6 @@ public class ServicePathLog extends Service
 		}
 	}
 	
-	/*
-	private void openLogFile(String date)
-	{
-		_logWriter = new LogWriter();
-		_logWriter.openFile("log_" + date + ".txt");
-		
-		if(_flight != null)
-		{
-			_logWriter.writeToFile("\"departure\":\"" + _flight.getDeparture() + "\",");
-			_logWriter.writeToFile("\"destination\":\"" + _flight.getDestination() + "\",");
-			_logWriter.writeToFile("\"date\":\"" + _flight.getDate().serialize() + "\",");
-			_logWriter.writeToFile("\"airplanetype\":\"" + _flight.getAirplaneType() + "\",");
-			_logWriter.writeToFile("\"waypoints\":[");
-		}
-	}
-	
-	private void closeLogFile()
-	{
-		if(_logWriter != null)
-		{
-			_logWriter.writeToFile("]}");
-			_logWriter.closeFile();
-		}
-	}
-	*/
-	
 	private void initFlight()
 	{
 		_flight = new Flight();
@@ -302,30 +276,4 @@ public class ServicePathLog extends Service
 		
 		_waypointsCount = 0;
 	}
-	
-	/*
-	private void writeFlight()
-	{
-		FlightsDataSource dataSource = new FlightsDataSource(this);
-		dataSource.open();
-		int id = dataSource.createFlight(_flight.getDate().toString(), _flight.getDeparture(), _flight.getDestination(), _flight.getAirplaneType());
-		
-		//dataSource.createWaypoint(id, 0, 0.0, 0.0, 300.0, 0.0f);
-		
-		
-		for(int i = 0; i < _flight.getWaypointCount(); i++)
-		{
-			Flight.Waypoint waypoint = _flight.getWaypoint(i);
-			
-			if(waypoint != null)
-			{
-				dataSource.createWaypoint(id, waypoint._t, waypoint._latitude, waypoint._longitude, waypoint._altitude, waypoint._speed);
-			}
-		}
-		
-		
-		//dataSource.createWaypoint(flightId, timeStamp, latitude, longitude, altitude, speed)
-		dataSource.close();
-	}
-	*/
 }

@@ -41,6 +41,9 @@
     <string name="log_destination">destination</string>
     <string name="log_waypoints">waypoints</string>
     <string name="log_airplane_type">airplaneType</string>
+    <string name="log_session_data">sessionData</string>
+    <string name="log_flight">flight</string>
+    <string name="log_activity">activity</string>
     
     <string name="log_path_log_handler">pathLogHandler</string>
     

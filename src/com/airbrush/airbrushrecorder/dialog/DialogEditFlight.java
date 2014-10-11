@@ -11,19 +11,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.content.DialogInterface;
 import android.os.Bundle;
 
-import com.airbrush.airbrushrecorder.DataStorage;
 import com.airbrush.airbrushrecorder.Flight;
 import com.airbrush.airbrushrecorder.R;
-import com.airbrush.airbrushrecorder.WebInterface;
 import com.airbrush.airbrushrecorder.data.FlightsDataSource;
 
 @SuppressLint("ValidFragment")
 public class DialogEditFlight extends DialogFragment
 {
 	private static String TAG = "DIALOG_EDIT_FLIGHT";
+	
+	public interface NoticeDialogListener
+	{
+        public void onDialogSaveClicked();
+    }
+	
+	private NoticeDialogListener m_listener;
 	
 	private FragmentActivity m_activity = null;
 	private int m_fightId = -1;
@@ -37,8 +41,6 @@ public class DialogEditFlight extends DialogFragment
     public Dialog onCreateDialog(Bundle savedInstanceState)
 	{
 		super.onCreateDialog(savedInstanceState);
-		
-		
 		
 		Bundle bundle = getArguments();
 		m_fightId = bundle.getInt("flightId");
@@ -85,10 +87,28 @@ public class DialogEditFlight extends DialogFragment
 	            	FlightsDataSource dataSource = new FlightsDataSource(m_activity);
 	                dataSource.open();
 	        		Flight flight = dataSource.getFlight(m_fightId);
-	        		flight.setDeparture(departure);
-	        		flight.setDestination(destination);
-	        		flight.setAirplaneType(airplaneType);
+	        		
+	        		if(flight != null)
+	        		{
+		        		if(departure.length() > 0)
+		        		{
+		        			flight.setDeparture(departure);
+		        		}
+		        		if(destination.length() > 0)
+		        		{
+		        			flight.setDestination(destination);
+		        		}
+		        		if(airplaneType.length() > 0)
+		        		{
+		        			flight.setAirplaneType(airplaneType);
+		        		}
+		        		dataSource.updateFlight(flight);
+	        		}
+	        		
 	        		dataSource.close();
+	        		
+	        		m_listener.onDialogSaveClicked();
+	        		d.dismiss();
 	            }
 	        });
 		}
@@ -103,6 +123,8 @@ public class DialogEditFlight extends DialogFragment
 				{
 					DialogDeleteFlight dialog = new DialogDeleteFlight();
 					dialog.show(m_activity.getSupportFragmentManager(), TAG);
+					
+					d.dismiss();
 				}
 			});
 		}
@@ -110,5 +132,18 @@ public class DialogEditFlight extends DialogFragment
 		return d;
 	}
 	
-	
+	@Override
+	public void onAttach(Activity activity)
+	{
+		super.onAttach(activity);
+		
+		try
+		{
+			m_listener = (NoticeDialogListener)activity;
+		}
+		catch (Exception e)
+		{
+			Log.e(TAG, activity.toString() + " must implement NoticeDialogListener");
+		}
+	}
 }

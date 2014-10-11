@@ -75,9 +75,9 @@ public class FlightSQLiteHelper extends SQLiteOpenHelper
 	{
 		String updateFlight = "UPDATE " + TABLE_FLIGHTS
 				+ " SET "
-				+ COLUMN_DEPARTURE + " = '" + departure + "'"
-				+ COLUMN_DESTINATION + " = '" + destination + "'"
-				+ COLUMN_AIRPLANE + " = '" + airplane + "'"
+				+ COLUMN_DEPARTURE + " = '" + departure + "', "
+				+ COLUMN_DESTINATION + " = '" + destination + "', "
+				+ COLUMN_AIRPLANE + " = '" + airplane + "' "
 				+ " WHERE " + COLUMN_ID + " = " + flightId + ";";
 		
 		database.execSQL(updateFlight);

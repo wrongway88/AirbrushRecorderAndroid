@@ -35,8 +35,6 @@ public class ServicePathLog extends Service
 	
 	private Flight _flight = null;
 	
-	private LogWriter _logWriter = null;
-	
 	private PowerManager.WakeLock _wakeLock = null;
 	
 	private Thread.UncaughtExceptionHandler _uncaughtExceptionHandler = null;
@@ -46,6 +44,8 @@ public class ServicePathLog extends Service
 	private int _waypointsCount = 0;
 	
 	private Messenger _messenger = null;
+	
+	private LogWriter _logWriter = null;
 	
 	private Thread.UncaughtExceptionHandler _exceptionHandler = new Thread.UncaughtExceptionHandler()
 	{

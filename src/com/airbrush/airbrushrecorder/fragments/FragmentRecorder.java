@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.airbrush.airbrushrecorder.ServicePathLog;
@@ -156,6 +157,7 @@ public class FragmentRecorder extends Fragment
 	
 	private void setLayoutLogging(Boolean logging)
 	{
+		LinearLayout indicatorLayout = (LinearLayout) getView().findViewById(R.id.layout_log_indicator);
 		TextView indicator = (TextView) getView().findViewById(R.id.textview_log_indicator);
 		
 		Button button = (Button) getView().findViewById(R.id.button_toggle_logging);
@@ -164,14 +166,24 @@ public class FragmentRecorder extends Fragment
 		{
 			indicator.setText("Recording");
 			indicator.setVisibility(View.VISIBLE);
+			indicatorLayout.setVisibility(View.VISIBLE);
 			
 			button.setText(R.string.button_stop_logging);
+			
+			int grey = 12763842; // #c2c2c2
+			getView().getRootView().setBackgroundColor(grey);
+			getView().setBackgroundColor(grey);
 		}
 		else
 		{
 			indicator.setVisibility(View.GONE);
+			indicatorLayout.setVisibility(View.GONE);
 			
 			button.setText(R.string.button_start_logging);
+			
+			int white = 16777215; // #ffffff
+			getView().getRootView().setBackgroundColor(white);
+			getView().setBackgroundColor(white);
 		}
 	}
 }

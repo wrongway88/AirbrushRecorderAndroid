@@ -31,6 +31,10 @@ public class MainActivity extends FragmentActivity implements FragmentRecorder.O
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+        MyPagerAdapter pageAdapter = new MyPagerAdapter(getSupportFragmentManager());
+        ViewPager pager = (ViewPager)findViewById(R.id.viewPager);
+        pager.setAdapter(pageAdapter);
 	}
 	
 	@Override
